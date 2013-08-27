@@ -1,0 +1,30 @@
+﻿@using CaraEntites;
+@model User
+
+@{
+  
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Registration</title>
+</head>
+<body>
+    <div>
+        First Name: @Html.TextBoxFor(m => m.FirstName, new {@class="requiredField" })
+        Last Name:  @Html.TextBoxFor(m => m.LastName, new {@class="requiredField" })
+    </div>
+    <div>
+        Title: @Html.TextBoxFor(m => m.Title, new {@class="requiredField" })
+    </div>
+    <div>
+        Company: @Html.TextBoxFor(m => m.Company, new {@class="requiredField" })
+    </div>
+    <div class="clear">
+        <input type="button" value="Register" />
+    </div>
+</body>
+</html>

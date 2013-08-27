@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaraOnlineForms", "CaraOnlineForms\CaraOnlineForms.csproj", "{BB3BB94B-6ADF-4D6E-A2CD-306139ECC42F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaraEntites", "CaraEntites\CaraEntites.csproj", "{6D41F5B9-B4F5-4B1B-95BB-9842EAD008D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{B84BD458-664E-466C-8A47-15D777C441A3}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://ladevtfs01:8080/tfs/mpaa
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = CaraEntites\\CaraEntites.csproj
+		SccProjectName1 = CaraEntites
+		SccLocalPath1 = CaraEntites
+		SccProjectUniqueName2 = CaraOnlineForms\\CaraOnlineForms.csproj
+		SccProjectName2 = CaraOnlineForms
+		SccLocalPath2 = CaraOnlineForms
+		SccProjectUniqueName3 = Repository\\Repository.csproj
+		SccProjectName3 = Repository
+		SccLocalPath3 = Repository
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB3BB94B-6ADF-4D6E-A2CD-306139ECC42F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB3BB94B-6ADF-4D6E-A2CD-306139ECC42F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB3BB94B-6ADF-4D6E-A2CD-306139ECC42F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB3BB94B-6ADF-4D6E-A2CD-306139ECC42F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D41F5B9-B4F5-4B1B-95BB-9842EAD008D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D41F5B9-B4F5-4B1B-95BB-9842EAD008D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D41F5B9-B4F5-4B1B-95BB-9842EAD008D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D41F5B9-B4F5-4B1B-95BB-9842EAD008D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B84BD458-664E-466C-8A47-15D777C441A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B84BD458-664E-466C-8A47-15D777C441A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B84BD458-664E-466C-8A47-15D777C441A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B84BD458-664E-466C-8A47-15D777C441A3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
