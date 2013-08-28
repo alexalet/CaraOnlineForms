@@ -19,5 +19,10 @@ namespace CaraOnlineForms.Controllers
             return View(new User());
         }
 
+        public ActionResult SubmitRegistration(User newUser)
+        {
+            ViewBag.ErrorMessage = "The email address already taken by another user.";
+            return View("Registration", newUser);
+        }
     }
 }

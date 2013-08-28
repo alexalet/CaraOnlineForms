@@ -203,6 +203,9 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jQuery_AJAX_Custom.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
@@ -221,6 +224,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\Registration.cshtml" />
+    <Content Include="Views\Shared\_States.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -237,6 +241,10 @@
     <ProjectReference Include="..\Repository\Repository.csproj">
       <Project>{b84bd458-664e-466c-8a47-15d777c441a3}</Project>
       <Name>Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{68ba7a5b-278a-47ef-ab32-a35d13cfadb5}</Project>
+      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

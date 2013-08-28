@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaraEntites", "CaraEntites\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{B84BD458-664E-466C-8A47-15D777C441A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{68BA7A5B-278A-47EF-AB32-A35D13CFADB5}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://ladevtfs01:8080/tfs/mpaa
 		SccLocalPath0 = .
@@ -22,6 +24,9 @@ Global
 		SccProjectUniqueName3 = Repository\\Repository.csproj
 		SccProjectName3 = Repository
 		SccLocalPath3 = Repository
+		SccProjectUniqueName4 = Utility\\Utility.csproj
+		SccProjectName4 = Utility
+		SccLocalPath4 = Utility
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +45,10 @@ Global
 		{B84BD458-664E-466C-8A47-15D777C441A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B84BD458-664E-466C-8A47-15D777C441A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B84BD458-664E-466C-8A47-15D777C441A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68BA7A5B-278A-47EF-AB32-A35D13CFADB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68BA7A5B-278A-47EF-AB32-A35D13CFADB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68BA7A5B-278A-47EF-AB32-A35D13CFADB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68BA7A5B-278A-47EF-AB32-A35D13CFADB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

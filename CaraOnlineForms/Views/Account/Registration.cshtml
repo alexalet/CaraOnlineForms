@@ -11,20 +11,93 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Registration</title>
+    <script>
+        $(document).ready(function () {
+
+            $(':text[requiredField]').keyup(function () {
+                var txt = $(this).val().trim();
+                if (txt.length == 0)
+                    $(this).addClass('requiredField');
+                else
+                    $(this).removeClass('requiredField');
+
+            })
+
+            $('#Register').click(function () {
+
+                if (ValidateForm()) {
+
+                    document.forms[0].submit();
+                }
+
+                /*
+                var email = $('#EmailAddress').val().trim();
+                var ck_email = /^([\w-]+(?:\.[\w-]+)*)@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+                if (!ck_email.test(email)) {
+                    alert('email is not correct')
+
+                }
+                */
+
+
+            });//--end click --
+
+        });//-- end ready --
+
+        function ValidateForm() {
+            var error = false;
+            var requireds = $(':text[requiredField]');
+            requireds.each(function () {
+                if ($(this).val().trim().length == 0) {
+                    $(this).addClass('requiredField');
+                    error = true;
+
+                }
+            })
+
+            if (error) {
+                DisplayErrors('Please fill all required fields.', 'Error');
+                return false;
+            }
+
+            return true;
+        } //-- end ValidateForm --
+    </script>
 </head>
 <body>
-    <div>
-        First Name: @Html.TextBoxFor(m => m.FirstName, new {@class="requiredField" })
-        Last Name:  @Html.TextBoxFor(m => m.LastName, new {@class="requiredField" })
-    </div>
-    <div>
-        Title: @Html.TextBoxFor(m => m.Title, new {@class="requiredField" })
-    </div>
-    <div>
-        Company: @Html.TextBoxFor(m => m.Company, new {@class="requiredField" })
-    </div>
-    <div class="clear">
-        <input type="button" value="Register" />
-    </div>
+    @{if (ViewBag.ErrorMessage != null)
+      {
+        <div class="error">@ViewBag.ErrorMessage</div>       
+      }
+    }
+    <form method="post" action="@Url.Action("SubmitRegistration")">
+        <div>
+            First Name<span>*</span>: @Html.TextBoxFor(m => m.FirstName, new { requiredField = "1" })
+            Last Name:  @Html.TextBoxFor(m => m.LastName, new { requiredField = "1" })
+        </div>
+        <div>
+            Title: @Html.TextBoxFor(m => m.Title, new { requiredField = "1" })
+        </div>
+        <div>
+            Company: @Html.TextBoxFor(m => m.Company, new { requiredField = "1" })
+        </div>
+        <div>
+            Address: @Html.TextBoxFor(m => m.Address1, new { requiredField = "1" })
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.Address2, new { })
+        </div>
+        <div>
+            State: @Html.Partial("_States", "State")
+        </div>
+        <div>
+            Email: @Html.TextBoxFor(m => m.EmailAddress, new { requiredField = "1" })
+        </div>
+        <div class="clear">
+            <input type="button" value="Register" id="Register" />
+        </div>
+    </form>
+
 </body>
+
 </html>
