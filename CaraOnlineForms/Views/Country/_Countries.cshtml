@@ -1,0 +1,16 @@
+﻿@using ViewModels;
+@using CaraEntites;
+@model CountryViewModel
+
+@{
+   if (Model.ISO.IsEmpty())
+   {
+       Model.ISO = "US";
+   }
+    var items = new List<SelectListItem>();
+    foreach (Country c in Model.Countries)
+    {
+        items.Add(new SelectListItem {Text=c.Name, Value=c.ISO, Selected=(c.ISO==Model.ISO) });
+    }    
+}
+@Html.DropDownList(Model.Name,items )

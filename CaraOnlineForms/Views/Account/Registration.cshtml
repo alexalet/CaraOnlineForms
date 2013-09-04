@@ -1,5 +1,6 @@
 ﻿@using CaraEntites;
-@model User
+@using ViewModels;
+@model RegistrationViewModel
 
 @{
   
@@ -11,6 +12,20 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Registration</title>
+    <style>
+        .label
+        {
+            width: 100px;
+            float: left;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .redStar
+        {
+            color: red;
+        }
+    </style>
     <script>
         $(document).ready(function () {
 
@@ -65,37 +80,66 @@
     </script>
 </head>
 <body>
-    @{if (ViewBag.ErrorMessage != null)
+    @{if (!Model.ErrorMessage.IsEmpty())
       {
-        <div class="error">@ViewBag.ErrorMessage</div>       
+        <div class="error">@Model.ErrorMessage</div>       
       }
     }
-    <form method="post" action="@Url.Action("SubmitRegistration")">
+    <form method="post" action="@(Model.User.UserId>0 ? Url.Action("UpdateProfile") : Url.Action("SubmitRegistration"))">
         <div>
-            First Name<span>*</span>: @Html.TextBoxFor(m => m.FirstName, new { requiredField = "1" })
-            Last Name:  @Html.TextBoxFor(m => m.LastName, new { requiredField = "1" })
+            <div class="label">First Name<span class="redStar">*</span>:</div>
+            @Html.TextBoxFor(m => m.User.FirstName, new { requiredField = "1" })
+            Last Name<span class="redStar">*</span>:  @Html.TextBoxFor(m => m.User.LastName, new { requiredField = "1" })
         </div>
         <div>
-            Title: @Html.TextBoxFor(m => m.Title, new { requiredField = "1" })
+            <div class="label">Title<span class="redStar">*</span>:</div>
+            @Html.TextBoxFor(m => m.User.Title, new { requiredField = "1" })
         </div>
         <div>
-            Company: @Html.TextBoxFor(m => m.Company, new { requiredField = "1" })
+            <div class="label">Company<span class="redStar">*</span>:</div>
+            @Html.TextBoxFor(m => m.User.Company, new { requiredField = "1" })
         </div>
         <div>
-            Address: @Html.TextBoxFor(m => m.Address1, new { requiredField = "1" })
+            <div class="label">Address<span class="redStar">*</span>:</div>
+            @Html.TextBoxFor(m => m.User.Address1, new { requiredField = "1" })
         </div>
         <div>
-            @Html.TextBoxFor(m => m.Address2, new { })
+            <div class="label">&nbsp;</div>
+            @Html.TextBoxFor(m => m.User.Address2, new { })
         </div>
         <div>
-            State: @Html.Partial("_States", "State")
+            <div class="label">City<span class="redStar">*</span>:</div>
+            @Html.TextBoxFor(m => m.User.City, new { requiredField = "1" })
+            Country<span class="redStar">*</span>: @Html.Action("Countries", "Country", new { Name = "User.CountryId", ISO = Model.User.CountryId })
         </div>
         <div>
-            Email: @Html.TextBoxFor(m => m.EmailAddress, new { requiredField = "1" })
+            <div class="label">State<span class="redStar">*</span>:</div>
+            @Html.Partial("_States", new CountryViewModel { Name = "User.State", ISO = Model.User.State })
+            Zip Code<span class="redStar">*</span>: @Html.TextBoxFor(m => m.User.Zip, new { requiredField = "1" })
         </div>
+        <div>
+            @{if (Model.User.UserId > 0)
+              { 
+                  <div class="label">Email:</div>@Model.User.EmailAddress<span>&nbsp;(Is used as UserID)</span>
+              }
+              else
+              { 
+                <div class="label">Email<span class="redStar">*</span>:</div> @Html.TextBoxFor(m => m.User.EmailAddress, new { requiredField = "1" }) <span>(Will be used as UserID)</span>
+              }
+            }
+        </div>
+        <div>
+            <div class="label">Phone<span class="redStar">*</span>:</div>
+            @Html.TextBoxFor(m => m.Phone, new { requiredField = "1" })
+            Cell:@Html.TextBoxFor(m => m.Cell)
+        </div>
+
+
+
         <div class="clear">
-            <input type="button" value="Register" id="Register" />
+            <input type="button" value="@(Model.User.UserId > 0 ? "Update" : "Register")" id="Register" />
         </div>
+
     </form>
 
 </body>

@@ -14,6 +14,12 @@ namespace CaraEntites
     
     public partial class User
     {
+        public User()
+        {
+            this.UserPhones = new HashSet<UserPhone>();
+            this.EmailsToConfirms = new HashSet<EmailsToConfirm>();
+        }
+    
         public int UserId { get; set; }
         public string EmailAddress { get; set; }
         public string FirstName { get; set; }
@@ -34,5 +40,8 @@ namespace CaraEntites
         public string PasswordSalt { get; set; }
         public Nullable<int> ParentCompanyId { get; set; }
         public Nullable<int> CARACompanyId { get; set; }
+    
+        public virtual ICollection<UserPhone> UserPhones { get; set; }
+        public virtual ICollection<EmailsToConfirm> EmailsToConfirms { get; set; }
     }
 }

@@ -4,10 +4,40 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CaraOnlineForms_DevModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="CaraOnlineForms_DevModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="CaraOnlineForms_DevModelStoreContainer">
+          <EntitySet Name="Country" EntityType="CaraOnlineForms_DevModel.Store.Country" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EmailsToConfirm" EntityType="CaraOnlineForms_DevModel.Store.EmailsToConfirm" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="User" EntityType="CaraOnlineForms_DevModel.Store.User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserPhone" EntityType="CaraOnlineForms_DevModel.Store.UserPhone" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_EmailsToConfirm_User" Association="CaraOnlineForms_DevModel.Store.FK_EmailsToConfirm_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="EmailsToConfirm" EntitySet="EmailsToConfirm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPhone_User" Association="CaraOnlineForms_DevModel.Store.FK_UserPhone_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserPhone" EntitySet="UserPhone" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="ISO" />
+          </Key>
+          <Property Name="ISO" Type="nvarchar" Nullable="false" MaxLength="2" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="64" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmailsToConfirm">
+          <Key>
+            <PropertyRef Name="ConfirmEmailId" />
+          </Key>
+          <Property Name="ConfirmEmailId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="ConfirmedIP" Type="varchar" MaxLength="50" />
+          <Property Name="Confirmed" Type="datetime" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserId" />
@@ -33,13 +63,57 @@
           <Property Name="ParentCompanyId" Type="int" />
           <Property Name="CARACompanyId" Type="int" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+        <EntityType Name="UserPhone">
+          <Key>
+            <PropertyRef Name="UserPhoneId" />
+          </Key>
+          <Property Name="UserPhoneId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="PhoneTypeCode" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="PhoneNumber" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="IsPrimary" Type="bit" />
+        </EntityType>
+        <Association Name="FK_EmailsToConfirm_User">
+          <End Role="User" Type="CaraOnlineForms_DevModel.Store.User" Multiplicity="1" />
+          <End Role="EmailsToConfirm" Type="CaraOnlineForms_DevModel.Store.EmailsToConfirm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="EmailsToConfirm">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPhone_User">
+          <End Role="User" Type="CaraOnlineForms_DevModel.Store.User" Multiplicity="1" />
+          <End Role="UserPhone" Type="CaraOnlineForms_DevModel.Store.UserPhone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserPhone">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CaraOnlineForms_DevModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="CaraEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="CaraOnlineForms_DevModel.User" />
+          <EntitySet Name="Countries" EntityType="CaraOnlineForms_DevModel.Country" />
+          <EntitySet Name="UserPhones" EntityType="CaraOnlineForms_DevModel.UserPhone" />
+          <AssociationSet Name="FK_UserPhone_User" Association="CaraOnlineForms_DevModel.FK_UserPhone_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserPhone" EntitySet="UserPhones" />
+          </AssociationSet>
+          <EntitySet Name="EmailsToConfirms" EntityType="CaraOnlineForms_DevModel.EmailsToConfirm" />
+          <AssociationSet Name="FK_EmailsToConfirm_User" Association="CaraOnlineForms_DevModel.FK_EmailsToConfirm_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="EmailsToConfirm" EntitySet="EmailsToConfirms" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -65,7 +139,64 @@
           <Property Name="PasswordSalt" Type="String" MaxLength="256" Unicode="true" FixedLength="false" />
           <Property Name="ParentCompanyId" Type="Int32" />
           <Property Name="CARACompanyId" Type="Int32" />
+          <NavigationProperty Name="UserPhones" Relationship="CaraOnlineForms_DevModel.FK_UserPhone_User" FromRole="User" ToRole="UserPhone" />
+          <NavigationProperty Name="EmailsToConfirms" Relationship="CaraOnlineForms_DevModel.FK_EmailsToConfirm_User" FromRole="User" ToRole="EmailsToConfirm" />
         </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="ISO" />
+          </Key>
+          <Property Type="String" Name="ISO" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserPhone">
+          <Key>
+            <PropertyRef Name="UserPhoneId" />
+          </Key>
+          <Property Type="Int32" Name="UserPhoneId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="PhoneTypeCode" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PhoneNumber" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="IsPrimary" />
+          <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_UserPhone_User" FromRole="UserPhone" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_UserPhone_User">
+          <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.UserPhone" Role="UserPhone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserPhone">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmailsToConfirm">
+          <Key>
+            <PropertyRef Name="ConfirmEmailId" />
+          </Key>
+          <Property Type="Int32" Name="ConfirmEmailId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+          <Property Type="String" Name="ConfirmedIP" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Confirmed" Precision="3" />
+          <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_EmailsToConfirm_User" FromRole="EmailsToConfirm" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_EmailsToConfirm_User">
+          <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.EmailsToConfirm" Role="EmailsToConfirm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="EmailsToConfirm">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -95,6 +226,38 @@
                 <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
                 <ScalarProperty Name="ParentCompanyId" ColumnName="ParentCompanyId" />
                 <ScalarProperty Name="CARACompanyId" ColumnName="CARACompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ISO" ColumnName="ISO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPhones">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.UserPhone">
+              <MappingFragment StoreEntitySet="UserPhone">
+                <ScalarProperty Name="IsPrimary" ColumnName="IsPrimary" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneTypeCode" ColumnName="PhoneTypeCode" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserPhoneId" ColumnName="UserPhoneId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailsToConfirms">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.EmailsToConfirm">
+              <MappingFragment StoreEntitySet="EmailsToConfirm">
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+                <ScalarProperty Name="ConfirmedIP" ColumnName="ConfirmedIP" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ConfirmEmailId" ColumnName="ConfirmEmailId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

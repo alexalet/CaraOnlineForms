@@ -1,0 +1,4 @@
+﻿------------------ TABLES ------------------
+User
+EmailsToConfirm
+Country

@@ -60,11 +60,49 @@ textarea {
     display: none;
 }
 
+body
+{
+    font-size: .9em;
+    font-family: "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif !important;
+    color: black;
+    background-color: #EEF1FA;
+    margin: 0 !important;
+    padding: 0px;
+    background-image: url("../Content/Images/Background.jpg");
+    background-repeat: repeat-x;
+    border: none;
+}
+
+DIV.title
+{
+    padding-left: 10px;
+    padding-bottom: 12px;
+    padding-top: 6px;
+    height: 20px;
+    border: none;
+    color: Black !important;
+    vertical-align: middle;
+    font-family: "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif !important;
+    font-size: 1em;
+    min-width: 1200px;
+    overflow: visible;
+}
+
+
 .clear
 {
   clear:both;
 }
 
+.leftFloat
+{
+    float: left;
+}
+
+.rightFloat
+{
+    float: right;
+}
 
 .requiredField
 {
