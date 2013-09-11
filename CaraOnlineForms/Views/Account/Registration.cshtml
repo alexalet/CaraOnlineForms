@@ -29,7 +29,7 @@
     <script>
         $(document).ready(function () {
 
-            $(':text[requiredField]').keyup(function () {
+            $(':text[requiredField],:password').keyup(function () {
                 var txt = $(this).val().trim();
                 if (txt.length == 0)
                     $(this).addClass('requiredField');
@@ -61,7 +61,7 @@
 
         function ValidateForm() {
             var error = false;
-            var requireds = $(':text[requiredField]');
+            var requireds = $(':text[requiredField],:password');
             requireds.each(function () {
                 if ($(this).val().trim().length == 0) {
                     $(this).addClass('requiredField');
@@ -120,7 +120,7 @@
         <div>
             @{if (Model.User.UserId > 0)
               { 
-                  <div class="label">Email:</div>@Model.User.EmailAddress<span>&nbsp;(Is used as UserID)</span>
+                <div class="label">Email:</div>@Model.User.EmailAddress<span>&nbsp;(Is used as UserID)</span>
               }
               else
               { 
@@ -133,9 +133,20 @@
             @Html.TextBoxFor(m => m.Phone, new { requiredField = "1" })
             Cell:@Html.TextBoxFor(m => m.Cell)
         </div>
-
-
-
+        <div>
+            <div class="label">Fax<span class="redStar"></span>:</div>
+            @Html.TextBoxFor(m => m.Fax)
+            Website:@Html.TextBoxFor(m => m.User.Website)
+        </div>
+        @if (Model.User.UserId <= 0)
+        {
+        <div>
+            <div class="label">Password<span class="redStar">*</span>:</div>
+            @Html.PasswordFor(m => m.User.Password, new { requiredField = "1" })
+            Confirm Password<span class="redStar">*</span>:
+            <input type="password"  requiredField = "1" id="ConfirmPassword"/>
+        </div>
+        }
         <div class="clear">
             <input type="button" value="@(Model.User.UserId > 0 ? "Update" : "Register")" id="Register" />
         </div>

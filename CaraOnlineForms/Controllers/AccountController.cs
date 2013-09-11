@@ -6,12 +6,36 @@ using System.Web.Mvc;
 using CaraEntites;
 using Repository;
 using ViewModels;
+using Utility;
 
 namespace CaraOnlineForms.Controllers
 {
     public class AccountController : Controller
     {
-       
+
+        public ActionResult Login()
+        {
+            LoginViewModel model = new LoginViewModel { ErrorMessage="", Pwd="", UserId="" };
+            return View(model);
+        }
+
+
+        public ActionResult TryLogin(LoginViewModel login)
+        {
+            string encryptedPWD = Utility.Cryptography.EncryptPwd(login.Pwd);
+            User user = new UserRepository().TryLogin(login.UserId, encryptedPWD);
+
+            if (user == null)
+            {
+                LoginViewModel model = new LoginViewModel { ErrorMessage = "Login Failed", Pwd = "", UserId = login.UserId };
+                return View("Login", model);
+            }
+
+            return RedirectToAction("Title", "Submition");
+        }
+        
+
+
         public ActionResult Registration()
         {
            
@@ -26,10 +50,11 @@ namespace CaraOnlineForms.Controllers
             var rep = new UserRepository();
             if (!rep.IsEmailUnique(newUser.User.EmailAddress))
             {
-                newUser.ErrorMessage = "The email address already was taken by another user.";
+                newUser.ErrorMessage = "The email address already is used by another user.";
                 return View("Registration", newUser);
             }
 
+            newUser.User.Password = Utility.Cryptography.EncryptPwd(newUser.User.Password);
             rep.CreateUser(newUser.User, newUser.Phone, newUser.Cell, newUser.Fax);
              
             return View("Registration", newUser);

@@ -88,6 +88,32 @@ DIV.title
     overflow: visible;
 }
 
+.blueMediumBack
+{
+    background-color: #1D6A81;
+}
+
+.wrapDialogBack
+{
+    background: #E9EEF3 !important;
+}
+
+
+.underline
+{
+    text-decoration: underline;
+}
+
+LI.paddedTop10
+{
+    padding-top: 10px !important;
+}
+
+
+.hidden
+{
+ display:none !important;
+}
 
 .clear
 {
@@ -107,5 +133,40 @@ DIV.title
 .requiredField
 {
   background-color:rosybrown;
-  
+}
+
+
+.red
+{
+    color: #950000 !important;
+}
+
+.orangeText
+{
+    color: #A06B1B;
+}
+
+.grayText
+{
+    color: Gray;
+}
+
+.whiteText
+{
+    color: White;
+}
+
+.blueText
+{
+    color: #2e6e9e;
+}
+
+.blueBack
+{
+    background-color: #D5E1E3;
+}
+
+.redBack
+{
+    background-color: #CA0000;
 }

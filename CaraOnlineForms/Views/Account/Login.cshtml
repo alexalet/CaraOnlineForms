@@ -1,0 +1,29 @@
+﻿@using ViewModels;
+@model LoginViewModel
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CARA Online Application</title>
+</head>
+<body>
+     @if(!Model.ErrorMessage.IsEmpty())
+     {
+      <div class="clear red">
+          @Model.ErrorMessage
+      </div>
+     }   
+    <form action="@Url.Action("TryLogin")">
+    <div>
+        User ID(Email Address):@Html.TextBoxFor(m=>m.UserId)
+    </div>
+    <div class="clear">
+        Password:@Html.PasswordFor(m=>m.Pwd)
+    </div>
+    <div class="clear">
+        <input type="submit" value="Login"/>
+    </div>
+   </form>
+</body>
+</html>

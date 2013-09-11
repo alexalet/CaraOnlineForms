@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Title</title>
+    <script>
+        $(function () {
+            $('#Add').click(function () {
+
+                var add = true;
+                $("#frmTitle :text[name='AltTitle']").each(function () {
+                  
+                    if ($(this).val().trim() == '')
+                        add = false;
+                })
+                if (add) {
+                    $('#AltTitle').clone(true).removeClass('hidden').removeAttr('id').appendTo('#AltTitles');
+                }
+            }
+            );
+
+            $('.remove').click(function () {
+
+                $(this).parent().remove();
+
+            })
+        
+        })//--end ready --  
+    </script>
+</head>
+<body>
+    <div>
+        Information Concerning the Motion Picture:   
+    </div>
+    <form id="frmTitle">
+        <div>
+            <input type="text" id="Title" /></div>
+        <div>
+            <input type="text" name="AltTitle" /><input type="button" id="Add" value="Add More" /></div>
+        <span id="AltTitles"></span>
+
+        <div><input /></div>
+    </form>
+ <div id="AltTitle" class="hidden">
+   <input type="text" name="AltTitle" /><input type="button" value="Remove" class="remove" />
+ </div>
+
+</body>
+</html>

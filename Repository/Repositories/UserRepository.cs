@@ -144,9 +144,13 @@ namespace Repository
             }
             _context.SaveChanges();
 
-
-
             return true;
+        }
+
+        public User TryLogin(string userId, string encryptedPWD)
+        {
+           return _context.Users.FirstOrDefault(x => x.EmailAddress == userId && x.Password == encryptedPWD); 
+        
         }
     }
 }

@@ -25,10 +25,7 @@ function DisplayErrors(errors, header) {
                         }
                     }
                 });
-  
-  //  $dialog.dialog('option', 'position', ['center', $(window.parent).scrollTop() + 30]);
-
-
+ 
     return false;
 };//-- end DisplayErrors --
 

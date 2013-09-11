@@ -2,3 +2,5 @@
 User
 EmailsToConfirm
 Country
+Film
+FilmAltTitle
