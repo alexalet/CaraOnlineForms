@@ -12,14 +12,15 @@ namespace CaraEntites
     using System;
     using System.Collections.Generic;
     
-    public partial class EmailsToConfirm
+    public partial class UserToConfirm
     {
-        public int ConfirmEmailId { get; set; }
+        public int UserToConfirmId { get; set; }
         public int UserId { get; set; }
-        public string Code { get; set; }
+        public string CodeForEmail { get; set; }
+        public Nullable<System.DateTime> EmailConfirmed { get; set; }
+        public Nullable<System.DateTime> CaraApproved { get; set; }
+        public string CaraApprovedBy { get; set; }
         public System.DateTime Created { get; set; }
-        public string ConfirmedIP { get; set; }
-        public Nullable<System.DateTime> Confirmed { get; set; }
     
         public virtual User User { get; set; }
     }

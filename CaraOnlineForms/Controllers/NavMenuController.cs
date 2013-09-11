@@ -12,7 +12,8 @@ namespace CaraOnlineForms.Controllers
 
         public PartialViewResult _NavMenu()
         {
-            return PartialView("_NavMenu");
+            bool showMenu = new Session().User != null;
+            return PartialView("_NavMenu", showMenu);
         }
 
     }

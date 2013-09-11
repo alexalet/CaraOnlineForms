@@ -1,0 +1,35 @@
+﻿@model bool
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        @if(Model)
+        {
+<text>            
+Thank you for confirming your account.
+<br />
+You will shortly receive a call from one of our representatives to go over your information and activate your account 
+<br />
+at the phone number you provided during the registration process.
+<br />
+<br />
+Thanks.
+<br />
+ <br />
+The Classification & Rating Administration (CARA) Team. 
+</text> 
+    
+        }
+else
+{
+  @:Confirmation failed        
+}
+ </div>     
+</body>
+</html>

@@ -131,10 +131,18 @@
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\NavMenuController.cs" />
     <Compile Include="Controllers\SubmitionController.cs" />
+    <Compile Include="Filters\Authorization.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\ControllerBase.cs" />
+    <Compile Include="Infrastructure\Session.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceText.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourceText.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\CountryViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
@@ -239,7 +247,9 @@
     <Content Include="Views\Country\_Countries.cshtml" />
     <Content Include="Views\Shared\_NavMenu.cshtml" />
     <Content Include="Views\Submition\Title.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Logon.cshtml" />
+    <Content Include="Views\Account\NotificationWasSent.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -260,6 +270,12 @@
       <Project>{68ba7a5b-278a-47ef-ab32-a35d13cfadb5}</Project>
       <Name>Utility</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ResourceText.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourceText.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

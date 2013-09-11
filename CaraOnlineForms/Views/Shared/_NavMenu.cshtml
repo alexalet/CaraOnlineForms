@@ -1,4 +1,7 @@
-﻿<ul class="sf-menu">
+﻿@model bool 
+@if (Model)
+{
+<ul class="sf-menu">
      <li>
           <a href="@Url.Action("Title","Submition")">Submit a Motion Picture</a>
      </li>
@@ -10,3 +13,4 @@
         </ul>
     </li>
 </ul>
+}

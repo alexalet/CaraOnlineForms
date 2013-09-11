@@ -5,12 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="b95fb11f4e8d400fa322ffa98e45e778" Name="Diagram1">
-        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.User" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.Country" Width="1.5" PointX="0.875" PointY="6.125" />
-        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.UserPhone" Width="1.5" PointX="3.25" PointY="3.25" />
-        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_UserPhone_User" />
-        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.EmailsToConfirm" Width="1.5" PointX="3.25" PointY="0.625" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.UserPhone" Width="1.5" PointX="3" PointY="3.375" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.User" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.UserToConfirm" Width="1.5" PointX="3" PointY="0.5" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_EmailsToConfirm_User" />
+        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_UserPhone_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

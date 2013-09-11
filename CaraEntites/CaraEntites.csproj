@@ -69,14 +69,14 @@
     <Compile Include="Country.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EmailsToConfirm.cs">
-      <DependentUpon>CaraModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserPhone.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserToConfirm.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

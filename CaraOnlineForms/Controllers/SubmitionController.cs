@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace CaraOnlineForms.Controllers
 {
-    public class SubmitionController : Controller
+    public class SubmitionController : ControllerBase
     {
         //
         // GET: /Submition/

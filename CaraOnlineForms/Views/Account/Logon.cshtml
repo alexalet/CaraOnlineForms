@@ -10,9 +10,9 @@
 <body>
      @if(!Model.ErrorMessage.IsEmpty())
      {
-      <div class="clear red">
+      @:<div class="clear red">
           @Model.ErrorMessage
-      </div>
+      @:</div>
      }   
     <form action="@Url.Action("TryLogin")">
     <div>
@@ -25,5 +25,6 @@
         <input type="submit" value="Login"/>
     </div>
    </form>
+    <div class="clear"><a href="@Url.Action("Registration")">Register</a></div>
 </body>
 </html>

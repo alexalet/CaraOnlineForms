@@ -52,8 +52,8 @@ namespace Repository
             }
 
             var guid = Guid.NewGuid();
-            EmailsToConfirm emailsToConfirm = new EmailsToConfirm { UserId = user.UserId, Code = guid.ToString(), Created = DateTime.Now };
-            _context.EmailsToConfirms.Add(emailsToConfirm);
+            UserToConfirm userToConfirm = new UserToConfirm { UserId = user.UserId, CodeForEmail = guid.ToString(), Created = DateTime.Now };
+            _context.UserToConfirms.Add(userToConfirm);
             _context.SaveChanges();
 
             return guid.ToString();
@@ -152,5 +152,21 @@ namespace Repository
            return _context.Users.FirstOrDefault(x => x.EmailAddress == userId && x.Password == encryptedPWD); 
         
         }
+
+        public bool ConfirmEmail(string code)
+        {
+            UserToConfirm user = _context.UserToConfirms.FirstOrDefault(x => x.CodeForEmail == code);
+            if (user == null)
+                return false;
+            
+            if (user.EmailConfirmed == null)
+            {
+                user.EmailConfirmed = DateTime.Now;
+                _context.SaveChanges();
+            }
+            return true;
+        
+        }
+
     }
 }

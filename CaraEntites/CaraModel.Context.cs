@@ -25,9 +25,9 @@ namespace CaraEntites
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<User> Users { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<UserPhone> UserPhones { get; set; }
-        public DbSet<EmailsToConfirm> EmailsToConfirms { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserToConfirm> UserToConfirms { get; set; }
     }
 }

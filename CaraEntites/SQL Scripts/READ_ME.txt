@@ -1,6 +1,6 @@
 ﻿------------------ TABLES ------------------
 User
-EmailsToConfirm
+UserToConfirm
 Country
 Film
 FilmAltTitle

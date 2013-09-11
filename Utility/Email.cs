@@ -45,5 +45,17 @@ namespace Utility
                 throw new InvalidOperationException(error, ex.InnerException);
             }
         }
+
+
+        public static void SendAnEmail(string subject, string body, string from, string fromName, string recipient, bool isHTML)
+        { 
+            List<string> recipients = new List<string>();
+            recipients.Add(recipient);
+
+            SendAnEmail(subject, body, from, fromName, recipients, isHTML);
+        
+        }
+
+
     }
 }
