@@ -17,7 +17,6 @@ namespace CaraEntites
         public User()
         {
             this.UserToConfirms = new HashSet<UserToConfirm>();
-            this.UserPhones = new HashSet<UserPhone>();
         }
     
         public int UserId { get; set; }
@@ -32,6 +31,9 @@ namespace CaraEntites
         public string State { get; set; }
         public string Zip { get; set; }
         public string CountryId { get; set; }
+        public string Phone { get; set; }
+        public string Cell { get; set; }
+        public string Fax { get; set; }
         public string Website { get; set; }
         public Nullable<System.DateTime> LastLoginDate { get; set; }
         public Nullable<byte> PasswordRetriesCount { get; set; }
@@ -40,6 +42,5 @@ namespace CaraEntites
         public bool IsActive { get; set; }
     
         public virtual ICollection<UserToConfirm> UserToConfirms { get; set; }
-        public virtual ICollection<UserPhone> UserPhones { get; set; }
     }
 }

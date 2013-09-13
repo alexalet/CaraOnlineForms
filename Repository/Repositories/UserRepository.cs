@@ -19,7 +19,7 @@ namespace Repository
         }
 
 
-        public string CreateUser(User user, string phone, string cell, string fax)
+        public string CreateUser(User user)
         {
 
             try
@@ -31,26 +31,7 @@ namespace Repository
             {
                 var txt = ex;
             }
-            var userPhones = new UserPhone {UserId=user.UserId, PhoneTypeCode="WORK", PhoneNumber=phone };
-            _context.UserPhones.Add(userPhones);
-            _context.SaveChanges();
-
-            if (cell != null)
-            {
-                userPhones.PhoneNumber = cell;
-                userPhones.PhoneTypeCode = "CELL";
-                _context.UserPhones.Add(userPhones);
-                _context.SaveChanges();
-            }
-
-            if (fax != null)
-            {
-                userPhones.PhoneNumber = fax;
-                userPhones.PhoneTypeCode = "FAX";
-                _context.UserPhones.Add(userPhones);
-                _context.SaveChanges();
-            }
-
+            
             var guid = Guid.NewGuid();
             UserToConfirm userToConfirm = new UserToConfirm { UserId = user.UserId, CodeForEmail = guid.ToString(), Created = DateTime.Now };
             _context.UserToConfirms.Add(userToConfirm);
@@ -60,33 +41,14 @@ namespace Repository
         }
 
 
-        public User GetUser(int userId, out string phone, out string cell, out string fax)
+        public User GetUser(int userId)
         {
-            phone = "";
-            cell = "";
-            fax = "";
-            var user = _context.Users.FirstOrDefault(x => x.UserId == userId);
-            if (user == null)
-                return null;
-
-            List<UserPhone> uph = _context.UserPhones.Where(x => x.UserId == userId).ToList();
-            foreach (UserPhone u in uph)
-            {
-                if (u.PhoneTypeCode == "WORK")
-                    phone = u.PhoneNumber;
-
-                if (u.PhoneTypeCode == "CELL")
-                    cell = u.PhoneNumber;
-
-                if (u.PhoneTypeCode == "FAX")
-                    fax = u.PhoneNumber;
-            }
-
-            return user;
+            return _context.Users.FirstOrDefault(x => x.UserId == userId);
+           
        }
 
 
-        public bool UpdateUser(User updatedUser, string phone, string cell, string fax)
+        public bool UpdateUser(User updatedUser)
         {
             User user = _context.Users.FirstOrDefault(x=>x.UserId==updatedUser.UserId);
             if (user == null)
@@ -102,6 +64,9 @@ namespace Repository
                 user.CountryId = updatedUser.CountryId;
                 user.State = updatedUser.State;
                 user.Zip = updatedUser.Zip;
+                user.Phone = updatedUser.Phone;
+                user.Cell = updatedUser.Cell;
+                user.Fax = updatedUser.Fax;
                 user.Website = updatedUser.Website;
 
                 _context.SaveChanges();
@@ -110,39 +75,6 @@ namespace Repository
             {
                 return false;
             }
-
-            UserPhone uph = _context.UserPhones.FirstOrDefault(x=>x.UserId==updatedUser.UserId && x.PhoneTypeCode=="WORK");
-            if (uph == null)
-            {
-                uph = new UserPhone { UserId = updatedUser.UserId, PhoneNumber = (phone ?? ""), PhoneTypeCode = "WORK" };
-            }
-            else
-            {
-                uph.PhoneNumber = (phone ?? "");
-            }
-            _context.SaveChanges();
-
-            uph = _context.UserPhones.FirstOrDefault(x => x.UserId == updatedUser.UserId && x.PhoneTypeCode == "CELL");
-            if (uph == null)
-            {
-                uph = new UserPhone { UserId = updatedUser.UserId, PhoneNumber = (cell ?? ""), PhoneTypeCode = "CELL" };
-            }
-            else
-            {
-                uph.PhoneNumber = (cell ?? "");
-            }
-            _context.SaveChanges();
-
-            uph = _context.UserPhones.FirstOrDefault(x => x.UserId == updatedUser.UserId && x.PhoneTypeCode == "FAX");
-            if (uph == null)
-            {
-                uph = new UserPhone { UserId = updatedUser.UserId, PhoneNumber = (fax ?? ""), PhoneTypeCode = "FAX" };
-            }
-            else
-            {
-                uph.PhoneNumber = (fax ?? "");
-            }
-            _context.SaveChanges();
 
             return true;
         }

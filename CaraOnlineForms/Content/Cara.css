@@ -104,6 +104,22 @@ DIV.title
     text-decoration: underline;
 }
 
+
+.bold
+{
+    font-weight: bold;
+}
+
+.boldNormal
+{
+    font-weight: normal;
+}
+
+.italic
+{
+    font-style: italic;
+}
+
 LI.paddedTop10
 {
     padding-top: 10px !important;
@@ -169,4 +185,9 @@ LI.paddedTop10
 .redBack
 {
     background-color: #CA0000;
+}
+
+.paddingBottom15
+{
+  padding-bottom: 15px;
 }

@@ -126,4 +126,7 @@ Please click on the link below to confirm your email address.
 Thanks,
 The CARA Team.</value>
   </data>
+  <data name="WebPageTitle" xml:space="preserve">
+    <value>CARA Application</value>
+  </data>
 </root>

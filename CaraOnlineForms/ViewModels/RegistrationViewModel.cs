@@ -15,10 +15,7 @@ namespace ViewModels
         }
 
         public User User { get; set; }
-        public string Phone { get; set; }
-        public string Cell { get; set; }
-        public string Fax { get; set; }
-
+        
         public string ErrorMessage { get; set; }
 
     }

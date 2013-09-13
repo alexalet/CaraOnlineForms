@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using CaraEntites;
 using Repository;
 using ViewModels;
@@ -12,9 +13,10 @@ namespace CaraOnlineForms.Controllers
 {
     public class AccountController : Controller
     {
-
+       
         public ActionResult Logon()
         {
+            //Membership.GeneratePassword(8, 1);
             LoginViewModel model = new LoginViewModel { ErrorMessage="", Pwd="", UserId="" };
             return View(model);
         }
@@ -28,7 +30,7 @@ namespace CaraOnlineForms.Controllers
             if (user == null)
             {
                 LoginViewModel model = new LoginViewModel { ErrorMessage = "Login Failed", Pwd = "", UserId = login.UserId };
-                return View("Login", model);
+                return View("Logon", model);
             }
 
             CaraOnlineForms.Session session = new Session();
@@ -57,7 +59,7 @@ namespace CaraOnlineForms.Controllers
             }
 
             newUser.User.Password = Utility.Cryptography.EncryptPwd(newUser.User.Password);
-            string code = rep.CreateUser(newUser.User, newUser.Phone, newUser.Cell, newUser.Fax);
+            string code = rep.CreateUser(newUser.User);
 
             string url = HttpContext.Request.Url.Scheme + "://" + HttpContext.Request.Url.Authority
                                         + Url.Action("ConfirmEmail", new { code = code }).ToString();
@@ -76,13 +78,10 @@ namespace CaraOnlineForms.Controllers
             if (user == null)
                 return View("Logon", new LoginViewModel { });
 
-            string phone = "";
-            string cell = "";
-            string fax = "";
             
-            user = new UserRepository().GetUser(user.UserId, out phone, out cell , out fax );
+            user = new UserRepository().GetUser(user.UserId );
 
-            RegistrationViewModel registration = new RegistrationViewModel { Phone=phone, Cell=cell, Fax=fax, User=user, ErrorMessage=message}; 
+            RegistrationViewModel registration = new RegistrationViewModel { User=user, ErrorMessage=message}; 
 
             return View("Registration", registration);
         }
@@ -97,7 +96,7 @@ namespace CaraOnlineForms.Controllers
 
             updatedUser.User.UserId = user.UserId;
             var rep = new UserRepository();
-            rep.UpdateUser(updatedUser.User, updatedUser.Phone, updatedUser.Cell, updatedUser.Fax);
+            rep.UpdateUser(updatedUser.User);
 
             session.User = updatedUser.User;
 

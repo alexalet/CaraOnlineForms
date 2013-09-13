@@ -3,7 +3,7 @@
 @model RegistrationViewModel
 
 @{
-  
+    ViewBag.PageHeader = "Welcome to CARA Online Application";
 }
 
 <!DOCTYPE html>
@@ -11,7 +11,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Registration</title>
+    <title>CARA Application</title>
     <style>
         .label
         {
@@ -25,9 +25,25 @@
         {
             color: red;
         }
+
+        .longField
+        {
+           width:300px;
+        }
+         .shortField
+        {
+           width:200px;
+        }
+          .medium
+        {
+           width:150px;
+        }
+
     </style>
     <script>
         $(document).ready(function () {
+
+            HideShowStates('US');
 
             $(':text[requiredField],:password').keyup(function () {
                 var txt = $(this).val().trim();
@@ -38,12 +54,19 @@
 
             })
 
+            $('#User_CountryId').change(function () {
+                HideShowStates($(this).val())
+            })//--end change --
+
             $('#Register').click(function () {
 
                 if (ValidateForm()) {
 
                     document.forms[0].submit();
                 }
+
+                
+
 
                 /*
                 var email = $('#EmailAddress').val().trim();
@@ -58,6 +81,29 @@
             });//--end click --
 
         });//-- end ready --
+
+        function HideShowStates(country)
+        {
+            if (country == 'US') {
+                $('#lblZip').text('Zip Code');
+                $('#lblState').text('State');
+                $('select[id="User_State"]').removeClass('hidden');
+                $('select[id="User_State"]').removeAttr('disabled');
+                $(':text[id="User_State"]').addClass('hidden');
+                $(':text[id="User_State"]').attr('disabled', 'disabled');
+            }
+            else {
+
+                $('#lblZip').text('Postal Code');
+                $('#lblState').text('Province');
+                $('select[id="User_State"]').addClass('hidden');
+                $('select[id="User_State"]').attr('disabled', 'disabled');
+                $(':text[id="User_State"]').removeClass('hidden');
+                $(':text[id="User_State"]').removeAttr('disabled');
+            }
+
+        }
+
 
         function ValidateForm() {
 
@@ -86,67 +132,79 @@
         <div class="error">@Model.ErrorMessage</div>       
       }
     }
-    <form method="post" action="@(Model.User.UserId>0 ? Url.Action("UpdateProfile") : Url.Action("SubmitRegistration"))">
-        <div>
+    <div class="bold">Registration:</div>
+
+    <form method="post" action="@(Model.User.UserId > 0 ? Url.Action("UpdateProfile") : Url.Action("SubmitRegistration"))">
+        <div class="paddingBottom15">
             <div class="label">First Name<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.User.FirstName, new { requiredField = "1" })
-            Last Name<span class="redStar">*</span>:  @Html.TextBoxFor(m => m.User.LastName, new { requiredField = "1" })
+            @Html.TextBoxFor(m => m.User.FirstName, new { requiredField = "1", @class = "longField" })
+            Last Name<span class="redStar">*</span>:  @Html.TextBoxFor(m => m.User.LastName, new { requiredField = "1", @class = "longField" })
         </div>
-        <div>
-            <div class="label">Title<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.User.Title, new { requiredField = "1" })
+        <div  class="paddingBottom15">
+            <div class="label">Title:</div>
+            @Html.TextBoxFor(m => m.User.Title, new { @class = "longField" })
         </div>
-        <div>
-            <div class="label">Company<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.User.Company, new { requiredField = "1" })
+        <div class="paddingBottom15">
+            @{if (Model.User.UserId > 0)
+              {
+                <div class="label">Company:</div>
+                @:@Model.User.Company
+              }
+              else
+              {
+                <div class="label">Company<span class="redStar">*</span>:</div>
+                @Html.TextBoxFor(m => m.User.Company, new { requiredField = "1", @class = "longField" })
+              }
+            }
         </div>
-        <div>
+        <div class="paddingBottom15">
             <div class="label">Address<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.User.Address1, new { requiredField = "1" })
+            @Html.TextBoxFor(m => m.User.Address1, new { requiredField = "1", @class = "longField" })
         </div>
-        <div>
+        <div class="paddingBottom15">
             <div class="label">&nbsp;</div>
-            @Html.TextBoxFor(m => m.User.Address2, new { })
+            @Html.TextBoxFor(m => m.User.Address2, new { @class = "longField" })
         </div>
-        <div>
+        <div class="paddingBottom15">
             <div class="label">City<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.User.City, new { requiredField = "1" })
+            @Html.TextBoxFor(m => m.User.City, new { requiredField = "1", @class = "shortField" })
             Country<span class="redStar">*</span>: @Html.Action("Countries", "Country", new { Name = "User.CountryId", ISO = Model.User.CountryId })
         </div>
-        <div>
-            <div class="label">State<span class="redStar">*</span>:</div>
+        <div class="paddingBottom15">
+            <div class="label"><span id="lblState">State</span><span class="redStar">*</span>:</div>
             @Html.Partial("_States", new CountryViewModel { Name = "User.State", ISO = Model.User.State })
-            Zip Code<span class="redStar">*</span>: @Html.TextBoxFor(m => m.User.Zip, new { requiredField = "1" })
+            @Html.TextBoxFor(m => m.User.State, new { @class = "shortField" })
+            <span id="lblZip">Zip Code</span><span class="redStar">*</span>: @Html.TextBoxFor(m => m.User.Zip, new { requiredField = "1", @class = "shortField" })
         </div>
-        <div>
+        <div class="paddingBottom15">
             @{if (Model.User.UserId > 0)
               { 
                 <div class="label">Email:</div>@Model.User.EmailAddress<span>&nbsp;(Is used as UserID)</span>
               }
               else
               { 
-                <div class="label">Email<span class="redStar">*</span>:</div> @Html.TextBoxFor(m => m.User.EmailAddress, new { requiredField = "1" }) <span>(Will be used as UserID)</span>
+                <div class="label">Email<span class="redStar">*</span>:</div> @Html.TextBoxFor(m => m.User.EmailAddress, new { requiredField = "1", @class = "shortField" }) <span>(Will be used as UserID)</span>
               }
             }
         </div>
-        <div>
+        <div class="paddingBottom15">
             <div class="label">Phone<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.Phone, new { requiredField = "1" })
-            Cell:@Html.TextBoxFor(m => m.Cell)
+            @Html.TextBoxFor(m => m.User.Phone, new { requiredField = "1", @class = "shortField" })
+            Cell:@Html.TextBoxFor(m => m.User.Cell, new { @class = "shortField" })
         </div>
-        <div>
+        <div class="paddingBottom15">
             <div class="label">Fax<span class="redStar"></span>:</div>
-            @Html.TextBoxFor(m => m.Fax)
-            Website:@Html.TextBoxFor(m => m.User.Website)
+            @Html.TextBoxFor(m => m.User.Fax, new { @class = "shortField" })
+            Website:@Html.TextBoxFor(m => m.User.Website, new { @class = "shortField" })
         </div>
         @if (Model.User.UserId <= 0)
         {
-        <div>
-            <div class="label">Password<span class="redStar">*</span>:</div>
-            @Html.PasswordFor(m => m.User.Password, new { requiredField = "1" })
-            Confirm Password<span class="redStar">*</span>:
-            <input type="password"  requiredField = "1" id="ConfirmPassword"/>
-        </div>
+            <div class="paddingBottom15">
+                <div class="label">Password<span class="redStar">*</span>:</div>
+                @Html.PasswordFor(m => m.User.Password, new { requiredField = "1" })
+                Confirm Password<span class="redStar">*</span>:
+            <input type="password" requiredfield="1" id="ConfirmPassword" />
+            </div>
         }
         <div class="clear">
             <input type="button" value="@(Model.User.UserId > 0 ? "Update" : "Register")" id="Register" />

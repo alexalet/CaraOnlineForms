@@ -73,9 +73,6 @@
     <Compile Include="User.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserPhone.cs">
-      <DependentUpon>CaraModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="UserToConfirm.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>

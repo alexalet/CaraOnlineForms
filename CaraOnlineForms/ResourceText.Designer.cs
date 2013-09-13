@@ -74,5 +74,14 @@ namespace CaraOnlineForms {
                 return ResourceManager.GetString("EmailAddressConfirmation", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CARA Application.
+        /// </summary>
+        internal static string WebPageTitle {
+            get {
+                return ResourceManager.GetString("WebPageTitle", resourceCulture);
+            }
+        }
     }
 }

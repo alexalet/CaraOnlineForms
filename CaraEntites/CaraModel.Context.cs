@@ -26,8 +26,7 @@ namespace CaraEntites
         }
     
         public DbSet<Country> Countries { get; set; }
-        public DbSet<UserPhone> UserPhones { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<UserToConfirm> UserToConfirms { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
