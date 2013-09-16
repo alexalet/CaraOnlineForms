@@ -7,11 +7,16 @@
     <Schema Namespace="CaraOnlineForms_DevModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="CaraOnlineForms_DevModelStoreContainer">
           <EntitySet Name="Country" EntityType="CaraOnlineForms_DevModel.Store.Country" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Film" EntityType="CaraOnlineForms_DevModel.Store.Film" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="User" EntityType="CaraOnlineForms_DevModel.Store.User" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserToConfirm" EntityType="CaraOnlineForms_DevModel.Store.UserToConfirm" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_EmailsToConfirm_User" Association="CaraOnlineForms_DevModel.Store.FK_EmailsToConfirm_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserToConfirm" EntitySet="UserToConfirm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Film_User" Association="CaraOnlineForms_DevModel.Store.FK_Film_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Film" EntitySet="Film" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Country">
@@ -21,6 +26,23 @@
           <Property Name="ISO" Type="nvarchar" Nullable="false" MaxLength="2" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="64" />
           <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Film">
+          <Key>
+            <PropertyRef Name="FilmId" />
+          </Key>
+          <Property Name="FilmId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Ttitle" Type="nvarchar" Nullable="false" MaxLength="120" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ISAN" Type="varchar" MaxLength="16" />
+          <Property Name="ISANCheck" Type="char" MaxLength="1" />
+          <Property Name="EIDR" Type="nvarchar" MaxLength="60" />
+          <Property Name="OtherID" Type="nvarchar" MaxLength="60" />
+          <Property Name="Synopsis" Type="nvarchar" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="Submitted" Type="datetime" />
+          <Property Name="AcceptedByCARA" Type="datetime" />
+          <Property Name="ReturnedByCARA" Type="datetime" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -72,6 +94,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Film_User">
+          <End Role="User" Type="CaraOnlineForms_DevModel.Store.User" Multiplicity="1" />
+          <End Role="Film" Type="CaraOnlineForms_DevModel.Store.Film" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Film">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -83,6 +117,11 @@
           <AssociationSet Name="FK_EmailsToConfirm_User" Association="CaraOnlineForms_DevModel.FK_EmailsToConfirm_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserToConfirm" EntitySet="UserToConfirms" />
+          </AssociationSet>
+          <EntitySet Name="Films" EntityType="CaraOnlineForms_DevModel.Film" />
+          <AssociationSet Name="FK_Film_User" Association="CaraOnlineForms_DevModel.FK_Film_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Film" EntitySet="Films" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Country">
@@ -132,6 +171,7 @@
           <Property Type="Int32" Name="ParentCompanyId" />
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
           <NavigationProperty Name="UserToConfirms" Relationship="CaraOnlineForms_DevModel.FK_EmailsToConfirm_User" FromRole="User" ToRole="UserToConfirm" />
+          <NavigationProperty Name="Films" Relationship="CaraOnlineForms_DevModel.FK_Film_User" FromRole="User" ToRole="Film" />
         </EntityType>
         <Association Name="FK_EmailsToConfirm_User">
           <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
@@ -141,6 +181,36 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="UserToConfirm">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Film">
+          <Key>
+            <PropertyRef Name="FilmId" />
+          </Key>
+          <Property Type="Int32" Name="FilmId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Ttitle" Nullable="false" MaxLength="120" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="ISAN" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ISANCheck" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="EIDR" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="OtherID" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Synopsis" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" />
+          <Property Type="DateTime" Name="Submitted" Precision="3" />
+          <Property Type="DateTime" Name="AcceptedByCARA" Precision="3" />
+          <Property Type="DateTime" Name="ReturnedByCARA" Precision="3" />
+          <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_Film_User" FromRole="Film" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Film_User">
+          <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Film" Role="Film" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Film">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -197,6 +267,24 @@
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Films">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.Film">
+              <MappingFragment StoreEntitySet="Film">
+                <ScalarProperty Name="ReturnedByCARA" ColumnName="ReturnedByCARA" />
+                <ScalarProperty Name="AcceptedByCARA" ColumnName="AcceptedByCARA" />
+                <ScalarProperty Name="Submitted" ColumnName="Submitted" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Synopsis" ColumnName="Synopsis" />
+                <ScalarProperty Name="OtherID" ColumnName="OtherID" />
+                <ScalarProperty Name="EIDR" ColumnName="EIDR" />
+                <ScalarProperty Name="ISANCheck" ColumnName="ISANCheck" />
+                <ScalarProperty Name="ISAN" ColumnName="ISAN" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Ttitle" ColumnName="Ttitle" />
+                <ScalarProperty Name="FilmId" ColumnName="FilmId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

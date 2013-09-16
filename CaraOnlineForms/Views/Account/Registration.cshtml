@@ -34,16 +34,22 @@
         {
            width:200px;
         }
-          .medium
-        {
-           width:150px;
-        }
+        
+        
 
     </style>
     <script>
         $(document).ready(function () {
 
             HideShowStates('US');
+            $('#User_State').addClass('shortField')
+
+            $(':text[requiredField]').each(function ()
+            {
+                if ($(this).val().trim() == '')
+                    $(this).addClass('requiredField');
+            })
+
 
             $(':text[requiredField],:password').keyup(function () {
                 var txt = $(this).val().trim();
@@ -132,12 +138,18 @@
         <div class="error">@Model.ErrorMessage</div>       
       }
     }
-    <div class="bold">Registration:</div>
-
+    <fieldset><legend>@(Model.User.UserId > 0 ? "My Profile:" : "Registration:")</legend>
+    @{if(Model.User.UserId == 0)
+      {
+          <div style="padding-left: 8px; padding-bottom: 20px;">To register, please fill out the form below and hit submit. If you already have a User ID and<br />
+               Password, please returmn to the <a href="@Url.Action("Logon")">previous screen</a> to login.  
+        </div>
+      }
+    }
     <form method="post" action="@(Model.User.UserId > 0 ? Url.Action("UpdateProfile") : Url.Action("SubmitRegistration"))">
         <div class="paddingBottom15">
             <div class="label">First Name<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.User.FirstName, new { requiredField = "1", @class = "longField" })
+            @Html.TextBoxFor(m => m.User.FirstName, new { requiredField = "1", @class = "shortField" })
             Last Name<span class="redStar">*</span>:  @Html.TextBoxFor(m => m.User.LastName, new { requiredField = "1", @class = "longField" })
         </div>
         <div  class="paddingBottom15">
@@ -201,9 +213,9 @@
         {
             <div class="paddingBottom15">
                 <div class="label">Password<span class="redStar">*</span>:</div>
-                @Html.PasswordFor(m => m.User.Password, new { requiredField = "1" })
+                @Html.PasswordFor(m => m.User.Password, new { requiredField = "1", @class="requiredField" })
                 Confirm Password<span class="redStar">*</span>:
-            <input type="password" requiredfield="1" id="ConfirmPassword" />
+            <input type="password" requiredfield="1" id="ConfirmPassword", class="requiredField" />
             </div>
         }
         <div class="clear">
@@ -211,7 +223,7 @@
         </div>
 
     </form>
-
+</fieldset>
 </body>
 
 </html>

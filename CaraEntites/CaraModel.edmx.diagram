@@ -9,6 +9,8 @@
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.UserToConfirm" Width="1.5" PointX="3" PointY="0.5" />
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.User" Width="1.5" PointX="0.5" PointY="0.5" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_EmailsToConfirm_User" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.Film" Width="1.5" PointX="6" PointY="3" />
+        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Film_User" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

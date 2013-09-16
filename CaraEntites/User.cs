@@ -17,6 +17,7 @@ namespace CaraEntites
         public User()
         {
             this.UserToConfirms = new HashSet<UserToConfirm>();
+            this.Films = new HashSet<Film>();
         }
     
         public int UserId { get; set; }
@@ -42,5 +43,6 @@ namespace CaraEntites
         public bool IsActive { get; set; }
     
         public virtual ICollection<UserToConfirm> UserToConfirms { get; set; }
+        public virtual ICollection<Film> Films { get; set; }
     }
 }

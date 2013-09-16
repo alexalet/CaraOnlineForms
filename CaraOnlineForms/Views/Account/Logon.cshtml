@@ -7,25 +7,42 @@
     <meta name="viewport" content="width=device-width" />
     <title>CARA Online Application</title>
     @{ ViewBag.PageHeader = "Welcome to CARA Online Application";}
+    <style>
+        .label
+        {
+            width: 200px;
+            float: left;
+            text-align: right;
+            padding-right: 10px;
+        }
+         .longField
+        {
+           width:200px;
+        }
+        
+    </style>
 </head>
 <body>
-     @if(!Model.ErrorMessage.IsEmpty())
-     {
-      @:<div class="clear red">
-          @Model.ErrorMessage
+    @if (!Model.ErrorMessage.IsEmpty())
+    {
+        @:<div class="clear red">
+@Model.ErrorMessage
       @:</div>
-     }   
-    <form action="@Url.Action("TryLogin")">
-    <div>
-        User ID(Email Address):@Html.TextBoxFor(m=>m.UserId)
-    </div>
-    <div class="clear">
-        Password:@Html.PasswordFor(m=>m.Pwd)
-    </div>
-    <div class="clear">
-        <input type="submit" value="Login"/>
-    </div>
-   </form>
-    <div class="clear"><a href="@Url.Action("Registration")">Register</a></div>
+             }
+    <fieldset>
+        <legend>CARA Online Application</legend>
+        <form action="@Url.Action("TryLogin")">
+            <div>
+                <div class="label">User ID (Email Address): </div>@Html.TextBoxFor(m => m.UserId, new {@class="longField" })
+            </div>
+            <div style="padding-top: 10px;">
+                <span class="label">Password:</span>@Html.PasswordFor(m => m.Pwd, new {@class="longField" })
+            </div>
+            <div class="clear" style="padding-top: 10px;">
+                <input type="submit" value="Login" />
+            </div>
+        </form>
+        <div class="clear"><a href="@Url.Action("Registration")">Register</a></div>
+    </fieldset>
 </body>
 </html>

@@ -36,7 +36,7 @@ namespace CaraOnlineForms.Controllers
             CaraOnlineForms.Session session = new Session();
             session.User = user;
 
-            return RedirectToAction("Title", "Submition");
+            return RedirectToAction("ProcessStatus", "ProcessStatus");
         }
         
 

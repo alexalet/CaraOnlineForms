@@ -1,27 +1,235 @@
-﻿body {
-    font-size: .85em;
-    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
-    color: #232323;
-    background-color: #fff;
-}
+﻿
+
 
 header, footer, nav, section {
     display: block;
 }
 
+DIV#wrap, DIV#wrapDialog
+{
+    margin: 1.2em;
+    margin-top: 0;
+    background: #E9EEF3;
+    padding: 0.7em;
+    border: 8px solid #E9EEF3;
+    border-radius: 8px 8px 8px 8px;
+    -webkit-border-radius: 8px 8px 8px 8px;
+    -moz-border-radius: 8px 8px 8px 8px;
+    overflow: hidden;
+}
+
+DIV#wrap
+{
+    min-width: 1200px;
+}
+
+DIV#wrapDialog, DIV#wrapIPad
+{
+    min-width: 1024px;
+}
+
+DIV#header
+{
+    background-color: #D6E0DF;
+    border: none;
+    border-bottom: 1px solid red;
+    color: Black;
+    margin: 1.2em;
+    padding: 0 !important;
+    padding-bottom: .4em;
+    padding-top: .4em;
+    min-width: 1200px;
+}
+
+DIV#headerDialog
+{
+    background-color: #D6E0DF;
+    border: none;
+    color: Black;
+    margin: 1.2em;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    padding: 0 !important;
+    padding-bottom: .4em;
+    padding-top: .4em;
+    min-width: 1200px;
+    text-align: center;
+}
+
+DIV#footer
+{
+    font-size: .9em;
+    font-family: "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif !important;
+    display: block;
+    border: none;
+    font-size: 0.9em;
+    padding-top: 3.4em;
+    margin: 0;
+}
+
+DIV.title
+{
+    padding-left: 10px;
+    padding-bottom: 12px;
+    padding-top: 6px;
+    height: 20px;
+    border: none;
+    color: Black !important;
+    vertical-align: middle;
+    font-family: "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif !important;
+    font-size: 1em;
+    min-width: 1200px;
+    overflow: visible;
+}
+
+/*Web Grid*/
+.header
+{
+    background-color: #E9EFF3;
+    font-weight: bold !important;
+    color: #333333;
+}
+
+.webgrid
+{
+    width: 100% !important;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    border-collapse: collapse;
+    font-size: 1.0em;
+}
+
+    .webgrid td /*only data, non TH tags*/
+    {
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+    }
+
+    .webgrid a
+    {
+        text-decoration: underline !important;
+        color: #000;
+    }
+
+.webgrid-wrapper
+{
+    width: 100%;
+    padding: 0px;
+}
+
+.webgrid-title
+{
+    padding-left: 0.3em;
+}
+
+.webgrid-header
+{
+}
+
+.webgrid-header th /*align the headers to data. can be overridden using !Important*/
+{
+        text-align: left;
+}
+
+.grid-footer
+{
+    color: Gray !important;
+}
+
+a.PagerLink
+{
+    padding-right: 6px;
+    padding-left: 6px;
+    color: #0C4D8D !important;
+}
+
+
+.webgrid-alternating-rows
+{
+    background-color: #F3F3F3;
+    color: #000;
+}
+
+/*General JQuery button*/
+.ui-button-text
+{
+    font-size: 0.9em !important;
+}
+
+/*Jquery Button override for a specific button class*/
+.gridButtonLink
+{
+    font-size: 0.7em !important;
+}
+
+/*Override default css for jquery widget*/
+.ui-widget
+{
+    font-family: "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif !important;
+    font-size: 0.95em !important;
+}
+
+    .ui-widget INPUT
+    {
+        font-family: "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif !important;
+        font-size: 0.95em !important;
+    }
+
+    .ui-widget SELECT
+    {
+        font-family: "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif !important;
+        font-size: 0.95em !important;
+    }
+
+/*Override the opacity of overlays (for the dialogs)*/
+.ui-widget-overlay
+{
+    opacity: .90 !important;
+    filter: Alpha(Opacity=90) !important;
+}
+
+
+.borderCollapse
+{
+    border-collapse: collapse;
+}
+
+.labelRounded
+{
+    margin: 0;
+    background: #E9EEF3;
+    padding: 0.3em;
+    padding-left: 1% !important;
+    padding-right: 1% !important;
+    border: 1px solid #7B99B7;
+    border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px 6px 6px 6px;
+    -moz-border-radius: 6px 6px 6px 6px;
+    overflow: visible;
+    min-width: 100px;
+    min-height: 100%;
+}
 
 /* Styles for basic forms
 -----------------------------------------------------------*/
-fieldset {
-    border: 1px solid #ddd;
+fieldset
+{
+    border: 1px solid #C8C8C8;
     padding: 0 1.4em 1.4em 1.4em;
     margin: 0 0 1.5em 0;
+    font-family: "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif !important;
 }
 
-legend {
-    font-size: 1.2em;
+legend
+{
+    font-size: 1.0em !important;
     font-weight: bold;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    color: #A06B1B;
 }
+
 
 textarea {
     min-height: 75px;
@@ -148,7 +356,7 @@ LI.paddedTop10
 
 .requiredField
 {
-  background-color:rosybrown;
+  background-color:#FFFF99;
 }
 
 

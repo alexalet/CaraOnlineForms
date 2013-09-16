@@ -1,0 +1,24 @@
+﻿@using CaraOnlineForms;
+@using CaraEntites; 
+@model List<Film>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CARA Online Application</title>
+</head>
+<body>
+    <div>
+        @{
+            WebGrid grid = Html.WebGridCustom(Model, rowsPerPage: 5);
+            Dictionary<int, WebGridColumn> openColumns = new Dictionary<int, WebGridColumn>();
+            Dictionary<int, WebGridColumn> editColumns = new Dictionary<int, WebGridColumn>();
+
+            openColumns.Add(1, grid.Column("FilmTitle", "Title", canSort: false));
+
+            @grid.GetHtmlCustom(columns: grid.GridColumnsCustom(openColumns, editColumns), title: "", fillEmptyRows: true); 
+         }
+    </div>
+</body>
+</html>

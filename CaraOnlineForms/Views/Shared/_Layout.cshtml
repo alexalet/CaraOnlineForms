@@ -10,53 +10,55 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
-    
+    <link href="@Url.Content("~/Content/themes/redmond/jquery-ui-1.9.2.custom.css")" rel="stylesheet" type="text/css" />
+
     <script src="@Url.Content("~/Scripts/superfish.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/hoverIntent.js")" type="text/javascript"></script>
     <script src="@Url.Content("/Scripts/jQuery_AJAX_Custom.js")"></script>
-     @RenderSection("scripts", required: false)
+    <script src="@Url.Content("/Scripts/jQuery_Styling_Custom.js")"></script>
+    @RenderSection("scripts", required: false)
 </head>
 <body id="mvc">
     <div id="header">
         <div class="title ui-widget-header">
-        <span> @ViewBag.PageHeader &nbsp; </span>
-        <span id="loadingBar" style="width:150px; color:White; height:10px; display:none; left:0px; top: 0px; padding:0; margin:0;">
-            <img src="@Url.Content("~/Content/Images/busy.gif")"  alt=""/> &nbsp;loading...
-        </span>
-        <span class="NavMenu">
-            @{Html.RenderAction("_NavMenu", "NavMenu", new { generationDate = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt")}); }
-        </span>
+            <span>@ViewBag.PageHeader &nbsp; </span>
+            <span id="loadingBar" style="width: 150px; color: White; height: 10px; display: none; left: 0px; top: 0px; padding: 0; margin: 0;">
+                <img src="@Url.Content("~/Content/Images/busy.gif")"  alt=""/>
+                &nbsp;loading...
+            </span>
+            <span class="NavMenu">
+                @{Html.RenderAction("_NavMenu", "NavMenu", new { generationDate = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt") }); }
+            </span>
         </div>
-     </div>
-    @RenderBody()
-
-   
-    <div id="footer">
+    </div>
+    <div id="wrap">
+        @RenderBody()
+        <div id="footer">
             <hr class="thinLine" />
-            
+
             <div class="leftFloat">
-            <img src="@Url.Content("~/Content/Images/MPAA_logo.png")" alt="MPAA, Inc." />
+                <img src="@Url.Content("~/Content/Images/MPAA_logo.png")" alt="MPAA, Inc." />
             </div>
             <div class="rightFloat lineHeight4em verticalCenterText">
-            THE CLASSIFICATION & RATING ADMINISTRATION
+                THE CLASSIFICATION & RATING ADMINISTRATION
             </div>
             <div class="clear"></div>
-           
         </div>
+    </div>
 </body>
 <script type="text/javascript">
     $(function () {
         // //style non-jqueryUI grid elements to look like jquery ui elements - globally
         //please note this will also hijax the 'href' on all links in header/footer, so it will only work through AJAX!
-       // jQueryUIStyling();
+        jQueryUIStyling();
 
         jQuery('ul.sf-menu').superfish({ //style the nav menu
-            delay:       800,                            //  delay on mouseout 
-            animation:   {opacity:'show',height:'show'},  // fade-in and slide-down animation 
-            speed:       'slow',                          // faster animation speed 
-            autoArrows:  true,                           // disable generation of arrow mark-up 
+            delay: 800,                            //  delay on mouseout 
+            animation: { opacity: 'show', height: 'show' },  // fade-in and slide-down animation 
+            speed: 'slow',                          // faster animation speed 
+            autoArrows: true,                           // disable generation of arrow mark-up 
             dropShadows: true                            // disable drop shadows 
-        });   
+        });
 
         jQuery(document).ajaxStart(function () {
             //$("#wrap").fadeTo("fast", 0.60);
@@ -71,7 +73,7 @@
             $("#loadingBar").fadeOut("fast");
         });
 
-    })    
+    })
 </script>
 
 </html>

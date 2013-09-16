@@ -10,7 +10,7 @@
 
                 var add = true;
                 $("#frmTitle :text[name='AltTitle']").each(function () {
-                  
+
                     if ($(this).val().trim() == '')
                         add = false;
                 })
@@ -25,7 +25,7 @@
                 $(this).parent().remove();
 
             })
-        
+
         })//--end ready --  
     </script>
 </head>
@@ -33,18 +33,28 @@
     <div>
         Information Concerning the Motion Picture:   
     </div>
+    <div class="clear" style="padding-bottom: 25px; padding-top: 5px">
+        <div class="leftFloat"><span class="labelRounded">Step1</span></div>
+        <div class="leftFloat" style="width: 80px;vertical-align:middle">
+            <div style="border: 1px solid Red; height: 1px;"></div>
+        </div>
+        <div class="leftFloat"><span class="labelRounded">Step2</span></div>
+    </div>
     <form id="frmTitle">
+        <div class="clear">
+            <input type="text" id="Title" />
+        </div>
         <div>
-            <input type="text" id="Title" /></div>
-        <div>
-            <input type="text" name="AltTitle" /><input type="button" id="Add" value="Add More" /></div>
+            <input type="text" name="AltTitle" /><input type="button" id="Add" value="Add More" />
+        </div>
         <span id="AltTitles"></span>
 
-        <div><input /></div>
+        <div>
+            <input /></div>
     </form>
- <div id="AltTitle" class="hidden">
-   <input type="text" name="AltTitle" /><input type="button" value="Remove" class="remove" />
- </div>
+    <div id="AltTitle" class="hidden">
+        <input type="text" name="AltTitle" /><input type="button" value="Remove" class="remove" />
+    </div>
 
 </body>
 </html>
