@@ -207,7 +207,6 @@ a.PagerLink
     -webkit-border-radius: 6px 6px 6px 6px;
     -moz-border-radius: 6px 6px 6px 6px;
     overflow: visible;
-    min-width: 100px;
     min-height: 100%;
 }
 

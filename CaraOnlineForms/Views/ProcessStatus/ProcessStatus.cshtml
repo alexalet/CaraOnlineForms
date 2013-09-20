@@ -1,22 +1,54 @@
 ﻿@using CaraOnlineForms;
 @using CaraEntites; 
-@model List<Film>
+@model List<FilmSubmission>
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>CARA Online Application</title>
+    <script>
+        $(function () {
+            $('.gridButtonLink').click(function (e) {
+                e.preventDefault();
+                DeleteSubmission($(this));
+            });
+
+          //  $('#Message').fadeTo(10000, 0, function () { });
+        }) //-- end ready ---
+
+
+        function DeleteSubmission($btn)
+        {
+            var callbackYes = function () {
+                document.location.href = $btn.attr('href');
+            }
+            confirmActionYesNo($btn, "Woud You like delete this Title?", "Delete Title", "Yes", "No", callbackYes, function () { })
+        }//-- end DeleteSubmission --
+
+    </script>
 </head>
 <body>
     <div>
+        
         @{
             WebGrid grid = Html.WebGridCustom(Model, rowsPerPage: 5);
             Dictionary<int, WebGridColumn> openColumns = new Dictionary<int, WebGridColumn>();
             Dictionary<int, WebGridColumn> editColumns = new Dictionary<int, WebGridColumn>();
 
-            openColumns.Add(1, grid.Column("FilmTitle", "Title", canSort: false));
+            openColumns.Add(1, grid.Column(columnName:"UserId", header:"Film Title", canSort: false,
+                format: (item) => Html.ActionLink((string)item.FilmTitle, "Title", "Submition", new { filmId = item.FilmSubmissionId }, new { @class = "lnkViewFilm" })
+                ));
+            openColumns.Add(2, grid.Column("Submitted", "Submitted", canSort: false, format: (item)=> (item.Submitted==null? "" : ((DateTime)item.Submitted).ToShortDateString())));
 
+            openColumns.Add(3, grid.Column("Delete", "", canSort: false, format: (item) => {
+                if (item.Submitted != null || item.ReturnedByCARA!=null)
+                    return "";
+
+                return Html.ActionLink("Delete", "DeleteTitle", new {filmId=item.FilmSubmissionId }, new { @class = "gridButtonLink" }); 
+            }));
+            
+            
             @grid.GetHtmlCustom(columns: grid.GridColumnsCustom(openColumns, editColumns), title: "", fillEmptyRows: true); 
          }
     </div>

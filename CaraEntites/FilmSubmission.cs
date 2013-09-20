@@ -12,10 +12,16 @@ namespace CaraEntites
     using System;
     using System.Collections.Generic;
     
-    public partial class Film
+    public partial class FilmSubmission
     {
-        public int FilmId { get; set; }
-        public string Ttitle { get; set; }
+        public FilmSubmission()
+        {
+            this.FilmAltTitles = new HashSet<FilmAltTitle>();
+            this.Participants = new HashSet<Participant>();
+        }
+    
+        public int FilmSubmissionId { get; set; }
+        public string FilmTitle { get; set; }
         public int UserId { get; set; }
         public string ISAN { get; set; }
         public string ISANCheck { get; set; }
@@ -26,7 +32,13 @@ namespace CaraEntites
         public Nullable<System.DateTime> Submitted { get; set; }
         public Nullable<System.DateTime> AcceptedByCARA { get; set; }
         public Nullable<System.DateTime> ReturnedByCARA { get; set; }
+        public int ModifiedBy { get; set; }
+        public System.DateTime Modified { get; set; }
+        public System.DateTime Created { get; set; }
     
+        public virtual ICollection<FilmAltTitle> FilmAltTitles { get; set; }
         public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
+        public virtual ICollection<Participant> Participants { get; set; }
     }
 }

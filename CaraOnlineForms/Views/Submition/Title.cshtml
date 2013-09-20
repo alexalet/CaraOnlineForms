@@ -1,60 +1,84 @@
-﻿<!DOCTYPE html>
+﻿@using CaraEntites;
+@model FilmSubmission
+<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Title</title>
+    <title>CARA Online Applivation</title>
     <script>
         $(function () {
             $('#Add').click(function () {
 
-                var add = true;
-                $("#frmTitle :text[name='AltTitle']").each(function () {
+                var altTitles = $("#frmTitle :text[name='AltTitle']")
 
-                    if ($(this).val().trim() == '')
-                        add = false;
-                })
-                if (add) {
+                if (altTitles.length == 1 || altTitles.last().val().trim() != '') {
                     $('#AltTitle').clone(true).removeClass('hidden').removeAttr('id').appendTo('#AltTitles');
                 }
             }
             );
 
             $('.remove').click(function () {
-
                 $(this).parent().remove();
-
             })
 
         })//--end ready --  
+
     </script>
+    <style>
+        .longField
+        {
+            width: 500px;
+            margin-right: 15px;
+        }
+    </style>
 </head>
+@{
+    ViewBag.PageHeader = "Motion Picture Info";
+}
 <body>
-    <div>
-        Information Concerning the Motion Picture:   
-    </div>
-    <div class="clear" style="padding-bottom: 25px; padding-top: 5px">
-        <div class="leftFloat"><span class="labelRounded">Step1</span></div>
-        <div class="leftFloat" style="width: 80px;vertical-align:middle">
-            <div style="border: 1px solid Red; height: 1px;"></div>
-        </div>
-        <div class="leftFloat"><span class="labelRounded">Step2</span></div>
-    </div>
-    <form id="frmTitle">
-        <div class="clear">
-            <input type="text" id="Title" />
-        </div>
-        <div>
-            <input type="text" name="AltTitle" /><input type="button" id="Add" value="Add More" />
-        </div>
-        <span id="AltTitles"></span>
+    @{
+        if (Model.FilmSubmissionId > 0)
+        {
+            Html.RenderAction("_WorkFlow", "NavMenu");
+        }
+    }
 
-        <div>
-            <input /></div>
-    </form>
-    <div id="AltTitle" class="hidden">
-        <input type="text" name="AltTitle" /><input type="button" value="Remove" class="remove" />
-    </div>
-
+    <div class="clear"></div>
+    <fieldset>
+        <legend>Information Concerning the Motion Picture:</legend>
+        <form id="frmTitle" action="@Url.Action("SaveTitle")">
+            <div class="clear" style="padding-bottom: 30px;">
+                <div>Title:</div>
+                <div class="clear">@Html.TextBoxFor(m => m.FilmTitle, new { @class = "longField", @maxlength = "120" })</div>
+            </div>
+            <div>
+                <div class="label">Previous, Working, Alternate, and Foreign Titles: </div>
+                <input type="text" name="AltTitle" class="longField" value="@(Model.FilmAltTitles.Count > 0 ? Model.FilmAltTitles.ElementAt(0).AltTitle : "")"  maxlength="120"/><input type="button" id="Add" value="Add More" style="font-size: 0.75em !important" />
+            </div>
+            <div id="AltTitles">
+                @{ foreach (FilmAltTitle at in Model.FilmAltTitles)
+                   {
+                       if (at.AltTitleId != Model.FilmAltTitles.ElementAt(0).AltTitleId)
+                       {
+                    <div class="clear" style="margin-top: 10px;">
+                        <input type="text" name="AltTitle" class="longField" value="@at.AltTitle" maxlength="120" /><input type="button" value="Remove" class="remove" style="font-size: 0.75em !important" />
+                    </div>
+                       }
+                   }
+                }
+            </div>
+            <div class="clear">
+                <div class="clear" style="margin-top: 20px;">Synopsis:</div>
+                @Html.TextAreaFor(m => m.Synopsis, new {@style="width: 700px",rows="10", cols="10"  })
+             </div>
+            <div>
+                <input type="submit" value="Submit" style="margin-top: 10px;"/>
+            </div>
+        </form>
+        <div id="AltTitle" class="hidden" style="margin-top: 10px;">
+            <input type="text" name="AltTitle" class="longField" /><input type="button" value="Remove" class="remove" style="font-size: 0.75em !important" />
+        </div>
+    </fieldset>
 </body>
 </html>

@@ -1,0 +1,30 @@
+﻿@using ViewModels;
+@model WorkFlowViewModel
+
+@{
+    var steps = new List<MvcHtmlString>();
+    steps.Add(Html.ActionLink("Picture Info", "Title", "Submission", new { }, new { }));
+    steps.Add(Html.ActionLink("Participants", "Participants", "Participants"));
+    steps.Add(Html.ActionLink("Contacts", "Action", "Controler"));
+    steps.Add(Html.ActionLink("Screener", "Action", "Controler"));
+    steps.Add(Html.ActionLink("Right Holders", "Action", "Controler"));
+    steps.Add(Html.ActionLink("Submit Picture", "Action", "Controler"));
+
+   if (Model.FilmTitle !=  null) 
+   {
+      @:<div>Title: @Model.FilmTitle</div>
+       for (int i = 0; i < steps.Count; i++)
+          {
+    
+            <div class="leftFloat labelRounded" style="display: inline"><span>@steps[i]</span></div>
+              if (i < steps.Count - 1)
+              {
+            <div class="leftFloat" style="width: 20px; vertical-align: middle">
+                <div style="border: 1px solid #7B99B7; border-top: hidden; border-left: hidden; border-right: hidden; height: 0.95em;">&nbsp;</div>
+            </div>
+              }
+
+          }
+        }
+    }
+

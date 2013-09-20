@@ -12,14 +12,29 @@ namespace CaraOnlineForms
     public class ControllerBase:Controller
     {
 
-        public User User {
+        public new User User {
             get { 
                 Session session = new Session();
                 return session.User;
             }
             
             set {} 
-        } 
-    
+        }
+
+        // currently selected film
+        public FilmSubmission CurrentFilm
+        {
+            get
+            {
+                Session session = new Session();
+                return session.Film;
+            }
+
+            set
+            {
+                Session session = new Session();
+                session.Film = value;
+            }
+        }
     }
 }

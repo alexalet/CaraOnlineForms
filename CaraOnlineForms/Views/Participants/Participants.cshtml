@@ -1,0 +1,58 @@
+﻿@using CaraEntites;
+@model List<Participant>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CARA Online Applivation</title>
+    <script>
+        $(function () {
+            $('.AddMore').click(function () {
+                var name = $(this).attr('name');
+                var fieldset = $(this).closest('fieldset');
+                var participants = $(fieldset).find(':text');
+
+                if (participants.length == 1 || participants.last().val().trim() != '') {
+                    $('#New').clone(true).removeClass('hidden').removeAttr('id').appendTo(fieldset);
+
+                    $(fieldset).find(':text').attr('name', name);
+                }
+            }
+            );
+
+            $('.remove').click(function () {
+                $(this).parent().remove();
+            })
+
+        })//--end ready --  
+
+    </script>
+    <style>
+        .longField
+        {
+            width: 500px;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <fieldset><legend>Actor(s):</legend>
+            <input type="text" name="Actor" class="longField" maxlength="100"/> <input type="button" name="Actor" value="Add More" class="AddMore" style="font-size: 0.75em !important"/>
+        </fieldset>
+        <fieldset><legend>Director(s):</legend>
+            <input type="text" name="Director" class="longField"  maxlength="100"/> <input type="button" name="Director" value="Add More" class="AddMore" style="font-size: 0.75em !important"/>
+        </fieldset>
+        <fieldset><legend>Producer(s):</legend>
+             <input type="text" name="Producer" class="longField"  maxlength="100"/> <input type="button" name="Producer" value="Add More" class="AddMore" style="font-size: 0.75em !important"/>
+        </fieldset>
+        <fieldset><legend>Writer(s):</legend>
+             <input type="text" name="Writer" class="longField"  maxlength="100"/> <input type="button"name="Writer" value="Add More" class="AddMore" style="font-size: 0.75em !important"/>
+        </fieldset>
+    </form>
+    <div id="New" class="clear hidden" style="margin-top: 8px;">
+         <input type="text" class="longField"  maxlength="100"/> <input type="button" value="Remove" class="remove" style="font-size: 0.75em !important"/>
+    </div>
+</body>
+</html>

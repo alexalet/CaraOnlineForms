@@ -32,6 +32,12 @@
         </div>
     </div>
     <div id="wrap">
+        @{ if(ViewBag.Message!=null)
+           {
+        <div class="red">@ViewBag.Message</div>
+        <div class="clear"></div>    
+        }
+        }
         @RenderBody()
         <div id="footer">
             <hr class="thinLine" />

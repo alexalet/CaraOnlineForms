@@ -69,7 +69,13 @@
     <Compile Include="Country.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Film.cs">
+    <Compile Include="FilmAltTitle.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FilmSubmission.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Participant.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

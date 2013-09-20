@@ -43,5 +43,21 @@ namespace CaraOnlineForms
                 set { SetInSession<User>("user", value); }
             }
 
+            public FilmSubmission Film
+            {
+                get { return GetFromSession<FilmSubmission>("film"); }
+                set {
+                    if (value == null)
+                    {
+                        SetInSession<FilmSubmission>("film", null);
+                        return;
+                    }
+                    FilmSubmission lightFilm = new FilmSubmission {UserId=value.UserId, FilmSubmissionId=value.FilmSubmissionId, FilmTitle=value.FilmTitle};
+                    SetInSession<FilmSubmission>("film", lightFilm); 
+                
+                }
+            }
+
+
    }
 }

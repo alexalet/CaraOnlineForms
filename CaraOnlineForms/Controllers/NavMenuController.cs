@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ViewModels;
+using CaraEntites;
 
 namespace CaraOnlineForms.Controllers
 {
@@ -16,5 +18,15 @@ namespace CaraOnlineForms.Controllers
             return PartialView("_NavMenu", showMenu);
         }
 
+
+        public PartialViewResult _WorkFlow()
+        {
+            WorkFlowViewModel model = new WorkFlowViewModel { FilmTitle=null};
+            FilmSubmission currentFilm = new Session().Film;
+            if (currentFilm != null)
+                model.FilmTitle = currentFilm.FilmTitle;
+
+            return PartialView("_WorkFlow", model);
+        }  
     }
 }
