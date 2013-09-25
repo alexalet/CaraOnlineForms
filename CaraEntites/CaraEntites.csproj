@@ -78,6 +78,9 @@
     <Compile Include="Participant.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="PasswordToReset.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>

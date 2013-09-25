@@ -1,11 +1,39 @@
 ﻿@using CaraEntites;
 @model List<Participant>
-
+@{
+    List<Participant> actors = Model.Where(x => x.ParticipantTypeID == 1).ToList();
+    if (actors.Count == 0)
+    {
+        actors.Add(new Participant { ParticipantName = "" });
+    }
+    List<Participant> directors = Model.Where(x => x.ParticipantTypeID == 2).ToList();
+    if (directors.Count == 0)
+    {
+        directors.Add(new Participant { ParticipantName = "" });
+    }
+    List<Participant> producers = Model.Where(x => x.ParticipantTypeID == 3).ToList();
+    if (producers.Count == 0)
+    {
+        producers.Add(new Participant { ParticipantName = "" });
+    }
+    List<Participant> writers = Model.Where(x => x.ParticipantTypeID == 4).ToList();
+    if (writers.Count == 0)
+    {
+        writers.Add(new Participant { ParticipantName = "" });
+    }
+}
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>CARA Online Applivation</title>
+    <style>
+        .longField
+        {
+            width: 500px;
+            margin-right: 15px;
+        }
+    </style>
     <script>
         $(function () {
             $('.AddMore').click(function () {
@@ -27,32 +55,65 @@
 
         })//--end ready --  
 
-    </script>
-    <style>
-        .longField
+        function NextPage(url)
         {
-            width: 500px;
-            margin-right: 15px;
+            document.location.href = url;
         }
-    </style>
+
+    </script>
 </head>
+@{
+    ViewBag.PageHeader = "Actors, Produsers, Directors, and Writers";
+    Html.RenderAction("_WorkFlow", "NavMenu", new {StepId="Participants" });
+}
 <body>
-    <form>
-        <fieldset><legend>Actor(s):</legend>
-            <input type="text" name="Actor" class="longField" maxlength="100"/> <input type="button" name="Actor" value="Add More" class="AddMore" style="font-size: 0.75em !important"/>
+    <form action="@Url.Action("SaveParticipants")">
+        <fieldset>
+            <legend>Actor(s):</legend>
+            @for (int i = 0; i < actors.Count; i++)
+            {   <div class="clear" style="margin-top: 5px;">
+                <input type="text" name="Actor" class="longField" maxlength="50" value="@actors[i].ParticipantName"/>
+                <input type="button" name="Actor" value="@(i == 0 ? "Add More" : "Remove")" class="@(i == 0 ? "AddMore" : "remove")" style="font-size: 0.75em !important"/>
+            </div>
+            }
         </fieldset>
-        <fieldset><legend>Director(s):</legend>
-            <input type="text" name="Director" class="longField"  maxlength="100"/> <input type="button" name="Director" value="Add More" class="AddMore" style="font-size: 0.75em !important"/>
+        <fieldset>
+            <legend>Director(s):</legend>
+            @for (int i = 0; i < directors.Count; i++)
+            {
+                <div class="clear" style="margin-top: 5px;">
+                    <input type="text" name="Director" class="longField" maxlength="50"  value="@directors[i].ParticipantName"/>
+                    <input type="button" name="Director" value="@(i == 0 ? "Add More" : "Remove")" class="@(i == 0 ? "AddMore" : "remove")" style="font-size: 0.75em !important"/>
+                </div>
+            }
         </fieldset>
-        <fieldset><legend>Producer(s):</legend>
-             <input type="text" name="Producer" class="longField"  maxlength="100"/> <input type="button" name="Producer" value="Add More" class="AddMore" style="font-size: 0.75em !important"/>
+        <fieldset>
+            <legend>Producer(s):</legend>
+            @{for (int i = 0; i < producers.Count; i++)
+              {
+                <div class="clear" style="margin-top: 5px;">
+                    <input type="text" name="Producer" class="longField" maxlength="50" value="@producers[i].ParticipantName" />
+                    <input type="button" name="Producer" value="@(i == 0 ? "Add More" : "Remove")" class="@(i == 0 ? "AddMore" : "remove")" style="font-size: 0.75em !important" />
+                </div>
+              }
+            }
         </fieldset>
-        <fieldset><legend>Writer(s):</legend>
-             <input type="text" name="Writer" class="longField"  maxlength="100"/> <input type="button"name="Writer" value="Add More" class="AddMore" style="font-size: 0.75em !important"/>
+        <fieldset>
+            <legend>Writer(s):</legend>
+            @{for (int i = 0; i < writers.Count; i++)
+              {
+                <div class="clear" style="margin-top: 5px;">
+                    <input type="text" name="Writer" class="longField" maxlength="50" value="@writers[i].ParticipantName" />
+                    <input type="button" name="Writer" value="@(i == 0 ? "Add More" : "Remove")" class="@(i == 0 ? "AddMore" : "remove")" style="font-size: 0.75em !important" />
+                </div>
+              }
+            }
         </fieldset>
+        <input type="submit" value="Save" />
     </form>
-    <div id="New" class="clear hidden" style="margin-top: 8px;">
-         <input type="text" class="longField"  maxlength="100"/> <input type="button" value="Remove" class="remove" style="font-size: 0.75em !important"/>
+    <div id="New" class="clear hidden" style="margin-top: 5px;">
+        <input type="text" class="longField" maxlength="50" />
+        <input type="button" value="Remove" class="remove" style="font-size: 0.75em !important" />
     </div>
 </body>
 </html>

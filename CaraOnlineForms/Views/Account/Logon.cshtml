@@ -25,7 +25,7 @@
 <body>
     @if (!Model.ErrorMessage.IsEmpty())
     {
-        @:<div class="clear red">
+        @:<div class="clear validation-summary-errors" style="margin-bottom:10px;">
 @Model.ErrorMessage
       @:</div>
              }
@@ -43,6 +43,7 @@
             </div>
         </form>
         <div class="clear"><a href="@Url.Action("Registration")">Register</a></div>
+        <div class="clear"><a href="@Url.Action("ForgotPassword")">Forgot My Password</a></div>
     </fieldset>
 </body>
 </html>

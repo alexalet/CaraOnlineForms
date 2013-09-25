@@ -23,7 +23,7 @@ namespace Repository
         
             film.Deleted = true;
            film.ModifiedBy = userId;
-           film.Modified = DateTime.Now;
+           film.ModifiedDate = DateTime.Now;
           _context.SaveChanges();
             
             return true;

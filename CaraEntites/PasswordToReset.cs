@@ -12,15 +12,14 @@ namespace CaraEntites
     using System;
     using System.Collections.Generic;
     
-    public partial class Participant
+    public partial class PasswordToReset
     {
-        public int PartisipantId { get; set; }
-        public int FilmSubmissionId { get; set; }
-        public int ParticipantTypeID { get; set; }
-        public string ParticipantName { get; set; }
-        public System.DateTime ModifiedDate { get; set; }
-        public int ModifiedBy { get; set; }
+        public int PasswordToResetId { get; set; }
+        public string Code { get; set; }
+        public int UserId { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public Nullable<System.DateTime> PasswordResetDate { get; set; }
     
-        public virtual FilmSubmission FilmSubmission { get; set; }
+        public virtual User User { get; set; }
     }
 }

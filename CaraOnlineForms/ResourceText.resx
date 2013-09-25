@@ -123,7 +123,16 @@ Please click on the link below to confirm your email address.
 &lt;br/&gt;
 &lt;a href='{0}'&gt;Confirm Email Address&lt;/a&gt;
 &lt;br/&gt;
-Thanks,
+Thanks,&lt;br/&gt;
+The CARA Team.</value>
+  </data>
+  <data name="EmailResetPassword" xml:space="preserve">
+    <value>This is an email generated from CARA.&lt;br/&gt;
+Please click on the link below to reset your password.
+&lt;br/&gt;
+&lt;a href='{0}'&gt;Reset Password&lt;/a&gt;
+&lt;br/&gt;
+Thanks,&lt;br/&gt;
 The CARA Team.</value>
   </data>
   <data name="WebPageTitle" xml:space="preserve">

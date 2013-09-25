@@ -11,7 +11,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>CARA Application</title>
+    <title>CARA Online Application</title>
     <style>
         .label
         {
@@ -73,17 +73,6 @@
 
                 
 
-
-                /*
-                var email = $('#EmailAddress').val().trim();
-                var ck_email = /^([\w-]+(?:\.[\w-]+)*)@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-                if (!ck_email.test(email)) {
-                    alert('email is not correct')
-
-                }
-                */
-
-
             });//--end click --
 
         });//-- end ready --
@@ -96,6 +85,7 @@
                 $('select[id="User_State"]').removeClass('hidden');
                 $('select[id="User_State"]').removeAttr('disabled');
                 $(':text[id="User_State"]').addClass('hidden');
+                $('#StateRedStar').removeClass('hidden');
                 $(':text[id="User_State"]').attr('disabled', 'disabled');
             }
             else {
@@ -105,6 +95,7 @@
                 $('select[id="User_State"]').addClass('hidden');
                 $('select[id="User_State"]').attr('disabled', 'disabled');
                 $(':text[id="User_State"]').removeClass('hidden');
+                $('#StateRedStar').addClass('hidden');
                 $(':text[id="User_State"]').removeAttr('disabled');
             }
 
@@ -135,7 +126,7 @@
 <body>
     @{if (!Model.ErrorMessage.IsEmpty())
       {
-        <div class="error">@Model.ErrorMessage</div>       
+        <div class="clear validation-summary-errors">@Model.ErrorMessage</div>       
       }
     }
     <fieldset><legend>@(Model.User.UserId > 0 ? "My Profile:" : "Registration:")</legend>
@@ -180,13 +171,13 @@
         <div class="paddingBottom15">
             <div class="label">City<span class="redStar">*</span>:</div>
             @Html.TextBoxFor(m => m.User.City, new { requiredField = "1", @class = "shortField" })
-            Country<span class="redStar">*</span>: @Html.Action("Countries", "Country", new { Name = "User.CountryId", ISO = Model.User.CountryId })
+            <span style="margin-left:10px;">Country<span class="redStar">*</span>: @Html.Action("Countries", "Country", new { Name = "User.CountryId", ISO = Model.User.CountryId })</span>
         </div>
         <div class="paddingBottom15">
-            <div class="label"><span id="lblState">State</span><span class="redStar">*</span>:</div>
+            <div class="label"><span id="lblState">State</span><span class="redStar" id="StateRedStar">*</span>:</div>
             @Html.Partial("_States", new CountryViewModel { Name = "User.State", ISO = Model.User.State })
             @Html.TextBoxFor(m => m.User.State, new { @class = "shortField" })
-            <span id="lblZip">Zip Code</span><span class="redStar">*</span>: @Html.TextBoxFor(m => m.User.Zip, new { requiredField = "1", @class = "shortField" })
+            <span id="lblZip" style="margin-left:10px;">Zip Code</span><span class="redStar">*</span>: @Html.TextBoxFor(m => m.User.Zip, new { requiredField = "1", @class = "shortField" })
         </div>
         <div class="paddingBottom15">
             @{if (Model.User.UserId > 0)
@@ -202,20 +193,19 @@
         <div class="paddingBottom15">
             <div class="label">Phone<span class="redStar">*</span>:</div>
             @Html.TextBoxFor(m => m.User.Phone, new { requiredField = "1", @class = "shortField" })
-            Cell:@Html.TextBoxFor(m => m.User.Cell, new { @class = "shortField" })
+            <span style="margin-left:10px;">Cell:@Html.TextBoxFor(m => m.User.Cell, new { @class = "shortField" })</span>
         </div>
         <div class="paddingBottom15">
             <div class="label">Fax<span class="redStar"></span>:</div>
             @Html.TextBoxFor(m => m.User.Fax, new { @class = "shortField" })
-            Website:@Html.TextBoxFor(m => m.User.Website, new { @class = "shortField" })
+            <span style="margin-left:10px;">Website:@Html.TextBoxFor(m => m.User.Website, new { @class = "shortField" })</span>
         </div>
         @if (Model.User.UserId <= 0)
         {
             <div class="paddingBottom15">
                 <div class="label">Password<span class="redStar">*</span>:</div>
-                @Html.PasswordFor(m => m.User.Password, new { requiredField = "1", @class="requiredField" })
-                Confirm Password<span class="redStar">*</span>:
-            <input type="password" requiredfield="1" id="ConfirmPassword", class="requiredField" />
+                @Html.PasswordFor(m => m.User.Password, new { requiredField = "1", @class="requiredField", @style="width:200px" })
+                <span style="margin-left:10px;">Confirm Password<span class="redStar">*</span>: <input type="password" requiredfield="1" id="ConfirmPassword" class="requiredField shortField" /></span>
             </div>
         }
         <div class="clear">

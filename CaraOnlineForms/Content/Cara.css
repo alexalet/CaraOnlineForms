@@ -216,7 +216,7 @@ fieldset
 {
     border: 1px solid #C8C8C8;
     padding: 0 1.4em 1.4em 1.4em;
-    margin: 0 0 1.5em 0;
+    margin: 0 0 1.0em 0;
     font-family: "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif !important;
 }
 
@@ -305,6 +305,10 @@ DIV.title
     background: #E9EEF3 !important;
 }
 
+.cursorPointer
+{
+    cursor: pointer;
+}
 
 .underline
 {

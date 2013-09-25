@@ -29,7 +29,8 @@ namespace CaraEntites
         public DbSet<UserToConfirm> UserToConfirms { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<FilmAltTitle> FilmAltTitles { get; set; }
-        public DbSet<FilmSubmission> FilmSubmissions { get; set; }
         public DbSet<Participant> Participants { get; set; }
+        public DbSet<FilmSubmission> FilmSubmissions { get; set; }
+        public DbSet<PasswordToReset> PasswordToResets { get; set; }
     }
 }

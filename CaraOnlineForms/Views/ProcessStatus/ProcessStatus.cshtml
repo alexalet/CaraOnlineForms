@@ -23,8 +23,14 @@
             var callbackYes = function () {
                 document.location.href = $btn.attr('href');
             }
-            confirmActionYesNo($btn, "Woud You like delete this Title?", "Delete Title", "Yes", "No", callbackYes, function () { })
+            confirmActionYesNo("Woud You like delete this Title?", "Delete Title", "Yes", "No", callbackYes, function () { })
         }//-- end DeleteSubmission --
+
+        function Test()
+        {
+
+            $.growlUI('Growl Notification', 'Have a nice day!');
+        }
 
     </script>
 </head>
@@ -52,5 +58,6 @@
             @grid.GetHtmlCustom(columns: grid.GridColumnsCustom(openColumns, editColumns), title: "", fillEmptyRows: true); 
          }
     </div>
+    <input type="button" value="Test" onclick="Test()"/>
 </body>
 </html>

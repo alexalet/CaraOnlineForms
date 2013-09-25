@@ -19,13 +19,16 @@ namespace CaraOnlineForms.Controllers
         }
 
 
-        public PartialViewResult _WorkFlow()
+        public PartialViewResult _WorkFlow(string StepId)
         {
             WorkFlowViewModel model = new WorkFlowViewModel { FilmTitle=null};
             FilmSubmission currentFilm = new Session().Film;
             if (currentFilm != null)
+            {
+                model.FilmSubmitionId = currentFilm.FilmSubmissionId;
                 model.FilmTitle = currentFilm.FilmTitle;
-
+                model.StepId = StepId;
+            }
             return PartialView("_WorkFlow", model);
         }  
     }

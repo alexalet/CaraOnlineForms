@@ -10,6 +10,7 @@ namespace CaraOnlineForms.Controllers
 {
     public class SubmitionController : ControllerBase
     {
+
         
         public ActionResult Title(int? filmId)
         {
@@ -26,7 +27,7 @@ namespace CaraOnlineForms.Controllers
             return View(model);
         }
 
-        public ActionResult SaveTitle(FilmSubmission film, List<string> AltTitle)
+        public ActionResult SaveTitle(FilmSubmission film, List<string> AltTitle, string NextPage)
         {
             // UserID of the saved film must be taken from session
             film.UserId = this.User.UserId;
@@ -39,8 +40,13 @@ namespace CaraOnlineForms.Controllers
 
             //the saved film must be saved in session - now it's current film
             this.CurrentFilm = model;
+
+            if (!String.IsNullOrEmpty( NextPage ) )
+              return  Redirect(NextPage);
+
             ViewBag.Message = "The Title has been saved";
             return View("Title", model);
+            
         }
 
     }

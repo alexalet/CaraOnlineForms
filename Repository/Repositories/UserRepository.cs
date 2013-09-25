@@ -47,6 +47,10 @@ namespace Repository
            
        }
 
+        public User GetUserByEmail(string email)
+        {
+            return _context.Users.FirstOrDefault(x => x.EmailAddress == email && x.IsActive);
+        }
 
         public bool UpdateUser(User updatedUser)
         {
@@ -99,6 +103,72 @@ namespace Repository
             return true;
         
         }
+        /// <summary>
+        /// creates record in table PasswordToResets  for the selected user
+        /// returns generated code
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string PrepareResetPassword(int userId)
+        {
+            PasswordToReset reset = _context.PasswordToResets.FirstOrDefault(x => x.UserId == userId && x.PasswordResetDate == null);
+            if (reset == null) // no records
+            {
+                reset = new PasswordToReset { UserId = userId, CreatedDate = DateTime.Now, Code = Guid.NewGuid().ToString() };
+                _context.PasswordToResets.Add(reset);
+            }
+            else // re-use existing record
+            {
+                reset.Code = Guid.NewGuid().ToString();
+                reset.CreatedDate = DateTime.Now;
+            }
+            _context.SaveChanges();
+            
+            return reset.Code;
+        }
 
+        public bool ChangePassword(int userId, string newPassword)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// returns true if code is valid for reset password
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public bool IsResetPasswordCodeValid(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+                return false;
+
+            return _context.PasswordToResets.FirstOrDefault(x => x.Code == code && x.PasswordResetDate == null)!=null;
+        }
+
+        /// <summary>
+        /// newPassword must be already encrypted
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        public bool ResetPassword(string code, string newPassword)
+        {
+            PasswordToReset reset = _context.PasswordToResets.FirstOrDefault(x => x.Code==code && x.PasswordResetDate == null);
+            if (reset == null) // no records
+            {
+                return false;
+            }
+
+           bool res = ChangePassword(reset.UserId, newPassword);
+           if (!res)
+           {
+               return false;
+           }
+
+            reset.PasswordResetDate = DateTime.Now;
+            _context.SaveChanges();
+
+            return true;
+        }
     }
 }

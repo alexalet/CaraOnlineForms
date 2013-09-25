@@ -1,7 +1,12 @@
 ﻿------------------ TABLES ------------------
+Country
+
 User
 UserToConfirm
-Country
+
+PasswordToReset
+
 FilmSubmission
 FilmAltTitle
+FilmRole 
 Participant

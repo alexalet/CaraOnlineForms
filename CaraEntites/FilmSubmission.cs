@@ -33,8 +33,8 @@ namespace CaraEntites
         public Nullable<System.DateTime> AcceptedByCARA { get; set; }
         public Nullable<System.DateTime> ReturnedByCARA { get; set; }
         public int ModifiedBy { get; set; }
-        public System.DateTime Modified { get; set; }
-        public System.DateTime Created { get; set; }
+        public System.DateTime ModifiedDate { get; set; }
+        public System.DateTime CreatedDate { get; set; }
     
         public virtual ICollection<FilmAltTitle> FilmAltTitles { get; set; }
         public virtual User User { get; set; }

@@ -13,11 +13,11 @@ namespace CaraOnlineForms.Controllers
 {
     public class AccountController : Controller
     {
-       
+
         public ActionResult Logon()
         {
-            //Membership.GeneratePassword(8, 1);
-            LoginViewModel model = new LoginViewModel { ErrorMessage="", Pwd="", UserId="" };
+
+            LoginViewModel model = new LoginViewModel { ErrorMessage = "", Pwd = "", UserId = "" };
             return View(model);
         }
 
@@ -38,16 +38,16 @@ namespace CaraOnlineForms.Controllers
 
             return RedirectToAction("ProcessStatus", "ProcessStatus");
         }
-        
+
 
 
         public ActionResult Registration()
         {
-        
+
             return View(new RegistrationViewModel());
         }
 
-        
+
 
         public ActionResult SubmitRegistration(RegistrationViewModel newUser)
         {
@@ -65,9 +65,9 @@ namespace CaraOnlineForms.Controllers
                                         + Url.Action("ConfirmEmail", new { code = code }).ToString();
             string body = String.Format(ResourceText.EmailAddressConfirmation, url);
 
-            Utility.Email.SendAnEmail("CARA request for e-mail address confirmation", body, "cara@mpaa.org", "CARA", newUser.User.EmailAddress , true);
+            Utility.Email.SendAnEmail("CARA request for e-mail address confirmation", body, "cara@mpaa.org", "CARA", newUser.User.EmailAddress, true);
 
-            return View("NotificationWasSent", "", newUser.User.EmailAddress );
+            return View("NotificationWasSent", "", newUser.User.EmailAddress);
         }
 
 
@@ -78,10 +78,10 @@ namespace CaraOnlineForms.Controllers
             if (user == null)
                 return View("Logon", new LoginViewModel { });
 
-            
-            user = new UserRepository().GetUser(user.UserId );
 
-            RegistrationViewModel registration = new RegistrationViewModel { User=user, ErrorMessage=message}; 
+            user = new UserRepository().GetUser(user.UserId);
+
+            RegistrationViewModel registration = new RegistrationViewModel { User = user, ErrorMessage = message };
 
             return View("Registration", registration);
         }
@@ -101,15 +101,71 @@ namespace CaraOnlineForms.Controllers
             session.User = updatedUser.User;
 
             return RedirectToAction("MyProfile", new { message = "Profile has been updated." });
-            
+
         }
 
         public ActionResult ConfirmEmail(string code)
         {
-            bool res = new UserRepository().ConfirmEmail(code); 
-            
+            bool res = new UserRepository().ConfirmEmail(code);
+
             return View(res);
         }
 
+        public ActionResult ForgotPassword(ForgotPasswordViewModel forgotPassword)
+        {
+            if (String.IsNullOrEmpty(forgotPassword.Email))
+                return View(new ForgotPasswordViewModel());
+
+            // find user by e-mail
+            User user = new UserRepository().GetUserByEmail(forgotPassword.Email);
+            if (user == null)
+            {
+                forgotPassword.Message = "The requested e-mail address not found.";
+                return View(forgotPassword);
+            }
+
+            string code = new UserRepository().PrepareResetPassword(user.UserId);
+
+            string url = HttpContext.Request.Url.Scheme + "://" + HttpContext.Request.Url.Authority
+                                       + Url.Action("ResetPassword", new { code = code }).ToString();
+            string body = String.Format(ResourceText.EmailResetPassword, url);
+
+            Utility.Email.SendAnEmail("CARA Application - Reset Password", body, "cara@mpaa.org", "CARA", user.EmailAddress, true);
+
+            return View(new ForgotPasswordViewModel { NotificationWasSent = true, Email = user.EmailAddress });
+        }
+
+
+
+        public ActionResult ResetPassword(string Code)
+        {
+            bool res = new UserRepository().IsResetPasswordCodeValid(Code);
+            if (!res)
+            {
+                return View("_Error","", "The Request to reset password is not valid");
+            }
+
+            return View("","",Code);
+        }
+
+
+        public ActionResult ResetPasswordSubmit(string Code, string Password, string ConfirmPassword)
+        {
+            // just in case
+            if (Password.Length < 6 || Password.Length > 24)
+            {
+                {
+                    return View("_Error", "", "Password is not correct");
+                }
+            }
+            
+            bool res = new UserRepository().ResetPassword(Code, Utility.Cryptography.EncryptPwd(Password));
+            if (!res)
+            {
+                return View("_Error","", "Failed to reset password");
+            }
+
+            return View("PasswordWasReset");
+        }
     }
 }

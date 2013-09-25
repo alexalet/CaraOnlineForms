@@ -10,6 +10,7 @@
           <EntitySet Name="FilmAltTitle" EntityType="CaraOnlineForms_DevModel.Store.FilmAltTitle" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FilmSubmission" EntityType="CaraOnlineForms_DevModel.Store.FilmSubmission" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Participant" EntityType="CaraOnlineForms_DevModel.Store.Participant" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PasswordToReset" EntityType="CaraOnlineForms_DevModel.Store.PasswordToReset" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="User" EntityType="CaraOnlineForms_DevModel.Store.User" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserToConfirm" EntityType="CaraOnlineForms_DevModel.Store.UserToConfirm" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_EmailsToConfirm_User" Association="CaraOnlineForms_DevModel.Store.FK_EmailsToConfirm_User">
@@ -31,6 +32,10 @@
           <AssociationSet Name="FK_Participant_FilmSubmission" Association="CaraOnlineForms_DevModel.Store.FK_Participant_FilmSubmission">
             <End Role="FilmSubmission" EntitySet="FilmSubmission" />
             <End Role="Participant" EntitySet="Participant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PasswordToReset_User" Association="CaraOnlineForms_DevModel.Store.FK_PasswordToReset_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="PasswordToReset" EntitySet="PasswordToReset" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Country">
@@ -66,8 +71,8 @@
           <Property Name="AcceptedByCARA" Type="datetime" />
           <Property Name="ReturnedByCARA" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" Nullable="false" />
-          <Property Name="Modified" Type="datetime" Nullable="false" />
-          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Participant">
           <Key>
@@ -77,6 +82,18 @@
           <Property Name="FilmSubmissionId" Type="int" Nullable="false" />
           <Property Name="ParticipantTypeID" Type="int" Nullable="false" />
           <Property Name="ParticipantName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PasswordToReset">
+          <Key>
+            <PropertyRef Name="PasswordToResetId" />
+          </Key>
+          <Property Name="PasswordToResetId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="PasswordResetDate" Type="datetime" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -176,6 +193,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PasswordToReset_User">
+          <End Role="User" Type="CaraOnlineForms_DevModel.Store.User" Multiplicity="1" />
+          <End Role="PasswordToReset" Type="CaraOnlineForms_DevModel.Store.PasswordToReset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PasswordToReset">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -189,6 +218,7 @@
             <End Role="UserToConfirm" EntitySet="UserToConfirms" />
           </AssociationSet>
           <EntitySet Name="FilmAltTitles" EntityType="CaraOnlineForms_DevModel.FilmAltTitle" />
+          <EntitySet Name="Participants" EntityType="CaraOnlineForms_DevModel.Participant" />
           <EntitySet Name="FilmSubmissions" EntityType="CaraOnlineForms_DevModel.FilmSubmission" />
           <AssociationSet Name="FK_FilmAltTitle_Film" Association="CaraOnlineForms_DevModel.FK_FilmAltTitle_Film">
             <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
@@ -202,10 +232,14 @@
             <End Role="User" EntitySet="Users" />
             <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
           </AssociationSet>
-          <EntitySet Name="Participants" EntityType="CaraOnlineForms_DevModel.Participant" />
           <AssociationSet Name="FK_Participant_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission">
             <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
             <End Role="Participant" EntitySet="Participants" />
+          </AssociationSet>
+          <EntitySet Name="PasswordToResets" EntityType="CaraOnlineForms_DevModel.PasswordToReset" />
+          <AssociationSet Name="FK_PasswordToReset_User" Association="CaraOnlineForms_DevModel.FK_PasswordToReset_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PasswordToReset" EntitySet="PasswordToResets" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Country">
@@ -257,7 +291,8 @@
           <NavigationProperty Name="UserToConfirms" Relationship="CaraOnlineForms_DevModel.FK_EmailsToConfirm_User" FromRole="User" ToRole="UserToConfirm" />
           <NavigationProperty Name="FilmSubmissions" Relationship="CaraOnlineForms_DevModel.FK_Film_User" FromRole="User" ToRole="FilmSubmission" />
           <NavigationProperty Name="FilmSubmissions1" Relationship="CaraOnlineForms_DevModel.FK_FilmSubmission_User" FromRole="User" ToRole="FilmSubmission" />
-        </EntityType>
+          <NavigationProperty Name="PasswordToResets" Relationship="CaraOnlineForms_DevModel.FK_PasswordToReset_User" FromRole="User" ToRole="PasswordToReset" />
+          </EntityType>
         <Association Name="FK_EmailsToConfirm_User">
           <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
           <End Type="CaraOnlineForms_DevModel.UserToConfirm" Role="UserToConfirm" Multiplicity="*" />
@@ -279,6 +314,18 @@
           <Property Type="String" Name="AltTitle" Nullable="false" MaxLength="120" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_FilmAltTitle_Film" FromRole="FilmAltTitle" ToRole="FilmSubmission" />
         </EntityType>
+        <EntityType Name="Participant">
+          <Key>
+            <PropertyRef Name="PartisipantId" />
+          </Key>
+          <Property Type="Int32" Name="PartisipantId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="FilmSubmissionId" Nullable="false" />
+          <Property Type="Int32" Name="ParticipantTypeID" Nullable="false" />
+          <Property Type="String" Name="ParticipantName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModifiedDate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
+          <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission" FromRole="Participant" ToRole="FilmSubmission" />
+        </EntityType>
         <EntityType Name="FilmSubmission">
           <Key>
             <PropertyRef Name="FilmSubmissionId" />
@@ -296,8 +343,8 @@
           <Property Type="DateTime" Name="AcceptedByCARA" Precision="3" />
           <Property Type="DateTime" Name="ReturnedByCARA" Precision="3" />
           <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
-          <Property Type="DateTime" Name="Modified" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="Created" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="ModifiedDate" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
           <NavigationProperty Name="FilmAltTitles" Relationship="CaraOnlineForms_DevModel.FK_FilmAltTitle_Film" FromRole="FilmSubmission" ToRole="FilmAltTitle" />
           <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_Film_User" FromRole="FilmSubmission" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CaraOnlineForms_DevModel.FK_FilmSubmission_User" FromRole="FilmSubmission" ToRole="User" />
@@ -339,16 +386,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Participant">
-          <Key>
-            <PropertyRef Name="PartisipantId" />
-          </Key>
-          <Property Type="Int32" Name="PartisipantId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="FilmSubmissionId" Nullable="false" />
-          <Property Type="Int32" Name="ParticipantTypeID" Nullable="false" />
-          <Property Type="String" Name="ParticipantName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission" FromRole="Participant" ToRole="FilmSubmission" />
-        </EntityType>
         <Association Name="FK_Participant_FilmSubmission">
           <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
           <End Type="CaraOnlineForms_DevModel.Participant" Role="Participant" Multiplicity="*" />
@@ -358,6 +395,29 @@
             </Principal>
             <Dependent Role="Participant">
               <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PasswordToReset">
+          <Key>
+            <PropertyRef Name="PasswordToResetId" />
+          </Key>
+          <Property Type="Int32" Name="PasswordToResetId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="PasswordResetDate" Precision="3" />
+          <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_PasswordToReset_User" FromRole="PasswordToReset" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_PasswordToReset_User">
+          <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.PasswordToReset" Role="PasswordToReset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PasswordToReset">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -425,11 +485,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Participants">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.Participant">
+              <MappingFragment StoreEntitySet="Participant">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ParticipantName" ColumnName="ParticipantName" />
+                <ScalarProperty Name="ParticipantTypeID" ColumnName="ParticipantTypeID" />
+                <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
+                <ScalarProperty Name="PartisipantId" ColumnName="PartisipantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="FilmSubmissions">
             <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.FilmSubmission">
               <MappingFragment StoreEntitySet="FilmSubmission">
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ReturnedByCARA" ColumnName="ReturnedByCARA" />
                 <ScalarProperty Name="AcceptedByCARA" ColumnName="AcceptedByCARA" />
@@ -446,13 +518,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Participants">
-            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.Participant">
-              <MappingFragment StoreEntitySet="Participant">
-                <ScalarProperty Name="ParticipantName" ColumnName="ParticipantName" />
-                <ScalarProperty Name="ParticipantTypeID" ColumnName="ParticipantTypeID" />
-                <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
-                <ScalarProperty Name="PartisipantId" ColumnName="PartisipantId" />
+          <EntitySetMapping Name="PasswordToResets">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.PasswordToReset">
+              <MappingFragment StoreEntitySet="PasswordToReset">
+                <ScalarProperty Name="PasswordResetDate" ColumnName="PasswordResetDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="PasswordToResetId" ColumnName="PasswordToResetId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

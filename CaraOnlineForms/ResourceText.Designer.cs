@@ -66,12 +66,27 @@ namespace CaraOnlineForms {
         ///&lt;br/&gt;
         ///&lt;a href=&apos;{0}&apos;&gt;Confirm Email Address&lt;/a&gt;
         ///&lt;br/&gt;
-        ///Thanks,
+        ///Thanks,&lt;br/&gt;
         ///The CARA Team..
         /// </summary>
         internal static string EmailAddressConfirmation {
             get {
                 return ResourceManager.GetString("EmailAddressConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is an email generated from CARA.&lt;br/&gt;
+        ///Please click on the link below to reset your password.
+        ///&lt;br/&gt;
+        ///&lt;a href=&apos;{0}&apos;&gt;Reset Password&lt;/a&gt;
+        ///&lt;br/&gt;
+        ///Thanks,&lt;br/&gt;
+        ///The CARA Team..
+        /// </summary>
+        internal static string EmailResetPassword {
+            get {
+                return ResourceManager.GetString("EmailResetPassword", resourceCulture);
             }
         }
         

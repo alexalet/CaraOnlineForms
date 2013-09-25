@@ -2,29 +2,40 @@
 @model WorkFlowViewModel
 
 @{
-    var steps = new List<MvcHtmlString>();
-    steps.Add(Html.ActionLink("Picture Info", "Title", "Submission", new { }, new { }));
-    steps.Add(Html.ActionLink("Participants", "Participants", "Participants"));
-    steps.Add(Html.ActionLink("Contacts", "Action", "Controler"));
-    steps.Add(Html.ActionLink("Screener", "Action", "Controler"));
-    steps.Add(Html.ActionLink("Right Holders", "Action", "Controler"));
-    steps.Add(Html.ActionLink("Submit Picture", "Action", "Controler"));
-
-   if (Model.FilmTitle !=  null) 
-   {
-      @:<div>Title: @Model.FilmTitle</div>
-       for (int i = 0; i < steps.Count; i++)
-          {
+   
     
-            <div class="leftFloat labelRounded" style="display: inline"><span>@steps[i]</span></div>
-              if (i < steps.Count - 1)
-              {
-            <div class="leftFloat" style="width: 20px; vertical-align: middle">
-                <div style="border: 1px solid #7B99B7; border-top: hidden; border-left: hidden; border-right: hidden; height: 0.95em;">&nbsp;</div>
-            </div>
-              }
+    var steps = new[] { 
+        new { StepId = "Title", Label = "Picture Info", URL = Url.Action("Title", "Submition",new {filmId=Model.FilmSubmitionId }) },
+        new { StepId = "Participants", Label = "Participants", URL = Url.Action("Participants", "Participants")},
+        new { StepId = "Contacts", Label = "Contacts", URL = Url.Action("Contacts", "Contacts")},
+        new { StepId = "Screener", Label = "Screener", URL = Url.Action("Screener", "Screener")},
+        new { StepId = "RightHolders", Label = "Right Holders", URL = Url.Action("RightHolders", "RightHolders")},
+        new { StepId = "Submit", Label = "Submit Picture", URL = Url.Action("SubmitPicture", "SubmitPicture")}
+    };
 
-          }
-        }
+    if (Model.FilmTitle != null)
+    {
+    @:<div>Title: @Model.FilmTitle</div>
+       for (int i = 0; i < steps.Length; i++)
+       {
+           if (steps[i].StepId != Model.StepId)
+           { 
+    <div class="leftFloat labelRounded cursorPointer" style="display: inline"  onclick="GoToNextPage('@steps[i].URL')"><span>@steps[i].Label</span></div>
+           }
+           else
+           {
+    <div class="leftFloat labelRounded" style="display: inline; background-color: lightblue"><span>@steps[i].Label</span></div>
+           }
+
+           if (i < steps.Length - 1)
+           {
+    <div class="leftFloat" style="width: 20px; vertical-align: middle">
+        <div style="border: 1px solid #7B99B7; border-top: hidden; border-left: hidden; border-right: hidden; height: 0.95em;">&nbsp;</div>
+    </div>
+           }
+
+       }
     }
+    <div class="clear"></div>
+}
 

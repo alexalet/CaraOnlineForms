@@ -14,9 +14,48 @@
 
     <script src="@Url.Content("~/Scripts/superfish.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/hoverIntent.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.blockUI.js")" type="text/javascript"></script>
     <script src="@Url.Content("/Scripts/jQuery_AJAX_Custom.js")"></script>
     <script src="@Url.Content("/Scripts/jQuery_Styling_Custom.js")"></script>
     @RenderSection("scripts", required: false)
+    <script>
+        var _cache = null;
+
+        function GoToNextPage(url) {
+        
+            $('form').first().remove(':hidden[name=NextPage]');
+
+            if (url === undefined || url == '') {
+                $('form').first().submit();
+                return;
+            }
+
+
+
+            var callbackNo = function () {
+                document.location.href = url;
+            }
+
+            var callbackYes = function () {
+                if (url !== undefined || url != '') {
+
+                    var nextPage = $('<input type="hidden" name="NextPage" />').attr('value', url);
+                    $(nextPage).appendTo($('form').first());
+                }
+                $('form').first().submit();
+            }
+
+
+           
+            if (_cache != $('form').first().serialize()) {
+                confirmActionYesNoCancel("The current page has been modified.<br/>Woud You like save changes?", "Save changes?", "Yes", "No", callbackYes, callbackNo);
+            } else {
+                callbackNo();
+            }
+
+        }
+
+    </script>
 </head>
 <body id="mvc">
     <div id="header">
@@ -67,11 +106,9 @@
         });
 
         jQuery(document).ajaxStart(function () {
-            //$("#wrap").fadeTo("fast", 0.60);
-            $("#loadingBar").fadeIn("fast");
+           $("#loadingBar").fadeIn("fast");
         });
         jQuery(document).ajaxStop(function () {
-            //$("#contwrapentDialog").fadeTo("fast", 1.0);
             $("#loadingBar").fadeOut("fast");
         });
         jQuery(document).ajaxError(function () {
@@ -79,7 +116,14 @@
             $("#loadingBar").fadeOut("fast");
         });
 
+       
+        if ($('form').length > 0)
+        {
+            _cache = $('form').first().serialize();
+        }
     })
+
+   
 </script>
 
 </html>

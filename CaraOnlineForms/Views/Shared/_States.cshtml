@@ -3,6 +3,7 @@
 @model CountryViewModel
 @{
     var states = new List<SelectListItem>();
+    states.Add(new SelectListItem { Value = "", Text = "" });
     states.Add(new SelectListItem { Value = "AL", Text = "ALABAMA" });
     states.Add(new SelectListItem { Value = "AK", Text = "ALASKA" });
     states.Add(new SelectListItem { Value = "AZ", Text = "ARIZONA" });
@@ -56,7 +57,7 @@
     
     if (Model.ISO.IsEmpty())
     {
-        Model.ISO = "CA";
+        Model.ISO = "";
     }
 
     states.Find(x => x.Value == Model.ISO).Selected=true;

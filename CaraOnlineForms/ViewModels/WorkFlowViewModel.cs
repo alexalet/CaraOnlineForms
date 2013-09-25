@@ -7,8 +7,8 @@ namespace ViewModels
 {
     public class WorkFlowViewModel
     {
-
+        public int? FilmSubmitionId { get; set; }
         public string FilmTitle { get; set; }
-        public int PageNumber { get; set; }
+        public string StepId { get; set; }
     }
 }

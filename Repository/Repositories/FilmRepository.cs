@@ -30,7 +30,7 @@ namespace Repository
                     return null;
                 film.FilmTitle = newFilm.FilmTitle;
                 film.Synopsis = newFilm.Synopsis.Trim().Replace("\r", "");
-                film.Modified = DateTime.Now;
+                film.ModifiedDate = DateTime.Now;
                 film.ModifiedBy = userId;
                 _context.SaveChanges();
 
@@ -56,8 +56,8 @@ namespace Repository
                 film.UserId = newFilm.UserId;
                 film.FilmTitle = newFilm.FilmTitle;
                 film.Synopsis = newFilm.Synopsis.Trim().Replace("\r", "");
-                film.Created = DateTime.Now;
-                film.Modified = DateTime.Now;
+                film.CreatedDate = DateTime.Now;
+                film.ModifiedDate = DateTime.Now;
                 film.ModifiedBy = userId;
                 _context.FilmSubmissions.Add(film);
                 _context.SaveChanges();
