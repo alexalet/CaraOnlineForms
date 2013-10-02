@@ -402,3 +402,13 @@ LI.paddedTop10
 {
   padding-bottom: 15px;
 }
+
+ .longField
+        {
+            width: 300px;
+        }
+
+.shortField
+{
+                width: 200px;
+}

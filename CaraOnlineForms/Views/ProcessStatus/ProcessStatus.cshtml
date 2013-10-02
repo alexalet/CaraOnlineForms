@@ -13,8 +13,7 @@
                 e.preventDefault();
                 DeleteSubmission($(this));
             });
-
-          //  $('#Message').fadeTo(10000, 0, function () { });
+          
         }) //-- end ready ---
 
 
@@ -26,11 +25,7 @@
             confirmActionYesNo("Woud You like delete this Title?", "Delete Title", "Yes", "No", callbackYes, function () { })
         }//-- end DeleteSubmission --
 
-        function Test()
-        {
-
-            $.growlUI('Growl Notification', 'Have a nice day!');
-        }
+       
 
     </script>
 </head>
@@ -45,9 +40,27 @@
             openColumns.Add(1, grid.Column(columnName:"UserId", header:"Film Title", canSort: false,
                 format: (item) => Html.ActionLink((string)item.FilmTitle, "Title", "Submition", new { filmId = item.FilmSubmissionId }, new { @class = "lnkViewFilm" })
                 ));
-            openColumns.Add(2, grid.Column("Submitted", "Submitted", canSort: false, format: (item)=> (item.Submitted==null? "" : ((DateTime)item.Submitted).ToShortDateString())));
+            openColumns.Add(2, grid.Column(columnName: "AltTitles", header: "Alt Titles", canSort: false,
+    format: item => {
+        string res = "";
+        string br = "";
+        foreach (FilmAltTitle at in item.FilmAlTTitles)
+        {
+            res += br + at.AltTitle;
+            br = "<br/>";  
+        }
+             
+        return MvcHtmlString.Create(res);
+    
+    }
+     
+    
+    
+    ));
+    
+            openColumns.Add(3, grid.Column("Submitted", "Submitted", canSort: false, format: (item)=> (item.Submitted==null? "" : ((DateTime)item.Submitted).ToShortDateString())));
 
-            openColumns.Add(3, grid.Column("Delete", "", canSort: false, format: (item) => {
+            openColumns.Add(4, grid.Column("Delete", "", canSort: false, format: (item) => {
                 if (item.Submitted != null || item.ReturnedByCARA!=null)
                     return "";
 
@@ -58,6 +71,5 @@
             @grid.GetHtmlCustom(columns: grid.GridColumnsCustom(openColumns, editColumns), title: "", fillEmptyRows: true); 
          }
     </div>
-    <input type="button" value="Test" onclick="Test()"/>
 </body>
 </html>

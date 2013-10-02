@@ -52,11 +52,11 @@ namespace Repository
             return _context.Users.FirstOrDefault(x => x.EmailAddress == email && x.IsActive);
         }
 
-        public bool UpdateUser(User updatedUser)
+        public User UpdateUser(User updatedUser)
         {
             User user = _context.Users.FirstOrDefault(x=>x.UserId==updatedUser.UserId);
             if (user == null)
-                return false;
+                return null;
             try
             {
                 user.FirstName = updatedUser.FirstName;
@@ -77,15 +77,22 @@ namespace Repository
             }
             catch (Exception)
             {
-                return false;
+                return null;
             }
 
-            return true;
+            return _context.Users.FirstOrDefault(x => x.UserId == updatedUser.UserId);
         }
 
         public User TryLogin(string userId, string encryptedPWD)
         {
-           return _context.Users.FirstOrDefault(x => x.EmailAddress == userId && x.Password == encryptedPWD); 
+           User user =  _context.Users.FirstOrDefault(x => x.EmailAddress == userId && x.Password == encryptedPWD);
+           if (user != null)
+           {
+               user.LastLoginDate = DateTime.Now;
+               _context.SaveChanges();
+           }
+
+           return user; 
         
         }
 
@@ -129,6 +136,9 @@ namespace Repository
 
         public bool ChangePassword(int userId, string newPassword)
         {
+            User user = GetUser(userId);
+            user.Password = newPassword;
+            _context.SaveChanges();
             return true;
         }
 
@@ -164,7 +174,7 @@ namespace Repository
            {
                return false;
            }
-
+            // mark record as used:
             reset.PasswordResetDate = DateTime.Now;
             _context.SaveChanges();
 

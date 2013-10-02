@@ -1,7 +1,7 @@
 ﻿function ValidatePassword(pwd, confirm)
 {
     if (pwd.length < 6)
-        return "Password is too short. Minimum length of password - 6 characters";
+        return "Password is too short. Minimum length of the password - 8 characters";
     if (/[A-Z]/.test(pwd) == false)
     {
         return "Password must contain at least one character in Upper Case"
@@ -20,8 +20,7 @@
     }
 
     if (pwd != confirm) {
-        DisplayErrors("'Confirm Password' doesn't match Password", 'Error');
-        return;
+        return "'Confirm Password' doesn't match Password";
     }
 
     return "";

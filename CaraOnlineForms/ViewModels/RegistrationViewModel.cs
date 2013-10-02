@@ -15,6 +15,8 @@ namespace ViewModels
         }
 
         public User User { get; set; }
+
+        public string Captcha { get; set; }
         
         public string ErrorMessage { get; set; }
 

@@ -11,7 +11,7 @@ namespace Repository
         public List<FilmSubmission> GetFilmsForUser(int userId)
         {
             
-            return _context.FilmSubmissions.Where(x=>x.UserId==userId && !x.Deleted).ToList();
+            return _context.FilmSubmissions.Include("FilmAltTitles").Where(x=>x.UserId==userId && !x.Deleted).ToList();
         }
 
 

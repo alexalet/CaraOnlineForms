@@ -1,13 +1,15 @@
-﻿@using CaraEntites;
+﻿@using Recaptcha.Web.Mvc;
+
+@using CaraEntites;
 @using ViewModels;
 @model RegistrationViewModel
 
 @{
-    ViewBag.PageHeader = "Welcome to CARA Online Application";
+    ViewBag.PageHeader = (Model.User.UserId > 0 ? " CARA Online Application - My Profile" : "Welcome to CARA Online Application");
 }
 
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -25,18 +27,6 @@
         {
             color: red;
         }
-
-        .longField
-        {
-           width:300px;
-        }
-         .shortField
-        {
-           width:200px;
-        }
-        
-        
-
     </style>
     <script>
         $(document).ready(function () {
@@ -44,8 +34,7 @@
             HideShowStates('US');
             $('#User_State').addClass('shortField')
 
-            $(':text[requiredField]').each(function ()
-            {
+            $(':text[requiredField]').each(function () {
                 if ($(this).val().trim() == '')
                     $(this).addClass('requiredField');
             })
@@ -71,14 +60,17 @@
                     document.forms[0].submit();
                 }
 
-                
+
 
             });//--end click --
 
+            @{if (@ViewBag.Message != null)
+              {
+                @:$.growlUI('', '@ViewBag.Message');
+            }}
         });//-- end ready --
 
-        function HideShowStates(country)
-        {
+        function HideShowStates(country) {
             if (country == 'US') {
                 $('#lblZip').text('Zip Code');
                 $('#lblState').text('State');
@@ -121,6 +113,16 @@
 
             return true;
         } //-- end ValidateForm --
+
+        function RefreshCaptcha() {
+            var src = $("#imgCaptcha").attr('src');
+            if (src.indexOf('1') > 0)
+                src = src.replace('1', '2')
+            else
+                src = src.replace('2', '1')
+            $("#imgCaptcha").attr('src', src)
+
+        }
     </script>
 </head>
 <body>
@@ -129,91 +131,109 @@
         <div class="clear validation-summary-errors">@Model.ErrorMessage</div>       
       }
     }
-    <fieldset><legend>@(Model.User.UserId > 0 ? "My Profile:" : "Registration:")</legend>
-    @{if(Model.User.UserId == 0)
-      {
-          <div style="padding-left: 8px; padding-bottom: 20px;">To register, please fill out the form below and hit submit. If you already have a User ID and<br />
-               Password, please returmn to the <a href="@Url.Action("Logon")">previous screen</a> to login.  
-        </div>
-      }
-    }
-    <form method="post" action="@(Model.User.UserId > 0 ? Url.Action("UpdateProfile") : Url.Action("SubmitRegistration"))">
-        <div class="paddingBottom15">
-            <div class="label">First Name<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.User.FirstName, new { requiredField = "1", @class = "shortField" })
-            Last Name<span class="redStar">*</span>:  @Html.TextBoxFor(m => m.User.LastName, new { requiredField = "1", @class = "longField" })
-        </div>
-        <div  class="paddingBottom15">
-            <div class="label">Title:</div>
-            @Html.TextBoxFor(m => m.User.Title, new { @class = "longField" })
-        </div>
-        <div class="paddingBottom15">
-            @{if (Model.User.UserId > 0)
-              {
-                <div class="label">Company:</div>
-                @:@Model.User.Company
-              }
-              else
-              {
-                <div class="label">Company<span class="redStar">*</span>:</div>
-                @Html.TextBoxFor(m => m.User.Company, new { requiredField = "1", @class = "longField" })
-              }
-            }
-        </div>
-        <div class="paddingBottom15">
-            <div class="label">Address<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.User.Address1, new { requiredField = "1", @class = "longField" })
-        </div>
-        <div class="paddingBottom15">
-            <div class="label">&nbsp;</div>
-            @Html.TextBoxFor(m => m.User.Address2, new { @class = "longField" })
-        </div>
-        <div class="paddingBottom15">
-            <div class="label">City<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.User.City, new { requiredField = "1", @class = "shortField" })
-            <span style="margin-left:10px;">Country<span class="redStar">*</span>: @Html.Action("Countries", "Country", new { Name = "User.CountryId", ISO = Model.User.CountryId })</span>
-        </div>
-        <div class="paddingBottom15">
-            <div class="label"><span id="lblState">State</span><span class="redStar" id="StateRedStar">*</span>:</div>
-            @Html.Partial("_States", new CountryViewModel { Name = "User.State", ISO = Model.User.State })
-            @Html.TextBoxFor(m => m.User.State, new { @class = "shortField" })
-            <span id="lblZip" style="margin-left:10px;">Zip Code</span><span class="redStar">*</span>: @Html.TextBoxFor(m => m.User.Zip, new { requiredField = "1", @class = "shortField" })
-        </div>
-        <div class="paddingBottom15">
-            @{if (Model.User.UserId > 0)
-              { 
-                <div class="label">Email:</div>@Model.User.EmailAddress<span>&nbsp;(Is used as UserID)</span>
-              }
-              else
-              { 
-                <div class="label">Email<span class="redStar">*</span>:</div> @Html.TextBoxFor(m => m.User.EmailAddress, new { requiredField = "1", @class = "shortField" }) <span>(Will be used as UserID)</span>
-              }
-            }
-        </div>
-        <div class="paddingBottom15">
-            <div class="label">Phone<span class="redStar">*</span>:</div>
-            @Html.TextBoxFor(m => m.User.Phone, new { requiredField = "1", @class = "shortField" })
-            <span style="margin-left:10px;">Cell:@Html.TextBoxFor(m => m.User.Cell, new { @class = "shortField" })</span>
-        </div>
-        <div class="paddingBottom15">
-            <div class="label">Fax<span class="redStar"></span>:</div>
-            @Html.TextBoxFor(m => m.User.Fax, new { @class = "shortField" })
-            <span style="margin-left:10px;">Website:@Html.TextBoxFor(m => m.User.Website, new { @class = "shortField" })</span>
-        </div>
-        @if (Model.User.UserId <= 0)
-        {
-            <div class="paddingBottom15">
-                <div class="label">Password<span class="redStar">*</span>:</div>
-                @Html.PasswordFor(m => m.User.Password, new { requiredField = "1", @class="requiredField", @style="width:200px" })
-                <span style="margin-left:10px;">Confirm Password<span class="redStar">*</span>: <input type="password" requiredfield="1" id="ConfirmPassword" class="requiredField shortField" /></span>
+    <fieldset>
+        <legend>@(Model.User.UserId > 0 ? "My Profile:" : "Registration:")</legend>
+        @{if (Model.User.UserId == 0)
+          {
+            <div style="padding-left: 8px; padding-bottom: 20px;">
+                To register, please fill out the form below and hit submit. If you already have a User ID and<br />
+                Password, please returmn to the <a href="@Url.Action("Logon")">previous screen</a> to login.  
             </div>
+          }
         }
-        <div class="clear">
-            <input type="button" value="@(Model.User.UserId > 0 ? "Update" : "Register")" id="Register" />
-        </div>
+        <form method="post" action="@(Model.User.UserId > 0 ? Url.Action("MyProfile") : Url.Action("SubmitRegistration"))">
+            <div class="paddingBottom15">
+                <div class="label">First Name<span class="redStar">*</span>:</div>
+                @Html.TextBoxFor(m => m.User.FirstName, new { requiredField = "1", @class = "shortField" })
+                Last Name<span class="redStar">*</span>:  @Html.TextBoxFor(m => m.User.LastName, new { requiredField = "1", @class = "longField" })
+            </div>
+            <div class="paddingBottom15">
+                <div class="label">Title:</div>
+                @Html.TextBoxFor(m => m.User.Title, new { @class = "longField" })
+            </div>
+            <div class="paddingBottom15">
+                @{if (Model.User.UserId > 0)
+                  {
+                    <div class="label">Company:</div>
+                    @:@Model.User.Company
+                                                                                              }
+                  else
+                  {
+                    <div class="label">Company<span class="redStar">*</span>:</div>
+                    @Html.TextBoxFor(m => m.User.Company, new { requiredField = "1", @class = "longField" })
+                  }
+                }
+            </div>
+            <div class="paddingBottom15">
+                <div class="label">Address<span class="redStar">*</span>:</div>
+                @Html.TextBoxFor(m => m.User.Address1, new { requiredField = "1", @class = "longField" })
+            </div>
+            <div class="paddingBottom15">
+                <div class="label">&nbsp;</div>
+                @Html.TextBoxFor(m => m.User.Address2, new { @class = "longField" })
+            </div>
+            <div class="paddingBottom15">
+                <div class="label">City<span class="redStar">*</span>:</div>
+                @Html.TextBoxFor(m => m.User.City, new { requiredField = "1", @class = "shortField" })
+                <span style="margin-left: 10px;">Country<span class="redStar">*</span>: @Html.Action("Countries", "Country", new { Name = "User.CountryId", ISO = Model.User.CountryId })</span>
+            </div>
+            <div class="paddingBottom15">
+                <div class="label"><span id="lblState">State</span><span class="redStar" id="StateRedStar">*</span>:</div>
+                @Html.Partial("_States", new CountryViewModel { Name = "User.State", ISO = Model.User.State })
+                @Html.TextBoxFor(m => m.User.State, new { @class = "shortField" })
+                <span id="lblZip" style="margin-left: 10px;">Zip Code</span><span class="redStar">*</span>: @Html.TextBoxFor(m => m.User.Zip, new { requiredField = "1", @class = "shortField" })
+            </div>
+            <div class="paddingBottom15">
+                @{if (Model.User.UserId > 0)
+                  { 
+                    <div class="label">Email:</div>@Model.User.EmailAddress<span>&nbsp;(Is used as UserID)</span>
+                  }
+                  else
+                  { 
+                    <div class="label">Email<span class="redStar">*</span>:</div> @Html.TextBoxFor(m => m.User.EmailAddress, new { requiredField = "1", @class = "shortField" }) <span>(Will be used as UserID)</span>
+                  }
+                }
+            </div>
+            <div class="paddingBottom15">
+                <div class="label">Phone<span class="redStar">*</span>:</div>
+                @Html.TextBoxFor(m => m.User.Phone, new { requiredField = "1", @class = "shortField" })
+                <span style="margin-left: 10px;">Cell:@Html.TextBoxFor(m => m.User.Cell, new { @class = "shortField" })</span>
+            </div>
+            <div class="paddingBottom15">
+                <div class="label">Fax<span class="redStar"></span>:</div>
+                @Html.TextBoxFor(m => m.User.Fax, new { @class = "shortField" })
+                <span style="margin-left: 10px;">Website:@Html.TextBoxFor(m => m.User.Website, new { @class = "shortField" })</span>
+            </div>
+            @if (Model.User.UserId <= 0)
+            {
+                <div class="paddingBottom15">
+                    <div class="label">Password<span class="redStar">*</span>:</div>
+                    @Html.PasswordFor(m => m.User.Password, new { requiredField = "1", @class = "requiredField", @style = "width:200px" })
+                    <span style="margin-left: 10px;">Confirm Password<span class="redStar">*</span>:
+                        <input type="password" requiredfield="1" id="ConfirmPassword" class="requiredField shortField" /></span>
+                </div>
+       
+                <div class="paddingBottom15">
+                    <div class="label">&nbsp;</div>
+                    <div class="leftFloat">
+                        <img src="/Account/getcaptcha?rand=1" id="imgCaptcha" />
+                    </div>
+                    <div class="leftFloat" style="margin-left: 10px;">
+                        <div class="clear" style="height: 50%; vertical-align: bottom;">
+                            <input type="text" name="Captcha" id="Captcha" requiredfield="1" class="requiredField" />
+                        </div>
+                        <div class="leftFloat" style="height: 50%"><a href="javascript: return(0)" onclick="RefreshCaptcha()" title="Refresh Captcha">Refresh</a></div>
+                    </div>
+                </div>
+            }
+            <div class="clear">
+                <div class="label">&nbsp;</div>
+                <input type="button" value="@(Model.User.UserId > 0 ? "Update Profile" : "Register")" id="Register" />
+            </div>
 
-    </form>
-</fieldset>
+        </form>
+    </fieldset>
+
 </body>
 
 </html>

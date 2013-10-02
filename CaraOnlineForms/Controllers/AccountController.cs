@@ -9,6 +9,7 @@ using Repository;
 using ViewModels;
 using Utility;
 
+
 namespace CaraOnlineForms.Controllers
 {
     public class AccountController : Controller
@@ -47,14 +48,21 @@ namespace CaraOnlineForms.Controllers
             return View(new RegistrationViewModel());
         }
 
-
-
+              
         public ActionResult SubmitRegistration(RegistrationViewModel newUser)
         {
+            if (newUser.Captcha != (string)Session["captcha"])
+            {
+
+                newUser.ErrorMessage = "The Captcha input is not valid.";
+                return View("Registration", newUser);
+            }
+
+            
             var rep = new UserRepository();
             if (!rep.IsEmailUnique(newUser.User.EmailAddress))
             {
-                newUser.ErrorMessage = "The email address already is used by another user.";
+                newUser.ErrorMessage = "The e-mail address already is used by another user.";
                 return View("Registration", newUser);
             }
 
@@ -71,7 +79,7 @@ namespace CaraOnlineForms.Controllers
         }
 
 
-        public ActionResult MyProfile(string message)
+        public ActionResult MyProfile()
         {
             CaraOnlineForms.Session session = new Session();
             User user = session.User;
@@ -81,13 +89,13 @@ namespace CaraOnlineForms.Controllers
 
             user = new UserRepository().GetUser(user.UserId);
 
-            RegistrationViewModel registration = new RegistrationViewModel { User = user, ErrorMessage = message };
+            RegistrationViewModel registration = new RegistrationViewModel { User = user, ErrorMessage = "" };
 
             return View("Registration", registration);
         }
 
-
-        public ActionResult UpdateProfile(RegistrationViewModel updatedUser)
+        [HttpPost]        
+        public ActionResult MyProfile(RegistrationViewModel updatedUser)
         {
             CaraOnlineForms.Session session = new Session();
             User user = session.User;
@@ -95,12 +103,16 @@ namespace CaraOnlineForms.Controllers
                 return View("Logon");
 
             updatedUser.User.UserId = user.UserId;
-            var rep = new UserRepository();
-            rep.UpdateUser(updatedUser.User);
+            user =  new UserRepository().UpdateUser(updatedUser.User);
+            if (user == null)
+            {
+                return View("_Error", "", "Failed to update Profile");
+            }
 
-            session.User = updatedUser.User;
+            session.User = user;
 
-            return RedirectToAction("MyProfile", new { message = "Profile has been updated." });
+            ViewBag.Message = "Profile has been updated";
+            return View("Registration", new RegistrationViewModel { User = user, ErrorMessage = "" });
 
         }
 
@@ -166,6 +178,43 @@ namespace CaraOnlineForms.Controllers
             }
 
             return View("PasswordWasReset");
+        }
+
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(string OldPassword, string NewPassword)
+        {
+            // validate old password
+            CaraOnlineForms.Session session = new Session();
+            User user = session.User;
+            if (user == null)
+                return View("Logon", new LoginViewModel { });
+
+            user = new UserRepository().GetUser(user.UserId);
+
+            if (user.Password != Utility.Cryptography.EncryptPwd(OldPassword))
+            {
+                ViewBag.ErrorMessage = "The Old Password is not valid";
+                return View();
+            }
+
+            new UserRepository().ChangePassword(user.UserId, Utility.Cryptography.EncryptPwd(NewPassword));
+            ViewBag.Message = "Password has been changed";
+
+            return View();
+        }
+
+
+        public CaptchaResult GetCaptcha()
+        {
+            string captchaText = Captcha.GenerateRandomCode();
+            HttpContext.Session.Add("captcha", captchaText);
+            return new CaptchaResult(captchaText);
         }
     }
 }

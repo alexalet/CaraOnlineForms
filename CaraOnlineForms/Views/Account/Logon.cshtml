@@ -31,7 +31,7 @@
              }
     <fieldset>
         <legend>CARA Online Application</legend>
-        <form action="@Url.Action("TryLogin")">
+        <form action="@Url.Action("TryLogin")" method="post">
             <div>
                 <div class="label">User ID (Email Address): </div>@Html.TextBoxFor(m => m.UserId, new {@class="longField" })
             </div>

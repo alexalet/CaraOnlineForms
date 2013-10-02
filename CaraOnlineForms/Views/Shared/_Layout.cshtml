@@ -22,7 +22,7 @@
         var _cache = null;
 
         function GoToNextPage(url) {
-        
+
             $('form').first().remove(':hidden[name=NextPage]');
 
             if (url === undefined || url == '') {
@@ -46,7 +46,7 @@
             }
 
 
-           
+
             if (_cache != $('form').first().serialize()) {
                 confirmActionYesNoCancel("The current page has been modified.<br/>Woud You like save changes?", "Save changes?", "Yes", "No", callbackYes, callbackNo);
             } else {
@@ -54,7 +54,6 @@
             }
 
         }
-
     </script>
 </head>
 <body id="mvc">
@@ -71,11 +70,11 @@
         </div>
     </div>
     <div id="wrap">
-        @{ if(ViewBag.Message!=null)
+        @{ if (ViewBag.Message5 != null)
            {
-        <div class="red">@ViewBag.Message</div>
-        <div class="clear"></div>    
-        }
+            <div class="red">@ViewBag.Message</div>
+            <div class="clear"></div>    
+           }
         }
         @RenderBody()
         <div id="footer">
@@ -106,7 +105,7 @@
         });
 
         jQuery(document).ajaxStart(function () {
-           $("#loadingBar").fadeIn("fast");
+            $("#loadingBar").fadeIn("fast");
         });
         jQuery(document).ajaxStop(function () {
             $("#loadingBar").fadeOut("fast");
@@ -116,14 +115,13 @@
             $("#loadingBar").fadeOut("fast");
         });
 
-       
-        if ($('form').length > 0)
-        {
+
+        if ($('form').length > 0) {
             _cache = $('form').first().serialize();
         }
     })
 
-   
+
 </script>
 
 </html>
