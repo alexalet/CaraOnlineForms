@@ -30,10 +30,15 @@ namespace CaraOnlineForms.Controllers
 
             if (user == null)
             {
-                LoginViewModel model = new LoginViewModel { ErrorMessage = "Login Failed", Pwd = "", UserId = login.UserId };
+                LoginViewModel model = new LoginViewModel { ErrorMessage = "The user name or password provided is incorrect.", Pwd = "", UserId = login.UserId };
                 return View("Logon", model);
             }
 
+            if (!user.IsActive)
+            {
+                LoginViewModel model = new LoginViewModel { ErrorMessage = "Your account is not active.", Pwd = "", UserId = login.UserId };
+                return View("Logon", model);
+            }
             CaraOnlineForms.Session session = new Session();
             session.User = user;
 

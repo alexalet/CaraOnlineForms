@@ -27,13 +27,14 @@
         {
             color: red;
         }
+        
     </style>
     <script>
         $(document).ready(function () {
 
             HideShowStates('US');
             $('#User_State').addClass('shortField')
-
+           
             $(':text[requiredField]').each(function () {
                 if ($(this).val().trim() == '')
                     $(this).addClass('requiredField');
@@ -143,13 +144,13 @@
         }
         <form method="post" action="@(Model.User.UserId > 0 ? Url.Action("MyProfile") : Url.Action("SubmitRegistration"))">
             <div class="paddingBottom15">
-                <div class="label">First Name<span class="redStar">*</span>:</div>
-                @Html.TextBoxFor(m => m.User.FirstName, new { requiredField = "1", @class = "shortField" })
-                Last Name<span class="redStar">*</span>:  @Html.TextBoxFor(m => m.User.LastName, new { requiredField = "1", @class = "longField" })
+                <div class="label">First Name<span class="redStar"><sup>*</sup></span>:</div>
+                @Html.TextBoxFor(m => m.User.FirstName, new { requiredField = "1", @class = "shortField", @maxlength=50 })
+                Last Name<span class="redStar"><sup>*</sup></span>:  @Html.TextBoxFor(m => m.User.LastName, new { requiredField = "1", @class = "longField",  @maxlength=50 })
             </div>
             <div class="paddingBottom15">
                 <div class="label">Title:</div>
-                @Html.TextBoxFor(m => m.User.Title, new { @class = "longField" })
+                @Html.TextBoxFor(m => m.User.Title, new { @class = "longField", @maxlength=60 })
             </div>
             <div class="paddingBottom15">
                 @{if (Model.User.UserId > 0)
@@ -159,29 +160,29 @@
                                                                                               }
                   else
                   {
-                    <div class="label">Company<span class="redStar">*</span>:</div>
-                    @Html.TextBoxFor(m => m.User.Company, new { requiredField = "1", @class = "longField" })
+                    <div class="label">Company<span class="redStar"><sup>*</sup></span>:</div>
+                    @Html.TextBoxFor(m => m.User.Company, new { requiredField = "1", @class = "longField", @maxlength=100 })
                   }
                 }
             </div>
             <div class="paddingBottom15">
-                <div class="label">Address<span class="redStar">*</span>:</div>
-                @Html.TextBoxFor(m => m.User.Address1, new { requiredField = "1", @class = "longField" })
+                <div class="label">Address<span class="redStar"><sup>*</sup></span>:</div>
+                @Html.TextBoxFor(m => m.User.Address1, new { requiredField = "1", @class = "longField", @maxlength=100 })
             </div>
             <div class="paddingBottom15">
                 <div class="label">&nbsp;</div>
-                @Html.TextBoxFor(m => m.User.Address2, new { @class = "longField" })
+                @Html.TextBoxFor(m => m.User.Address2, new { @class = "longField" , @maxlength=100})
             </div>
             <div class="paddingBottom15">
-                <div class="label">City<span class="redStar">*</span>:</div>
-                @Html.TextBoxFor(m => m.User.City, new { requiredField = "1", @class = "shortField" })
-                <span style="margin-left: 10px;">Country<span class="redStar">*</span>: @Html.Action("Countries", "Country", new { Name = "User.CountryId", ISO = Model.User.CountryId })</span>
+                <div class="label">City<span class="redStar"><sup>*</sup></span>:</div>
+                @Html.TextBoxFor(m => m.User.City, new { requiredField = "1", @class = "shortField", @maxlength=100 })
+                <span style="margin-left: 10px;">Country<span class="redStar"><sup>*</sup></span>: @Html.Action("Countries", "Country", new { Name = "User.CountryId", ISO = Model.User.CountryId })</span>
             </div>
             <div class="paddingBottom15">
-                <div class="label"><span id="lblState">State</span><span class="redStar" id="StateRedStar">*</span>:</div>
+                <div class="label"><span id="lblState">State</span><span class="redStar" id="StateRedStar"><sup>*</sup></span>:</div>
                 @Html.Partial("_States", new CountryViewModel { Name = "User.State", ISO = Model.User.State })
-                @Html.TextBoxFor(m => m.User.State, new { @class = "shortField" })
-                <span id="lblZip" style="margin-left: 10px;">Zip Code</span><span class="redStar">*</span>: @Html.TextBoxFor(m => m.User.Zip, new { requiredField = "1", @class = "shortField" })
+                @Html.TextBoxFor(m => m.User.State, new { @class = "shortField", @maxlength=100 })
+                <span id="lblZip" style="margin-left: 10px;">Zip Code</span><span class="redStar"><sup>*</sup></span>: @Html.TextBoxFor(m => m.User.Zip, new { requiredField = "1", @class = "shortField", @maxlength=40 })
             </div>
             <div class="paddingBottom15">
                 @{if (Model.User.UserId > 0)
@@ -190,26 +191,26 @@
                   }
                   else
                   { 
-                    <div class="label">Email<span class="redStar">*</span>:</div> @Html.TextBoxFor(m => m.User.EmailAddress, new { requiredField = "1", @class = "shortField" }) <span>(Will be used as UserID)</span>
+                    <div class="label">Email<span class="redStar"><sup>*</sup></span>:</div> @Html.TextBoxFor(m => m.User.EmailAddress, new { requiredField = "1", @class = "shortField", @maxlength=100 }) <span>(Will be used as UserID)</span>
                   }
                 }
             </div>
             <div class="paddingBottom15">
-                <div class="label">Phone<span class="redStar">*</span>:</div>
-                @Html.TextBoxFor(m => m.User.Phone, new { requiredField = "1", @class = "shortField" })
-                <span style="margin-left: 10px;">Cell:@Html.TextBoxFor(m => m.User.Cell, new { @class = "shortField" })</span>
+                <div class="label">Phone<span class="redStar"><sup>*</sup></span>:</div>
+                @Html.TextBoxFor(m => m.User.Phone, new { requiredField = "1", @class = "shortField", @maxlength=25 })
+                <span style="margin-left: 10px;">Cell:@Html.TextBoxFor(m => m.User.Cell, new { @class = "shortField", @maxlength=25 })</span>
             </div>
             <div class="paddingBottom15">
-                <div class="label">Fax<span class="redStar"></span>:</div>
+                <div class="label">Fax:</div>
                 @Html.TextBoxFor(m => m.User.Fax, new { @class = "shortField" })
-                <span style="margin-left: 10px;">Website:@Html.TextBoxFor(m => m.User.Website, new { @class = "shortField" })</span>
+                <span style="margin-left: 10px;">Website:@Html.TextBoxFor(m => m.User.Website, new { @class = "shortField", @maxlength=100 })</span>
             </div>
             @if (Model.User.UserId <= 0)
             {
                 <div class="paddingBottom15">
-                    <div class="label">Password<span class="redStar">*</span>:</div>
-                    @Html.PasswordFor(m => m.User.Password, new { requiredField = "1", @class = "requiredField", @style = "width:200px" })
-                    <span style="margin-left: 10px;">Confirm Password<span class="redStar">*</span>:
+                    <div class="label">Password<span class="redStar"><sup>*</sup></span>:</div>
+                    @Html.PasswordFor(m => m.User.Password, new { requiredField = "1", @class = "requiredField", @style = "width:200px" , @maxlength=25})
+                    <span style="margin-left: 10px;">Confirm Password<span class="redStar"><sup>*</sup></span>:
                         <input type="password" requiredfield="1" id="ConfirmPassword" class="requiredField shortField" /></span>
                 </div>
        
@@ -226,7 +227,7 @@
                     </div>
                 </div>
             }
-            <div class="clear">
+            <div class="clear" style="margin-top: 15px;">
                 <div class="label">&nbsp;</div>
                 <input type="button" value="@(Model.User.UserId > 0 ? "Update Profile" : "Register")" id="Register" />
             </div>
