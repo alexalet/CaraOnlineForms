@@ -18,6 +18,7 @@
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission" />
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.PasswordToReset" Width="1.5" PointX="0.625" PointY="7.125" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_PasswordToReset_User" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.EmailNote" Width="1.5" PointX="8.75" PointY="7.5" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

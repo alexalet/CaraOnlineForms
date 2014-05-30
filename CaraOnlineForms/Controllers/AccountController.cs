@@ -221,5 +221,8 @@ namespace CaraOnlineForms.Controllers
             HttpContext.Session.Add("captcha", captchaText);
             return new CaptchaResult(captchaText);
         }
+
+              
+
     }
 }

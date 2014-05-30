@@ -180,5 +180,13 @@ namespace Repository
 
             return true;
         }
+
+
+
+        public EmailNote GetEmailNote()
+        {
+            return _context.EmailNotes.FirstOrDefault(x => x.EmailId >= 1);
+        
+        }
     }
 }

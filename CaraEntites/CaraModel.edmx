@@ -7,6 +7,7 @@
     <Schema Namespace="CaraOnlineForms_DevModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="CaraOnlineForms_DevModelStoreContainer">
           <EntitySet Name="Country" EntityType="CaraOnlineForms_DevModel.Store.Country" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EmailNotes" EntityType="CaraOnlineForms_DevModel.Store.EmailNotes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FilmAltTitle" EntityType="CaraOnlineForms_DevModel.Store.FilmAltTitle" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FilmSubmission" EntityType="CaraOnlineForms_DevModel.Store.FilmSubmission" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Participant" EntityType="CaraOnlineForms_DevModel.Store.Participant" store:Type="Tables" Schema="dbo" />
@@ -45,6 +46,14 @@
           <Property Name="ISO" Type="nvarchar" Nullable="false" MaxLength="2" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="64" />
           <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmailNotes">
+          <Key>
+            <PropertyRef Name="EmailId" />
+          </Key>
+          <Property Name="EmailId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="varbinary(max)" />
+          <Property Name="From" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="FilmAltTitle">
           <Key>
@@ -241,6 +250,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="PasswordToReset" EntitySet="PasswordToResets" />
           </AssociationSet>
+          <EntitySet Name="EmailNotes" EntityType="CaraOnlineForms_DevModel.EmailNote" />
           </EntityContainer>
         <EntityType Name="Country">
           <Key>
@@ -421,6 +431,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="EmailNote">
+          <Key>
+            <PropertyRef Name="EmailId" />
+          </Key>
+          <Property Type="Int32" Name="EmailId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Binary" Name="Email" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="From" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -529,6 +547,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EmailNotes">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.EmailNote">
+              <MappingFragment StoreEntitySet="EmailNotes">
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -544,7 +571,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
