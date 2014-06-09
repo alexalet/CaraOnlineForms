@@ -33,5 +33,11 @@ namespace CaraEntites
         public DbSet<FilmSubmission> FilmSubmissions { get; set; }
         public DbSet<PasswordToReset> PasswordToResets { get; set; }
         public DbSet<EmailNote> EmailNotes { get; set; }
+        public DbSet<Screener> Screeners { get; set; }
+        public DbSet<Attribute> Attributes { get; set; }
+        public DbSet<Format> Formats { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<PostScreeningAction> PostScreeningActions { get; set; }
+        public DbSet<ScreenerGenre> ScreenerGenres { get; set; }
     }
 }

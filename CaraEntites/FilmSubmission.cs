@@ -40,5 +40,6 @@ namespace CaraEntites
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         public virtual ICollection<Participant> Participants { get; set; }
+        public virtual Screener Screener { get; set; }
     }
 }

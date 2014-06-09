@@ -6,12 +6,19 @@
     <edmx:StorageModels>
     <Schema Namespace="CaraOnlineForms_DevModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="CaraOnlineForms_DevModelStoreContainer">
+          <EntitySet Name="Attribute" EntityType="CaraOnlineForms_DevModel.Store.Attribute" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Country" EntityType="CaraOnlineForms_DevModel.Store.Country" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmailNotes" EntityType="CaraOnlineForms_DevModel.Store.EmailNotes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FilmAltTitle" EntityType="CaraOnlineForms_DevModel.Store.FilmAltTitle" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FilmSubmission" EntityType="CaraOnlineForms_DevModel.Store.FilmSubmission" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Format" EntityType="CaraOnlineForms_DevModel.Store.Format" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Genre" EntityType="CaraOnlineForms_DevModel.Store.Genre" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Participant" EntityType="CaraOnlineForms_DevModel.Store.Participant" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PasswordToReset" EntityType="CaraOnlineForms_DevModel.Store.PasswordToReset" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PostScreeningAction" EntityType="CaraOnlineForms_DevModel.Store.PostScreeningAction" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Screener" EntityType="CaraOnlineForms_DevModel.Store.Screener" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ScreenerAttribute" EntityType="CaraOnlineForms_DevModel.Store.ScreenerAttribute" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ScreenerGenre" EntityType="CaraOnlineForms_DevModel.Store.ScreenerGenre" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="User" EntityType="CaraOnlineForms_DevModel.Store.User" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserToConfirm" EntityType="CaraOnlineForms_DevModel.Store.UserToConfirm" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_EmailsToConfirm_User" Association="CaraOnlineForms_DevModel.Store.FK_EmailsToConfirm_User">
@@ -38,7 +45,46 @@
             <End Role="User" EntitySet="User" />
             <End Role="PasswordToReset" EntitySet="PasswordToReset" />
           </AssociationSet>
+          <AssociationSet Name="FK_Screener_Film" Association="CaraOnlineForms_DevModel.Store.FK_Screener_Film">
+            <End Role="FilmSubmission" EntitySet="FilmSubmission" />
+            <End Role="Screener" EntitySet="Screener" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Screener_Format" Association="CaraOnlineForms_DevModel.Store.FK_Screener_Format">
+            <End Role="Format" EntitySet="Format" />
+            <End Role="Screener" EntitySet="Screener" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Screener_ModifiedBy" Association="CaraOnlineForms_DevModel.Store.FK_Screener_ModifiedBy">
+            <End Role="User" EntitySet="User" />
+            <End Role="Screener" EntitySet="Screener" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Screener_PostScreeningAction" Association="CaraOnlineForms_DevModel.Store.FK_Screener_PostScreeningAction">
+            <End Role="PostScreeningAction" EntitySet="PostScreeningAction" />
+            <End Role="Screener" EntitySet="Screener" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScreenerAttribute_Attribute" Association="CaraOnlineForms_DevModel.Store.FK_ScreenerAttribute_Attribute">
+            <End Role="Attribute" EntitySet="Attribute" />
+            <End Role="ScreenerAttribute" EntitySet="ScreenerAttribute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScreenerAttribute_Screener" Association="CaraOnlineForms_DevModel.Store.FK_ScreenerAttribute_Screener">
+            <End Role="Screener" EntitySet="Screener" />
+            <End Role="ScreenerAttribute" EntitySet="ScreenerAttribute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScreenerGenre_Genre" Association="CaraOnlineForms_DevModel.Store.FK_ScreenerGenre_Genre">
+            <End Role="Genre" EntitySet="Genre" />
+            <End Role="ScreenerGenre" EntitySet="ScreenerGenre" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScreenerGenre_Screener" Association="CaraOnlineForms_DevModel.Store.FK_ScreenerGenre_Screener">
+            <End Role="Screener" EntitySet="Screener" />
+            <End Role="ScreenerGenre" EntitySet="ScreenerGenre" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Attribute">
+          <Key>
+            <PropertyRef Name="filmAttributeId" />
+          </Key>
+          <Property Name="filmAttributeId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="100" />
+        </EntityType>
         <EntityType Name="Country">
           <Key>
             <PropertyRef Name="ISO" />
@@ -83,6 +129,21 @@
           <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Format">
+          <Key>
+            <PropertyRef Name="FormatId" />
+          </Key>
+          <Property Name="FormatId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="Code" Type="varchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="GenreId" />
+          </Key>
+          <Property Name="GenreId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="100" />
+        </EntityType>
         <EntityType Name="Participant">
           <Key>
             <PropertyRef Name="PartisipantId" />
@@ -103,6 +164,41 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="PasswordResetDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PostScreeningAction">
+          <Key>
+            <PropertyRef Name="PostScreeningActionId" />
+          </Key>
+          <Property Name="PostScreeningActionId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Screener">
+          <Key>
+            <PropertyRef Name="ScreenerId" />
+          </Key>
+          <Property Name="ScreenerId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FilmSubmissionId" Type="int" Nullable="false" />
+          <Property Name="PostScreeningActionId" Type="int" Nullable="false" />
+          <Property Name="FormatId" Type="int" />
+          <Property Name="DurationMinutes" Type="bigint" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScreenerAttribute">
+          <Key>
+            <PropertyRef Name="ScreenerId" />
+            <PropertyRef Name="AttributeId" />
+          </Key>
+          <Property Name="ScreenerId" Type="int" Nullable="false" />
+          <Property Name="AttributeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScreenerGenre">
+          <Key>
+            <PropertyRef Name="ScreenerGenreId" />
+          </Key>
+          <Property Name="ScreenerGenreId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ScreenerId" Type="int" Nullable="false" />
+          <Property Name="GenreId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -214,6 +310,102 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Screener_Film">
+          <End Role="FilmSubmission" Type="CaraOnlineForms_DevModel.Store.FilmSubmission" Multiplicity="1" />
+          <End Role="Screener" Type="CaraOnlineForms_DevModel.Store.Screener" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FilmSubmission">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Principal>
+            <Dependent Role="Screener">
+              <PropertyRef Name="ScreenerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Screener_Format">
+          <End Role="Format" Type="CaraOnlineForms_DevModel.Store.Format" Multiplicity="0..1" />
+          <End Role="Screener" Type="CaraOnlineForms_DevModel.Store.Screener" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Format">
+              <PropertyRef Name="FormatId" />
+            </Principal>
+            <Dependent Role="Screener">
+              <PropertyRef Name="FormatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Screener_ModifiedBy">
+          <End Role="User" Type="CaraOnlineForms_DevModel.Store.User" Multiplicity="1" />
+          <End Role="Screener" Type="CaraOnlineForms_DevModel.Store.Screener" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Screener">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Screener_PostScreeningAction">
+          <End Role="PostScreeningAction" Type="CaraOnlineForms_DevModel.Store.PostScreeningAction" Multiplicity="1" />
+          <End Role="Screener" Type="CaraOnlineForms_DevModel.Store.Screener" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PostScreeningAction">
+              <PropertyRef Name="PostScreeningActionId" />
+            </Principal>
+            <Dependent Role="Screener">
+              <PropertyRef Name="PostScreeningActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScreenerAttribute_Attribute">
+          <End Role="Attribute" Type="CaraOnlineForms_DevModel.Store.Attribute" Multiplicity="1" />
+          <End Role="ScreenerAttribute" Type="CaraOnlineForms_DevModel.Store.ScreenerAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attribute">
+              <PropertyRef Name="filmAttributeId" />
+            </Principal>
+            <Dependent Role="ScreenerAttribute">
+              <PropertyRef Name="AttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScreenerAttribute_Screener">
+          <End Role="Screener" Type="CaraOnlineForms_DevModel.Store.Screener" Multiplicity="1" />
+          <End Role="ScreenerAttribute" Type="CaraOnlineForms_DevModel.Store.ScreenerAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screener">
+              <PropertyRef Name="ScreenerId" />
+            </Principal>
+            <Dependent Role="ScreenerAttribute">
+              <PropertyRef Name="ScreenerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScreenerGenre_Genre">
+          <End Role="Genre" Type="CaraOnlineForms_DevModel.Store.Genre" Multiplicity="1" />
+          <End Role="ScreenerGenre" Type="CaraOnlineForms_DevModel.Store.ScreenerGenre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="GenreId" />
+            </Principal>
+            <Dependent Role="ScreenerGenre">
+              <PropertyRef Name="GenreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScreenerGenre_Screener">
+          <End Role="Screener" Type="CaraOnlineForms_DevModel.Store.Screener" Multiplicity="1" />
+          <End Role="ScreenerGenre" Type="CaraOnlineForms_DevModel.Store.ScreenerGenre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screener">
+              <PropertyRef Name="ScreenerId" />
+            </Principal>
+            <Dependent Role="ScreenerGenre">
+              <PropertyRef Name="ScreenerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -251,6 +443,40 @@
             <End Role="PasswordToReset" EntitySet="PasswordToResets" />
           </AssociationSet>
           <EntitySet Name="EmailNotes" EntityType="CaraOnlineForms_DevModel.EmailNote" />
+          <EntitySet Name="Screeners" EntityType="CaraOnlineForms_DevModel.Screener" />
+          <AssociationSet Name="FK_Screener_Film" Association="CaraOnlineForms_DevModel.FK_Screener_Film">
+            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
+            <End Role="Screener" EntitySet="Screeners" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Screener_ModifiedBy" Association="CaraOnlineForms_DevModel.FK_Screener_ModifiedBy">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Screener" EntitySet="Screeners" />
+          </AssociationSet>
+          <EntitySet Name="Attributes" EntityType="CaraOnlineForms_DevModel.Attribute" />
+          <EntitySet Name="Formats" EntityType="CaraOnlineForms_DevModel.Format" />
+          <EntitySet Name="Genres" EntityType="CaraOnlineForms_DevModel.Genre" />
+          <EntitySet Name="PostScreeningActions" EntityType="CaraOnlineForms_DevModel.PostScreeningAction" />
+          <EntitySet Name="ScreenerGenres" EntityType="CaraOnlineForms_DevModel.ScreenerGenre" />
+          <AssociationSet Name="FK_Screener_Format" Association="CaraOnlineForms_DevModel.FK_Screener_Format">
+            <End Role="Format" EntitySet="Formats" />
+            <End Role="Screener" EntitySet="Screeners" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScreenerGenre_Genre" Association="CaraOnlineForms_DevModel.FK_ScreenerGenre_Genre">
+            <End Role="Genre" EntitySet="Genres" />
+            <End Role="ScreenerGenre" EntitySet="ScreenerGenres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Screener_PostScreeningAction" Association="CaraOnlineForms_DevModel.FK_Screener_PostScreeningAction">
+            <End Role="PostScreeningAction" EntitySet="PostScreeningActions" />
+            <End Role="Screener" EntitySet="Screeners" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScreenerGenre_Screener" Association="CaraOnlineForms_DevModel.FK_ScreenerGenre_Screener">
+            <End Role="Screener" EntitySet="Screeners" />
+            <End Role="ScreenerGenre" EntitySet="ScreenerGenres" />
+          </AssociationSet>
+          <AssociationSet Name="ScreenerAttribute" Association="CaraOnlineForms_DevModel.ScreenerAttribute">
+            <End Role="Attribute" EntitySet="Attributes" />
+            <End Role="Screener" EntitySet="Screeners" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Country">
           <Key>
@@ -302,6 +528,7 @@
           <NavigationProperty Name="FilmSubmissions" Relationship="CaraOnlineForms_DevModel.FK_Film_User" FromRole="User" ToRole="FilmSubmission" />
           <NavigationProperty Name="FilmSubmissions1" Relationship="CaraOnlineForms_DevModel.FK_FilmSubmission_User" FromRole="User" ToRole="FilmSubmission" />
           <NavigationProperty Name="PasswordToResets" Relationship="CaraOnlineForms_DevModel.FK_PasswordToReset_User" FromRole="User" ToRole="PasswordToReset" />
+          <NavigationProperty Name="Screeners" Relationship="CaraOnlineForms_DevModel.FK_Screener_ModifiedBy" FromRole="User" ToRole="Screener" />
           </EntityType>
         <Association Name="FK_EmailsToConfirm_User">
           <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
@@ -359,6 +586,7 @@
           <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_Film_User" FromRole="FilmSubmission" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CaraOnlineForms_DevModel.FK_FilmSubmission_User" FromRole="FilmSubmission" ToRole="User" />
           <NavigationProperty Name="Participants" Relationship="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission" FromRole="FilmSubmission" ToRole="Participant" />
+          <NavigationProperty Name="Screener" Relationship="CaraOnlineForms_DevModel.FK_Screener_Film" FromRole="FilmSubmission" ToRole="Screener" />
         </EntityType>
         <Association Name="FK_FilmAltTitle_Film">
           <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
@@ -439,6 +667,143 @@
           <Property Type="Binary" Name="Email" MaxLength="Max" FixedLength="false" />
           <Property Type="String" Name="From" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Screener">
+          <Key>
+            <PropertyRef Name="ScreenerId" />
+          </Key>
+          <Property Type="Int32" Name="ScreenerId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="FilmSubmissionId" Nullable="false" />
+          <Property Type="Int32" Name="PostScreeningActionId" Nullable="false" />
+          <Property Type="Int32" Name="FormatId" />
+          <Property Type="Int64" Name="DurationMinutes" />
+          <Property Type="DateTime" Name="ModifiedDate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
+          <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_Screener_Film" FromRole="Screener" ToRole="FilmSubmission" />
+          <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_Screener_ModifiedBy" FromRole="Screener" ToRole="User" />
+          <NavigationProperty Name="Format" Relationship="CaraOnlineForms_DevModel.FK_Screener_Format" FromRole="Screener" ToRole="Format" />
+          <NavigationProperty Name="PostScreeningAction" Relationship="CaraOnlineForms_DevModel.FK_Screener_PostScreeningAction" FromRole="Screener" ToRole="PostScreeningAction" />
+          <NavigationProperty Name="ScreenerGenres" Relationship="CaraOnlineForms_DevModel.FK_ScreenerGenre_Screener" FromRole="Screener" ToRole="ScreenerGenre" />
+          <NavigationProperty Name="Attributes" Relationship="CaraOnlineForms_DevModel.ScreenerAttribute" FromRole="Screener" ToRole="Attribute" />
+        </EntityType>
+        <Association Name="FK_Screener_Film">
+          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Screener" Role="Screener" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FilmSubmission">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Principal>
+            <Dependent Role="Screener">
+              <PropertyRef Name="ScreenerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Screener_ModifiedBy">
+          <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Screener" Role="Screener" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Screener">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Attribute">
+          <Key>
+            <PropertyRef Name="filmAttributeId" />
+          </Key>
+          <Property Type="Int32" Name="filmAttributeId" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Screeners" Relationship="CaraOnlineForms_DevModel.ScreenerAttribute" FromRole="Attribute" ToRole="Screener" />
+        </EntityType>
+        <EntityType Name="Format">
+          <Key>
+            <PropertyRef Name="FormatId" />
+          </Key>
+          <Property Type="Int32" Name="FormatId" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Code" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Screeners" Relationship="CaraOnlineForms_DevModel.FK_Screener_Format" FromRole="Format" ToRole="Screener" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="GenreId" />
+          </Key>
+          <Property Type="Int32" Name="GenreId" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ScreenerGenres" Relationship="CaraOnlineForms_DevModel.FK_ScreenerGenre_Genre" FromRole="Genre" ToRole="ScreenerGenre" />
+        </EntityType>
+        <EntityType Name="PostScreeningAction">
+          <Key>
+            <PropertyRef Name="PostScreeningActionId" />
+          </Key>
+          <Property Type="Int32" Name="PostScreeningActionId" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Screeners" Relationship="CaraOnlineForms_DevModel.FK_Screener_PostScreeningAction" FromRole="PostScreeningAction" ToRole="Screener" />
+        </EntityType>
+        <EntityType Name="ScreenerGenre">
+          <Key>
+            <PropertyRef Name="ScreenerGenreId" />
+          </Key>
+          <Property Type="Int32" Name="ScreenerGenreId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ScreenerId" Nullable="false" />
+          <Property Type="Int32" Name="GenreId" Nullable="false" />
+          <NavigationProperty Name="Genre" Relationship="CaraOnlineForms_DevModel.FK_ScreenerGenre_Genre" FromRole="ScreenerGenre" ToRole="Genre" />
+          <NavigationProperty Name="Screener" Relationship="CaraOnlineForms_DevModel.FK_ScreenerGenre_Screener" FromRole="ScreenerGenre" ToRole="Screener" />
+        </EntityType>
+        <Association Name="FK_Screener_Format">
+          <End Type="CaraOnlineForms_DevModel.Format" Role="Format" Multiplicity="0..1" />
+          <End Type="CaraOnlineForms_DevModel.Screener" Role="Screener" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Format">
+              <PropertyRef Name="FormatId" />
+            </Principal>
+            <Dependent Role="Screener">
+              <PropertyRef Name="FormatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScreenerGenre_Genre">
+          <End Type="CaraOnlineForms_DevModel.Genre" Role="Genre" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.ScreenerGenre" Role="ScreenerGenre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="GenreId" />
+            </Principal>
+            <Dependent Role="ScreenerGenre">
+              <PropertyRef Name="GenreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Screener_PostScreeningAction">
+          <End Type="CaraOnlineForms_DevModel.PostScreeningAction" Role="PostScreeningAction" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Screener" Role="Screener" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PostScreeningAction">
+              <PropertyRef Name="PostScreeningActionId" />
+            </Principal>
+            <Dependent Role="Screener">
+              <PropertyRef Name="PostScreeningActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScreenerGenre_Screener">
+          <End Type="CaraOnlineForms_DevModel.Screener" Role="Screener" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.ScreenerGenre" Role="ScreenerGenre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screener">
+              <PropertyRef Name="ScreenerId" />
+            </Principal>
+            <Dependent Role="ScreenerGenre">
+              <PropertyRef Name="ScreenerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ScreenerAttribute">
+          <End Type="CaraOnlineForms_DevModel.Attribute" Role="Attribute" Multiplicity="*" />
+          <End Type="CaraOnlineForms_DevModel.Screener" Role="Screener" Multiplicity="*" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -556,6 +921,69 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Screeners">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.Screener">
+              <MappingFragment StoreEntitySet="Screener">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="DurationMinutes" ColumnName="DurationMinutes" />
+                <ScalarProperty Name="FormatId" ColumnName="FormatId" />
+                <ScalarProperty Name="PostScreeningActionId" ColumnName="PostScreeningActionId" />
+                <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
+                <ScalarProperty Name="ScreenerId" ColumnName="ScreenerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attributes">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.Attribute">
+              <MappingFragment StoreEntitySet="Attribute">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="filmAttributeId" ColumnName="filmAttributeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Formats">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.Format">
+              <MappingFragment StoreEntitySet="Format">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FormatId" ColumnName="FormatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="GenreId" ColumnName="GenreId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostScreeningActions">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.PostScreeningAction">
+              <MappingFragment StoreEntitySet="PostScreeningAction">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PostScreeningActionId" ColumnName="PostScreeningActionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScreenerGenres">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.ScreenerGenre">
+              <MappingFragment StoreEntitySet="ScreenerGenre">
+                <ScalarProperty Name="GenreId" ColumnName="GenreId" />
+                <ScalarProperty Name="ScreenerId" ColumnName="ScreenerId" />
+                <ScalarProperty Name="ScreenerGenreId" ColumnName="ScreenerGenreId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ScreenerAttribute" TypeName="CaraOnlineForms_DevModel.ScreenerAttribute" StoreEntitySet="ScreenerAttribute">
+            <EndProperty Name="Screener">
+              <ScalarProperty Name="ScreenerId" ColumnName="ScreenerId" />
+            </EndProperty>
+            <EndProperty Name="Attribute">
+              <ScalarProperty Name="filmAttributeId" ColumnName="AttributeId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -571,7 +999,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>

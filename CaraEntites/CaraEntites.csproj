@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="CaraModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -78,13 +81,28 @@
     <Compile Include="FilmSubmission.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Format.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Genre.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Participant.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PasswordToReset.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="PostScreeningAction.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screener.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenerGenre.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>

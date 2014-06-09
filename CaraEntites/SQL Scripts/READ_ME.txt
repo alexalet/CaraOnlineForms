@@ -10,3 +10,11 @@ FilmSubmission
 FilmAltTitle
 FilmRole 
 Participant
+
+-----
+Genre
+Format
+Attribute
+PostScreeningAction
+Screener
+ScreenerGenre

@@ -20,6 +20,7 @@ namespace CaraEntites
             this.FilmSubmissions = new HashSet<FilmSubmission>();
             this.FilmSubmissions1 = new HashSet<FilmSubmission>();
             this.PasswordToResets = new HashSet<PasswordToReset>();
+            this.Screeners = new HashSet<Screener>();
         }
     
         public int UserId { get; set; }
@@ -48,5 +49,6 @@ namespace CaraEntites
         public virtual ICollection<FilmSubmission> FilmSubmissions { get; set; }
         public virtual ICollection<FilmSubmission> FilmSubmissions1 { get; set; }
         public virtual ICollection<PasswordToReset> PasswordToResets { get; set; }
+        public virtual ICollection<Screener> Screeners { get; set; }
     }
 }
