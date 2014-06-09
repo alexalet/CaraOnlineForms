@@ -1,0 +1,87 @@
+﻿@using CaraEntites;
+@using ViewModels;
+@model ScreenerViewModel
+@{
+    ViewBag.PageHeader = "Screener";
+    Html.RenderAction("_WorkFlow", "NavMenu", new { StepId = "Screener" });
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>CARA Online Applivation</title>
+    <style>
+        .longField {
+            width: 500px;
+            margin-right: 15px;
+        }
+    </style>
+    <script>
+        
+    </script>
+</head>
+<body>
+    <form name="FormScreener" id="FormScreener"  method="post" action="@Url.Action("SaveScreener")">
+        @Html.HiddenFor(model => model.Screener.FilmSubmissionId)
+        <fieldset>
+            <legend>Screener:</legend>
+            <div class="leftFloat">
+                @*<p class="field-item padTop10">*@
+                    <span class="editor-label-block">Format:</span>
+                    <select id="FormatId" name="Screener.FormatId" class="width200">
+                        @{
+                            <option value="-1" code="?" @(Model.Screener.FormatId == -1 ? "selected" : "")></option>
+                            foreach (Format f in Model.ListOfFormats)
+                            {
+                            <option value="@f.FormatId" code="@f.Code" @(f.FormatId == Model.Screener.FormatId ? "selected" : "")>@f.Description</option>
+                            }    
+                        }
+                    </select>
+                @*</p>*@
+            </div>
+            <div class="padTop10 leftFloat" style="margin-left:50px;">
+                <span class="editor-label-block inline-block">After Screening is done, Screener should be:</span>
+                <br />
+                <span>
+                    @Html.RadioButtonFor(model => model.Screener.PostScreeningActionId, 1)Picked up
+                        @Html.RadioButtonFor(model => model.Screener.PostScreeningActionId, 2, new { @class = "padLeft20" })Destroyed
+                        @Html.RadioButtonFor(model => model.Screener.PostScreeningActionId, 3, new { @class = "padLeft20" })Held
+                        <span class="@(Model.Screener.FormatId != 16 ? "hidden" : "")">@Html.RadioButtonFor(model => model.Screener.PostScreeningActionId, 4, new { @class = "padLeft20" })<span>Digital</span></span>
+                </span>
+            </div>
+            <div class="clear leftFloat padRight40">
+                <p class="field-item">
+                    <span class="editor-label-block" style="margin-bottom: -15px;">Genre:</span>
+                    @{
+                        List<SelectListItem> _genres = new List<SelectListItem>();
+                        foreach (Genre x in Model.ListOfGenres)
+                        {
+                            _genres.Add(new SelectListItem() { Value = x.GenreId.ToString(), Text = x.Description, Selected = Model.Screener.ScreenerGenres.Any(g => g.GenreId == x.GenreId) });
+                        }
+
+                        Html.RenderPartial("_ListOfCheckBoxes", _genres, new ViewDataDictionary() { { "Name", "SelectedGenres" } });
+                    
+                    }
+                </p>
+
+            </div>
+            <div class="leftFloat">
+                <p class="field-item">
+                    <span class="editor-label-block" style="margin-bottom: -15px;">Attributes:</span>
+                    @{
+                        List<SelectListItem> _attributes = new List<SelectListItem>();
+                        foreach (var x in Model.ListOfAttributes)
+                        {
+                            _attributes.Add(new SelectListItem() { Value = x.filmAttributeId.ToString(), Text = x.Description, Selected = Model.Screener.Attributes.Any(a => a.filmAttributeId == x.filmAttributeId) });
+                        }
+                        Html.RenderPartial("_ListOfCheckBoxes", _attributes, new ViewDataDictionary() { { "Name", "SelectedAttributes" } });
+                    }
+                </p>
+            </div>
+            <!--attributes -->
+        </fieldset>
+        <input type="submit" value="Save" />
+    </form>
+</body>
+</html>

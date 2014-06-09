@@ -1,0 +1,17 @@
+﻿@model List<SelectListItem>
+<div class="listOfCheckBoxes">
+        <table style="width: 180px;">
+        @{
+            string _name = (string)ViewData["Name"];
+
+            foreach (var p in Model)
+            {
+            <tr class="whiteBack">
+                <td>
+                    <input type="checkbox"  name="@_name" value="@p.Value" @(p.Selected ? "checked" : "")/></td>
+                <td class="cursorPointer">@p.Text</td>
+            </tr>
+            } 
+        }
+    </table>
+</div>

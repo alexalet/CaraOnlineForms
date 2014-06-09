@@ -22,9 +22,17 @@ namespace CaraOnlineForms.Controllers
             model.ListOfFormats = new ScreenerRepository().GetListOfFormats();
             int filmSubId = filmId ?? -1;
             Screener screener = new ScreenerRepository().GetScreener(filmSubId);
-            if (screener != null)
-                model.Screener = screener;
+            if (screener == null)
+                screener = new Screener { ScreenerId = -1, FormatId = -1, FilmSubmissionId = filmSubId, DurationMinutes = 0 };
+            model.Screener = screener;
 
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult SaveScreener(ScreenerViewModel screener, List<int> SelectedAttributes, List<int> SelectedGenres,int Screener_FormatId)
+        {
+            string a = "";
             return View();
         }
 

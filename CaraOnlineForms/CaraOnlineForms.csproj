@@ -139,6 +139,7 @@
     <Compile Include="Controllers\NavMenuController.cs" />
     <Compile Include="Controllers\ParticipantsController.cs" />
     <Compile Include="Controllers\ProcessStatusController.cs" />
+    <Compile Include="Controllers\ScreenerController.cs" />
     <Compile Include="Controllers\SubmitionController.cs" />
     <Compile Include="Filters\Authorization.cs" />
     <Compile Include="Global.asax.cs">
@@ -155,6 +156,8 @@
     </Compile>
     <Compile Include="ViewModels\Captcha.cs" />
     <Compile Include="ViewModels\CaptchaResult.cs" />
+    <Compile Include="ViewModels\ScreenerViewModel.cs" />
+    <Compile Include="ViewModels\ScreenerInfoViewModel.cs" />
     <Compile Include="ViewModels\CountryViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -294,6 +297,8 @@
     <Content Include="Views\Shared\_Error.cshtml" />
     <Content Include="Views\Account\PasswordWasReset.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Screener\Screener.cshtml" />
+    <Content Include="Views\Screener\_ListOfCheckBoxes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

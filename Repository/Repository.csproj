@@ -53,6 +53,7 @@
     <Compile Include="Repositories\FilmRepository.cs" />
     <Compile Include="Repositories\ParticipantRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Repositories\ScreenerRepository.cs" />
     <Compile Include="Repositories\SubmitionProcessRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>

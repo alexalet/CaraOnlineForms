@@ -412,3 +412,35 @@ LI.paddedTop10
 {
                 width: 200px;
 }
+
+/* Styles screener
+-----------------------------------------------------------*/
+
+.whiteBack {
+    background-color: White !important;
+}
+
+.listOfCheckBoxes {
+    height: 300px !important;
+    border: 1px Solid Black!important;
+    background: White !important;
+    overflow-x: hidden !important;
+}
+
+.padRight40 {
+    padding-right: 40px !important;
+}
+
+.editor-label-block {
+    margin: 0.1em 0 0 0;
+    display: block; /*If applied to a span, will render like a div - as a block, not inline, keeping margin/padding values.*/
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+
+
+
+
