@@ -17,7 +17,7 @@ namespace CaraEntites
         public Screener()
         {
             this.ScreenerGenres = new HashSet<ScreenerGenre>();
-            this.Attributes = new HashSet<Attribute>();
+            this.ScreenerAttributes = new HashSet<ScreenerAttribute>();
         }
     
         public int ScreenerId { get; set; }
@@ -25,14 +25,15 @@ namespace CaraEntites
         public int PostScreeningActionId { get; set; }
         public Nullable<int> FormatId { get; set; }
         public Nullable<long> DurationMinutes { get; set; }
+        public string CodeName { get; set; }
         public System.DateTime ModifiedDate { get; set; }
         public int ModifiedBy { get; set; }
     
         public virtual FilmSubmission FilmSubmission { get; set; }
-        public virtual User User { get; set; }
         public virtual Format Format { get; set; }
         public virtual PostScreeningAction PostScreeningAction { get; set; }
+        public virtual User User { get; set; }
         public virtual ICollection<ScreenerGenre> ScreenerGenres { get; set; }
-        public virtual ICollection<Attribute> Attributes { get; set; }
+        public virtual ICollection<ScreenerAttribute> ScreenerAttributes { get; set; }
     }
 }

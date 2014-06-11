@@ -19,80 +19,90 @@ namespace Repository
         public Screener GetScreener(int filmSubId)
         {
             return _context.Screeners
-                .Include(x => x.ScreenerGenres.Select(g => g.Genre))
-                .Include(a => a.Attributes)
+                //.Include(x => x.ScreenerGenres.Select(g => g.Genre))
+                //.Include(a => a.Attributes)
                 .Include(f => f.Format)
                 .Include(p => p.PostScreeningAction)
                 .Include(u => u.User)
                 .FirstOrDefault(x => x.FilmSubmissionId == filmSubId);
         }
 
-        public NameValueCollection AddScreener(Screener newScreener, List<int> selectedGenres, List<int> selectedAttributes, int userId)
+        public Screener AddScreener(Screener newScreener, List<int> selectedGenres, List<int> selectedAttributes, int userId)
         {
-            NameValueCollection result = new NameValueCollection();
-            bool isNew = false;
             int screenerId;
-
-            Screener screener = GetScreener(newScreener.FilmSubmissionId);
-            if (screener == null)
+            Screener screenerOld = GetScreener(newScreener.FilmSubmissionId);
+            try
             {
-                isNew = true;
-                newScreener.User.UserId = userId;
-                newScreener.ModifiedDate = DateTime.Now;
-                screener.ModifiedBy = userId;
-
-                _context.Screeners.Add(newScreener);
-            }
-            else
-            {
-                screener.FormatId = newScreener.FormatId;
-                screener.DurationMinutes = newScreener.DurationMinutes;
-                screener.PostScreeningActionId = newScreener.PostScreeningActionId;
-
-                screener.ModifiedDate = DateTime.Now;
-                screener.ModifiedBy = userId;
-
-
-            }
-            _context.SaveChanges();
-            if (isNew)
-                screenerId = newScreener.ScreenerId;
-            else
-                screenerId = screener.ScreenerId;
-
-            // delete previous genres
-            var prevGenres = _context.ScreenerGenres.Where(x => x.ScreenerId == screenerId);
-            foreach (var pg in prevGenres)
-            {
-                _context.ScreenerGenres.Remove(pg);
-            }
-            _context.SaveChanges();
-            // add new genres
-            if (selectedGenres != null)
-            {
-                selectedGenres.ForEach(g => _context.ScreenerGenres.Add(new ScreenerGenre() { ScreenerId = screenerId, GenreId = g }));
-                _context.SaveChanges();
-            }
-
-            // delete previous attributes
-            if (screener != null) // it is existing screener
-            {
-                screener.Attributes.Clear();
-                _context.SaveChanges();
-            }
-
-            // add new attributes
-            if (selectedAttributes != null)
-            {
-                foreach (var sa in selectedAttributes)
+                
+                if (screenerOld == null)
                 {
-                    var attr = _context.Attributes.Find(sa);
-                    attr.Screeners.Add(screener ?? newScreener);
+                    screenerOld = new Screener();
+                    screenerOld.FilmSubmissionId = newScreener.FilmSubmissionId;
+                    screenerOld.ModifiedBy = userId;
+                    screenerOld.FormatId = newScreener.FormatId;
+                    screenerOld.PostScreeningActionId = newScreener.PostScreeningActionId;
+                    screenerOld.DurationMinutes = (newScreener.DurationMinutes ?? 0);
+                    screenerOld.ModifiedDate = DateTime.Now;
+
+                    _context.Screeners.Add(screenerOld);
+                }
+                else
+                {
+                    screenerOld.FormatId = newScreener.FormatId;
+                    screenerOld.DurationMinutes = newScreener.DurationMinutes;
+                    screenerOld.PostScreeningActionId = newScreener.PostScreeningActionId;
+
+                    screenerOld.ModifiedDate = DateTime.Now;
+                    screenerOld.ModifiedBy = userId;
+
 
                 }
                 _context.SaveChanges();
+
+                screenerId = screenerOld.ScreenerId;
+
+                // delete previous genres
+                var prevGenres = _context.ScreenerGenres.Where(x => x.ScreenerId == screenerId);
+                foreach (var pg in prevGenres)
+                {
+                    _context.ScreenerGenres.Remove(pg);
+                }
+                _context.SaveChanges();
+                // add new genres
+                if (selectedGenres != null)
+                {
+                    foreach (var sg in selectedGenres)
+                    {
+                        var gnr = _context.Genres.Find(sg);
+                        _context.ScreenerGenres.Add(new ScreenerGenre{ScreenerId=screenerId,GenreId=gnr.GenreId});
+                        _context.SaveChanges();
+                    }
+                }
+
+                //// delete previous attributes
+                var prevAttr = _context.ScreenerAttributes.Where(x => x.ScreenerId == screenerId);
+                foreach (var pa in prevAttr)
+                {
+                    _context.ScreenerAttributes.Remove(pa);
+                }
+                _context.SaveChanges();
+
+                // add new attributes
+                if (selectedAttributes != null)
+                {
+                    foreach (var sa in selectedAttributes)
+                    {
+                        var attr = _context.Attributes.Find(sa);
+                        _context.ScreenerAttributes.Add(new ScreenerAttribute { ScreenerId = screenerId, AttributeId = attr.AttributeId });
+                        _context.SaveChanges();
+                    }
+                }
             }
-            return result;
+            catch (Exception ex)
+            {
+                string msg = ex.Message + ", " + ex.InnerException.InnerException.Message;
+            }
+            return screenerOld;
         }
 
         /// <summary>

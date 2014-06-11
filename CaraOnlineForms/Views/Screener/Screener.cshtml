@@ -18,29 +18,35 @@
         }
     </style>
     <script>
-        
+         @{ if (ViewBag.Message != null)
+            {
+            
+                       @:$.growlUI('', '@ViewBag.Message');
+                    }
+            }
     </script>
 </head>
 <body>
     <form name="FormScreener" id="FormScreener"  method="post" action="@Url.Action("SaveScreener")">
         @Html.HiddenFor(model => model.Screener.FilmSubmissionId)
+        @Html.HiddenFor(model => model.Screener.ScreenerId)
         <fieldset>
             <legend>Screener:</legend>
             <div class="leftFloat">
                 @*<p class="field-item padTop10">*@
-                    <span class="editor-label-block">Format:</span>
-                    <select id="FormatId" name="Screener.FormatId" class="width200">
-                        @{
-                            <option value="-1" code="?" @(Model.Screener.FormatId == -1 ? "selected" : "")></option>
-                            foreach (Format f in Model.ListOfFormats)
-                            {
-                            <option value="@f.FormatId" code="@f.Code" @(f.FormatId == Model.Screener.FormatId ? "selected" : "")>@f.Description</option>
-                            }    
-                        }
-                    </select>
+                <span class="editor-label-block">Format:</span>
+                <select id="FormatId" name="Screener.FormatId" class="width200">
+                    @{
+                        <option value="-1" code="?" @(Model.Screener.FormatId == -1 ? "selected" : "")></option>
+                        foreach (Format f in Model.ListOfFormats)
+                        {
+                        <option value="@f.FormatId" code="@f.Code" @(f.FormatId == Model.Screener.FormatId ? "selected" : "")>@f.Description</option>
+                        }    
+                    }
+                </select>
                 @*</p>*@
             </div>
-            <div class="padTop10 leftFloat" style="margin-left:50px;">
+            <div class="padTop10 leftFloat" style="margin-left: 50px;">
                 <span class="editor-label-block inline-block">After Screening is done, Screener should be:</span>
                 <br />
                 <span>
@@ -73,13 +79,19 @@
                         List<SelectListItem> _attributes = new List<SelectListItem>();
                         foreach (var x in Model.ListOfAttributes)
                         {
-                            _attributes.Add(new SelectListItem() { Value = x.filmAttributeId.ToString(), Text = x.Description, Selected = Model.Screener.Attributes.Any(a => a.filmAttributeId == x.filmAttributeId) });
+                            _attributes.Add(new SelectListItem() { Value = x.AttributeId.ToString(), Text = x.Description, Selected = Model.Screener.ScreenerAttributes.Any(a => a.AttributeId == x.AttributeId) });
                         }
                         Html.RenderPartial("_ListOfCheckBoxes", _attributes, new ViewDataDictionary() { { "Name", "SelectedAttributes" } });
                     }
                 </p>
             </div>
             <!--attributes -->
+            <div class="leftFloat" style="margin-left: 20px;">
+                <p class="field-item">
+                    <span class="editor-label-block">Duration:</span>
+                    @{Html.RenderPartial("_TimePicker", Model.Duration);}
+                </p>
+            </div>
         </fieldset>
         <input type="submit" value="Save" />
     </form>

@@ -18,6 +18,7 @@ namespace CaraEntites
         {
             this.FilmAltTitles = new HashSet<FilmAltTitle>();
             this.Participants = new HashSet<Participant>();
+            this.Screeners = new HashSet<Screener>();
         }
     
         public int FilmSubmissionId { get; set; }
@@ -40,6 +41,6 @@ namespace CaraEntites
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         public virtual ICollection<Participant> Participants { get; set; }
-        public virtual Screener Screener { get; set; }
+        public virtual ICollection<Screener> Screeners { get; set; }
     }
 }

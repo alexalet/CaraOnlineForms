@@ -15,10 +15,10 @@ namespace ViewModels
             get
             {
                 string res = "";
-                foreach (CaraEntites.Attribute a in Screener.Attributes)
-                {
-                    res += (res == "" ? "" : ", ") + a.Description;
-                }
+                //foreach (CaraEntites.Attribute a in Screener.Attributes)
+                //{
+                //    res += (res == "" ? "" : ", ") + a.Description;
+                //}
                 return res;
             }
         }

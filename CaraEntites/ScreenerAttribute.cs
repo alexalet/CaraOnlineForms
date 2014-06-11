@@ -12,16 +12,13 @@ namespace CaraEntites
     using System;
     using System.Collections.Generic;
     
-    public partial class Attribute
+    public partial class ScreenerAttribute
     {
-        public Attribute()
-        {
-            this.ScreenerAttributes = new HashSet<ScreenerAttribute>();
-        }
-    
+        public int ScreenerAttributeId { get; set; }
+        public int ScreenerId { get; set; }
         public int AttributeId { get; set; }
-        public string Description { get; set; }
     
-        public virtual ICollection<ScreenerAttribute> ScreenerAttributes { get; set; }
+        public virtual Attribute Attribute { get; set; }
+        public virtual Screener Screener { get; set; }
     }
 }

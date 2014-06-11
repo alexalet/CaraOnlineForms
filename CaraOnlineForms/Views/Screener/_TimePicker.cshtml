@@ -1,0 +1,37 @@
+﻿@using CaraEntites;
+@using ViewModels;
+@using System.Collections.Generic;
+
+@model TimePickerViewModel
+@{
+    List<SelectListItem> hrs = new List<SelectListItem>();
+
+    if (Model.IsNullable)
+    {
+        hrs.Add(new SelectListItem() { Text = " ", Value = "-1", Selected = (Model.TimeHR == -1) });
+    }
+
+    if (Model.HideAmPm)
+    {
+        Model.AmPm = "AM";
+        hrs.Add(new SelectListItem() { Text = "00", Value = "0", Selected = (Model.TimeHR == 0) });
+    }
+
+    for (int i = 1; i <= 12; i++)
+    {
+        hrs.Add(new SelectListItem() { Text = String.Format("{0:00}", i), Value = i.ToString(), Selected = (Model.TimeHR == i) });
+    }
+
+
+    var ampm = new List<SelectListItem>();
+    ampm.Add(new SelectListItem() { Text = "AM", Value = "AM", Selected = (Model.AmPm == "AM") });
+    ampm.Add(new SelectListItem() { Text = "PM", Value = "PM", Selected = (Model.AmPm == "PM") });
+
+    var hrName = Model.Prefix + ".TimeHR";
+    var minName = Model.Prefix + ".TimeMin";
+    var ampmName = Model.Prefix + ".AmPm";
+}
+@Html.DropDownList(hrName, hrs, new { @class = "timepickerHR" })
+:
+@Html.TextBox(minName, Model.TimeMin.ToString("D2"), new { @class = "timepickerMin", @maxlength = 2 })
+@Html.DropDownList(ampmName, ampm, new { @class = (Model.HideAmPm ? "hidden" : "") })

@@ -413,7 +413,7 @@ LI.paddedTop10
                 width: 200px;
 }
 
-/* Styles screener
+/* Styles for screener
 -----------------------------------------------------------*/
 
 .whiteBack {
@@ -440,7 +440,9 @@ LI.paddedTop10
     display: inline-block;
 }
 
-
+.timepickerMin {
+    width: 30px !important;
+}
 
 
 

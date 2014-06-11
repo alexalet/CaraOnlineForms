@@ -162,6 +162,7 @@
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
+    <Compile Include="ViewModels\TimePickerViewModel.cs" />
     <Compile Include="ViewModels\WorkFlowViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -299,6 +300,7 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Screener\Screener.cshtml" />
     <Content Include="Views\Screener\_ListOfCheckBoxes.cshtml" />
+    <Content Include="Views\Screener\_TimePicker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
