@@ -7,7 +7,7 @@
     var steps = new[] { 
         new { StepId = "Title", Label = "Picture Info", URL = Url.Action("Title", "Submition",new {filmId=Model.FilmSubmitionId }) },
         new { StepId = "Participants", Label = "Participants", URL = Url.Action("Participants", "Participants")},
-        new { StepId = "Contacts", Label = "Contacts", URL = Url.Action("Contacts", "Contacts")},
+        new { StepId = "Contacts", Label = "Contacts", URL = Url.Action("Contacts", "Contacts",new {filmId=Model.FilmSubmitionId })},
         new { StepId = "Screener", Label = "Screener", URL = Url.Action("Screener", "Screener",new {filmId=Model.FilmSubmitionId })},
         new { StepId = "RightHolders", Label = "Right Holders", URL = Url.Action("RightHolders", "RightHolders")},
         new { StepId = "Submit", Label = "Submit Picture", URL = Url.Action("SubmitPicture", "SubmitPicture")}

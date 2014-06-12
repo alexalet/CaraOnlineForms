@@ -135,6 +135,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\NavMenuController.cs" />
     <Compile Include="Controllers\ParticipantsController.cs" />
@@ -301,6 +302,7 @@
     <Content Include="Views\Screener\Screener.cshtml" />
     <Content Include="Views\Screener\_ListOfCheckBoxes.cshtml" />
     <Content Include="Views\Screener\_TimePicker.cshtml" />
+    <Content Include="Views\Contacts\Contacts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

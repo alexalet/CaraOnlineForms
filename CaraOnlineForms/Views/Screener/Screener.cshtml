@@ -22,8 +22,31 @@
             {
             
                        @:$.growlUI('', '@ViewBag.Message');
-                    }
+                            }
             }
+
+        $(function () {
+            $('#FormScreener').submit(function (e) {
+                var $timepickerMin = $('.timepickerMin').val();
+                if ($timepickerMin > 59) {
+                    e.preventDefault();
+                    DisplayErrors("Duration in Minutes text box should be less than 60", "Error!");
+                    $('.timepickerMin').focus();
+                    $('.timepickerMin').css('color', 'red');
+                }
+
+            });
+
+            $('.timepickerMin').keypress(function (event) {
+                $(this).css('color', 'black');
+                var charCode = (event.which) ? event.which : event.keyCode
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                    return false;
+                return true;
+            });
+
+        });
+
     </script>
 </head>
 <body>
@@ -93,7 +116,7 @@
                 </p>
             </div>
         </fieldset>
-        <input type="submit" value="Save" />
+        <input type="submit" value="Save" id="saveScreener" />
     </form>
 </body>
 </html>
