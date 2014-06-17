@@ -18,3 +18,9 @@ Attribute
 PostScreeningAction
 Screener
 ScreenerGenre
+ScreenerAttribute
+-----
+Address
+Company
+CoContact
+CertificateMailing

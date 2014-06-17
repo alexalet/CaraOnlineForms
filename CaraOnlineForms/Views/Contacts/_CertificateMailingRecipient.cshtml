@@ -1,0 +1,79 @@
+﻿@using CaraEntites;
+@using ViewModels;
+@model CertificateMailingViewModel
+
+@{ List<SelectListItem> suffix = new List<SelectListItem>();
+   suffix.Add(new SelectListItem { Text = "" });
+   suffix.Add(new SelectListItem { Text = "Mr." });
+   suffix.Add(new SelectListItem { Text = "Mrs." });
+   suffix.Add(new SelectListItem { Text = "Ms." });
+
+   int id = Model.Recipient.CertificateMailingId;
+   string strHidden = (Model.Recipient.CertificateMailingId == -1 ? "hidden added" : "");
+   string formId = (Model.Recipient.CertificateMailingId == -1 ? "FormMailingContact" : "FormMailingContact" + Model.Recipient.CertificateMailingId.ToString());
+   string serialBefore = (Model.Recipient.CertificateMailingId == -1 ? "_contBeforeNew" : "_contBefore" + Model.Recipient.CertificateMailingId.ToString()); 
+}
+
+<script>
+    function ValidateEmailAddress(email) {
+        var ck_email = new RegExp(/^([\w-]+(?:\.[\w-]+)*)@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i);
+        return ck_email.test(email);
+
+    }//--end ValidateEmailAddress --
+
+    function DeleteThis($btn) {
+        if ($btn.data('id') == -1) {
+            $(".added").addClass("hidden");
+            $("#AddMailing").removeAttr("disabled");
+        }
+        else {
+            var callbackYes = function () {
+                var frmId = "FormMailingContact" + $btn.data('id');
+                $("#" + frmId).attr("action", "@Url.Action("DeleteRecipient")");
+                $("#" + frmId).submit();
+                }
+            confirmActionYesNo("Woud You like delete this Recipient?", "Delete Recipient", "Yes", "No", callbackYes, function () { })
+        }
+    };
+
+</script>
+@{
+    
+    <form method="get" name="FormMailingContact" id="@formId" action="@Url.Action("SaveRecipient")">
+
+        <fieldset class="@strHidden" style="margin-top:-15px;">
+            <legend></legend>
+            <div class="clear"></div>
+            <div style="margin-bottom: 7px;">
+                <span style="margin-right: 5px;">First Name:</span>&nbsp;&nbsp;<input type="text" name="FirstName"  style="width:198px;" maxlength="95" value="@(Model.Recipient.FirstName ?? "")"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="margin-right: 5px;">Last Name:</span>&nbsp;&nbsp;<input type="text" name="LastName" style="width:243px;" maxlength="95" value="@(Model.Recipient.LastName ?? "")"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="margin-right: 5px;">Suffix:&nbsp;&nbsp;</span>@Html.DropDownListFor(m => m.Recipient.Suffix, suffix)&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="margin-left: 2px;">Title:</span>&nbsp;&nbsp;<input type="text" name="Title" class="width200" maxlength="50" value="@(Model.Recipient.Title ?? "")"/>
+            </div>
+            <div style="margin-bottom: 7px;">
+                <span style="margin-right: 16px;">Company:</span>&nbsp;&nbsp;<input type="text" name="Company" class="width400" maxlength="95" value="@(Model.Recipient.Company ?? "")"/>&nbsp;&nbsp;
+                <span style="margin-right: 11px;">Address 1:</span>&nbsp;<input type="text" name="Address1" class="width200" maxlength="95" value="@(Model.Recipient.Address1 ?? "")"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>Address 2:</span>&nbsp;<input type="text" name="Address2" style="width:200px;" maxlength="95" value="@(Model.Recipient.Address2 ?? "")"/>
+            </div>
+            <div style="margin-bottom: 7px;">
+                <span style="margin-right: 62px;">City:</span>&nbsp;<input type="text" name="City" style="width:100px;" maxlength="95" value="@(Model.Recipient.City ?? "")"/>&nbsp;&nbsp;&nbsp;
+                <span style="margin-right: 5px;">State:</span>&nbsp;<input type="text" name="State" style="width:20px;" maxlength="3" class="yellowBack" value="@(Model.Recipient.State ?? "")"/>&nbsp;&nbsp;&nbsp;
+                <span style="margin-right: 8px; margin-left: 2px;">&nbsp;Zip:</span>&nbsp;<input type="text" name="Zip" style="width:80px;" maxlength="10" class="yellowBack" value="@(Model.Recipient.Zip ?? "")"/>&nbsp;&nbsp;&nbsp;
+                <span style="margin-right: 5px; margin-left: 5px;">Country:</span>&nbsp;<input type="text" name="Country" style="width:200px;" maxlength="95" value="@(Model.Recipient.Country ?? "")"/>&nbsp;&nbsp;&nbsp;
+            </div>
+            <div style="margin-bottom: 7px;">
+                <span style="margin-right: 46px;">Phone:</span>&nbsp;<input type="text" name="Phone" class="width150" maxlength="50" value="@(Model.Recipient.Phone ?? "")"/>
+                <span style="margin-right: 5px; margin-left: 20px;">Fax:</span>&nbsp;<input type="text" name="Fax" class="width150" maxlength="50" value="@(Model.Recipient.Fax ?? "")"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="margin-right: 5px;">Email:</span>&nbsp;<input type="text" name="Email" class="width200" maxlength="50" value="@(Model.Recipient.Email ?? "")"/>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <input type="hidden" name="CertificateMailingId" class="certId" style="width:10px;margin-left:-100px;" value="@(Model.Recipient.CertificateMailingId)"/>
+            <input type="hidden" name="FilmSubmissionId" style="width:10px;margin-left:-100px;" value="@(Model.Recipient.FilmSubmissionId)"/>
+            <input type="hidden" name="Counter" value="@(Model.Counter)"/>
+            <div>
+                <input type="submit" value="Save" style="margin-right: 20px; margin-left: 100px;" /><input type="submit" data-id="@Model.Recipient.CertificateMailingId" value="Delete" class="deleteRecipient" onclick="DeleteThis($(this)); return false" />
+            </div>
+        </fieldset>
+
+    </form>
+}
+

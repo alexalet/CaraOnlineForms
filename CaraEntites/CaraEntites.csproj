@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Attribute.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
@@ -68,6 +71,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CaraModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="CertificateMailing.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CoContact.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Company.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Country.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>

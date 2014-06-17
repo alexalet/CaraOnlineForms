@@ -40,5 +40,9 @@ namespace CaraEntites
         public DbSet<ScreenerGenre> ScreenerGenres { get; set; }
         public DbSet<Attribute> Attributes { get; set; }
         public DbSet<ScreenerAttribute> ScreenerAttributes { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<CoContact> CoContacts { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<CertificateMailing> CertificateMailings { get; set; }
     }
 }
