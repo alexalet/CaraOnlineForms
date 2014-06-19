@@ -20,6 +20,7 @@
     @RenderSection("scripts", required: false)
     <script>
         var _cache = null;
+        var _beforeChanges = new Array();   //to keep serialyzed multiple forms (for now, from the "Rights Holders" page)
 
         function GoToNextPage(url) {
 
@@ -30,24 +31,37 @@
                 return;
             }
 
-
-
             var callbackNo = function () {
                 document.location.href = url;
             }
 
-            var callbackYes = function () {
-                if (url !== undefined || url != '') {
-
-                    var nextPage = $('<input type="hidden" name="NextPage" />').attr('value', url);
-                    $(nextPage).appendTo($('form').first());
+            var $frm = $('form').first();
+            var dirtyFormId = "";
+            var callbackYes;
+            if (!/FormMailingContact/i.test($frm.attr('id'))) {  // if it is not "Rights Holders" page...
+                callbackYes = function () {
+                    if (url !== undefined || url != '') {
+                        var nextPage = $('<input type="hidden" name="NextPage" />').attr('value', url);
+                        $(nextPage).appendTo($('form').first());
+                    }
+                    $('form').first().submit();
                 }
-                $('form').first().submit();
             }
-
-
-
-            if (_cache != $('form').first().serialize()) {
+            else {      // if it is "Rights Holders" page...
+                var $frms = $('form');
+                var i = 0;
+                $frms.each(function () {         // loop through the forms to find out which one is edited
+                    if (_beforeChanges[i] != $(this).serialize()) {
+                        dirtyFormId = $(this).attr('id');
+                    }
+                    i++;
+                });
+                callbackYes = function () {
+                    $("#" + dirtyFormId).find(".saveButton").focus();      //just set focus on the "Save" button
+                }
+            };
+            
+            if (_cache != $('form').first().serialize() || dirtyFormId != "") {
                 confirmActionYesNoCancel("The current page has been modified.<br/>Woud You like save changes?", "Save changes?", "Yes", "No", callbackYes, callbackNo);
             } else {
                 callbackNo();

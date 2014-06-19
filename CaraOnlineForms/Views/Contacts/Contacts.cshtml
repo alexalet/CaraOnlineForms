@@ -1,25 +1,28 @@
 ﻿@using CaraEntites;
 @using ViewModels;
-@model List<CertificateMailingViewModel>
+@model List<CertificateMailing>
 @{
     ViewBag.Title = "Contacts";
     Html.RenderAction("_WorkFlow", "NavMenu", new { StepId = "Contacts" });
 }
 <script>
-    var _beforeChanges = new Array();
     $(document).ready(function () {
         var frms = $('form');
-        alert(frms.length);
-        //frms.each(function () { alert($(this).id); });
-    });
+        frms.each(function () {
+            var ser = $(this).serialize();
+            _beforeChanges.push(ser);
+        });
+
+    }); // end document.ready
+
     $(function () {
-         @{ if (ViewBag.Message != null )
-           {
+         @{ if (ViewBag.Message != null)
+            {
             
                        @:$.growlUI('', '@ViewBag.Message');
-                    }
+                                    }
             };
-        
+
     })
 </script>
 <!DOCTYPE html>
@@ -32,6 +35,10 @@
             width: 500px;
             margin-right: 15px;
         }
+
+        .yellowBack {
+            background-color: #FBFAC8 !important;
+        }
     </style>
     <script>
         function AddCertificateMailing() {
@@ -41,17 +48,15 @@
     </script>
 </head>
 <body>
-    <form id="frmMailingContacts" name="frmMailingContacts">
-        <br />
-        <div>
-            @foreach (CertificateMailingViewModel cert in Model)
-            {
-                Html.RenderPartial("_CertificateMailingRecipient", cert);
-            }
-            <div style="width: 90%; max-width: 1100px">
-                <input type="button" id="AddMailing" value="Add Mailing Recipient" onclick="AddCertificateMailing()" />
-            </div>
+    <br />
+    <div>
+        @foreach (CertificateMailing cert in Model)
+        {
+            Html.RenderPartial("_CertificateMailingRecipient", cert);
+        }
+        <div style="width: 90%; max-width: 1100px">
+            <input type="button" id="AddMailing" value="Add Mailing Recipient" onclick="AddCertificateMailing()" />
         </div>
-    </form>
+    </div>
 </body>
 </html>
