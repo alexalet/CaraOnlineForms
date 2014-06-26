@@ -157,7 +157,6 @@
     </Compile>
     <Compile Include="ViewModels\Captcha.cs" />
     <Compile Include="ViewModels\CaptchaResult.cs" />
-    <Compile Include="ViewModels\ContactViewModel.cs" />
     <Compile Include="ViewModels\ScreenerViewModel.cs" />
     <Compile Include="ViewModels\ScreenerInfoViewModel.cs" />
     <Compile Include="ViewModels\CountryViewModel.cs" />
