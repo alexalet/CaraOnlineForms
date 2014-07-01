@@ -12,20 +12,26 @@ namespace CaraEntites
     using System;
     using System.Collections.Generic;
     
-    public partial class CoContact
+    public partial class CompanyContact
     {
-        public int CoContactID { get; set; }
-        public Nullable<int> CompanyID { get; set; }
+        public int ContactID { get; set; }
+        public int CompanyID { get; set; }
+        public int FilmSubmissionId { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MidName { get; set; }
         public string Suffix { get; set; }
-        public Nullable<int> AddressID { get; set; }
+        public int AddressID { get; set; }
         public string Phone1 { get; set; }
         public string Phone2 { get; set; }
         public string eMail { get; set; }
-        public string Role { get; set; }
+        public int RoleId { get; set; }
+        public System.DateTime ModifiedDate { get; set; }
+        public int ModifiedBy { get; set; }
     
+        public virtual Address Address { get; set; }
         public virtual Company Company { get; set; }
+        public virtual User User { get; set; }
+        public virtual ContactRole ContactRole { get; set; }
     }
 }

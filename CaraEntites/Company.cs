@@ -16,22 +16,26 @@ namespace CaraEntites
     {
         public Company()
         {
-            this.CoContacts = new HashSet<CoContact>();
+            this.CompanyContacts = new HashSet<CompanyContact>();
         }
     
         public int CompanyID { get; set; }
         public string CompanyName { get; set; }
         public int FilmSubmissionId { get; set; }
-        public int CorporateParentID { get; set; }
-        public byte Member { get; set; }
+        public int RelTypeId { get; set; }
+        public Nullable<System.DateTime> RelDate { get; set; }
         public string Phone { get; set; }
         public string FAX { get; set; }
         public int AddressID { get; set; }
         public string URL { get; set; }
         public int Valid { get; set; }
+        public System.DateTime ModifiedDate { get; set; }
+        public int ModifiedBy { get; set; }
     
         public virtual Address Address { get; set; }
-        public virtual ICollection<CoContact> CoContacts { get; set; }
+        public virtual ICollection<CompanyContact> CompanyContacts { get; set; }
         public virtual FilmSubmission FilmSubmission { get; set; }
+        public virtual User User { get; set; }
+        public virtual RelType RelType { get; set; }
     }
 }

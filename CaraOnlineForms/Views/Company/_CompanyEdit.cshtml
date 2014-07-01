@@ -1,0 +1,92 @@
+﻿@using CaraEntites;
+@using ViewModels;
+@model Company
+
+<script>
+    var _beforeChanges = '';
+    $(document).ready(function () {
+        _beforeChanges = $("#frmCompanyInfo").serialize();
+    });
+
+    // -- if any field on the form is changed, ask the user if he really wants to close without saving the changes.
+    // if yes, close the form, if not, focus on the Save button
+    function CloseDlgCompanyInfo() {
+        if (_beforeChanges != $("#frmCompanyInfo").serialize()) {
+            var msg = "This Company Info Record has been changed.<br/><span style='color:red'>If you close now, the changes will be lost.</span><br/>Do you want to close?";
+            confirmActionYesNo(msg, "Confirm", "No, don't close", "Yes, close", function () { $('.saveCompanyInfo').focus() }, function () { $('#dlgAddEditCompany').remove() });
+        }
+        else {
+            $('#dlgAddEditCompany').remove()
+        }
+    }   //-- End Close Dialog
+
+    function SaveCompanyInfo() {
+        var $btn = $('<a></a>').attr('href', '@Url.Action("SaveCompanyInfo")');
+        var callback = function () {
+            $('#dlgAddEditCompany').remove();
+            //ReloadContacts(nextStep);
+        };
+        //$("#frmCompanyInfo").submit();
+        //$('#dlgAddEditCompany').remove();
+        callAction($btn, $('#Companies'), false, callback, "Company Info has been updated", $('#frmCompanyInfo'));
+    }
+
+</script>
+<form id="frmCompanyInfo" action="@Url.Action("SaveCompanyInfo")">
+    @{
+        List<SelectListItem> RelTypes = new List<SelectListItem>();
+        RelTypes.Add(new SelectListItem { Text = "", Value = "-1" });
+        RelTypes.Add(new SelectListItem { Text = "Video Distributor", Value = "1" });
+        RelTypes.Add(new SelectListItem { Text = "Production Company", Value = "2" });
+        RelTypes.Add(new SelectListItem { Text = "Rating Applicant", Value = "3" });
+        RelTypes.Add(new SelectListItem { Text = "VOD Distributor", Value = "4" });
+        RelTypes.Add(new SelectListItem { Text = "Distributor", Value = "5" });
+        RelTypes.Add(new SelectListItem { Text = "Other Distributor", Value = "6" });
+        RelTypes.Add(new SelectListItem { Text = "Advertising Company", Value = "7" });
+    }
+    @Html.HiddenFor(m => m.FilmSubmissionId)
+    @Html.HiddenFor(m => m.CompanyID)
+    @Html.HiddenFor(m => m.Address.AddressID)
+    <div>
+        <div style="margin-bottom: 10px;">
+            <span class="inline-block">Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Html.TextBoxFor(m => m.CompanyName, new { @maxlength = "50", @style = "width:510px;" })
+            </span>
+            <div style="margin-bottom: 10px; margin-top: 7px;">
+                <span class="inline-block">Address 1:&nbsp;
+                @Html.TextBoxFor(m => m.Address.Addr1, new { @maxlength = "50", @style = "width:200px;" })
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbspAddress 2:&nbsp
+                @Html.TextBoxFor(m => m.Address.Addr2, new { @maxlength = "50", @style = "width:190px;" })
+                </span>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <span class="inline-block">City:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.TextBoxFor(m => m.Address.City, new { @maxlength = "50", @style = "width:245px;" })&nbsp;&nbsp;
+            State:&nbsp;
+            @Html.TextBoxFor(m => m.Address.State, new { @maxlength = "2", @style = "width:30px;" })&nbsp;&nbsp;
+            Zip:&nbsp;
+            @Html.TextBoxFor(m => m.Address.PostalCode, new { @maxlength = "10", @style = "width:103px;" })
+                </span>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <span class="inline-block">Country:&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.TextBoxFor(m => m.Address.Country, new { @maxlength = "50", @style = "width:250px;" })
+                </span>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <span class="inline-block">Phone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.TextBoxFor(m => m.Phone, new { @maxlength = "50", @style = "width:200px;" })&nbsp;&nbsp;
+            Fax:&nbsp; @Html.TextBoxFor(m => m.FAX, new { @maxlength = "50", @style = "width:200px;" })
+                </span>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <span class="inline-block">Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.DropDownListFor(m => m.RelTypeId, RelTypes)&nbsp;&nbsp; &nbsp;
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+    <input type="button" style="margin-left: 20px; margin-top: 10px;" value="Save Company Info" class="saveCompanyInfo green" onclick="SaveCompanyInfo()" />
+    <input type="button" value="Close" class="rightFloat" style="margin-right: 20px;" onclick="CloseDlgCompanyInfo()" />
+</form>

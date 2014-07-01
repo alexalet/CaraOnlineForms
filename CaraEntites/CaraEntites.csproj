@@ -75,10 +75,13 @@
     <Compile Include="CertificateMailing.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="CoContact.cs">
+    <Compile Include="Company.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Company.cs">
+    <Compile Include="CompanyContact.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContactRole.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Country.cs">
@@ -109,6 +112,9 @@
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelType.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Screener.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>

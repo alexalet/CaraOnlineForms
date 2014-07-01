@@ -9,8 +9,9 @@
           <EntitySet Name="Address" EntityType="CaraOnlineForms_DevModel.Store.Address" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Attribute" EntityType="CaraOnlineForms_DevModel.Store.Attribute" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CertificateMailing" EntityType="CaraOnlineForms_DevModel.Store.CertificateMailing" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="CoContact" EntityType="CaraOnlineForms_DevModel.Store.CoContact" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Company" EntityType="CaraOnlineForms_DevModel.Store.Company" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompanyContact" EntityType="CaraOnlineForms_DevModel.Store.CompanyContact" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ContactRole" EntityType="CaraOnlineForms_DevModel.Store.ContactRole" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Country" EntityType="CaraOnlineForms_DevModel.Store.Country" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmailNotes" EntityType="CaraOnlineForms_DevModel.Store.EmailNotes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FilmAltTitle" EntityType="CaraOnlineForms_DevModel.Store.FilmAltTitle" store:Type="Tables" Schema="dbo" />
@@ -20,6 +21,7 @@
           <EntitySet Name="Participant" EntityType="CaraOnlineForms_DevModel.Store.Participant" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PasswordToReset" EntityType="CaraOnlineForms_DevModel.Store.PasswordToReset" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PostScreeningAction" EntityType="CaraOnlineForms_DevModel.Store.PostScreeningAction" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RelType" EntityType="CaraOnlineForms_DevModel.Store.RelType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Screener" EntityType="CaraOnlineForms_DevModel.Store.Screener" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ScreenerAttribute" EntityType="CaraOnlineForms_DevModel.Store.ScreenerAttribute" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ScreenerGenre" EntityType="CaraOnlineForms_DevModel.Store.ScreenerGenre" store:Type="Tables" Schema="dbo" />
@@ -31,7 +33,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_CoContact_Company" Association="CaraOnlineForms_DevModel.Store.FK_CoContact_Company">
             <End Role="Company" EntitySet="Company" />
-            <End Role="CoContact" EntitySet="CoContact" />
+            <End Role="CompanyContact" EntitySet="CompanyContact" />
           </AssociationSet>
           <AssociationSet Name="FK_Company_Address" Association="CaraOnlineForms_DevModel.Store.FK_Company_Address">
             <End Role="Address" EntitySet="Address" />
@@ -40,6 +42,26 @@
           <AssociationSet Name="FK_Company_FilmSubmission" Association="CaraOnlineForms_DevModel.Store.FK_Company_FilmSubmission">
             <End Role="FilmSubmission" EntitySet="FilmSubmission" />
             <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_RelType" Association="CaraOnlineForms_DevModel.Store.FK_Company_RelType">
+            <End Role="RelType" EntitySet="RelType" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_User" Association="CaraOnlineForms_DevModel.Store.FK_Company_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyContact_Address" Association="CaraOnlineForms_DevModel.Store.FK_CompanyContact_Address">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="CompanyContact" EntitySet="CompanyContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyContact_Role" Association="CaraOnlineForms_DevModel.Store.FK_CompanyContact_Role">
+            <End Role="ContactRole" EntitySet="ContactRole" />
+            <End Role="CompanyContact" EntitySet="CompanyContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyContact_User" Association="CaraOnlineForms_DevModel.Store.FK_CompanyContact_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="CompanyContact" EntitySet="CompanyContact" />
           </AssociationSet>
           <AssociationSet Name="FK_EmailsToConfirm_User" Association="CaraOnlineForms_DevModel.Store.FK_EmailsToConfirm_User">
             <End Role="User" EntitySet="User" />
@@ -142,22 +164,6 @@
           <Property Name="ModifiedDate" Type="date" Nullable="false" />
           <Property Name="ModifiedBy" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="CoContact">
-          <Key>
-            <PropertyRef Name="CoContactID" />
-          </Key>
-          <Property Name="CoContactID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyID" Type="int" />
-          <Property Name="LastName" Type="varchar" MaxLength="50" />
-          <Property Name="FirstName" Type="varchar" MaxLength="50" />
-          <Property Name="MidName" Type="char" MaxLength="1" />
-          <Property Name="Suffix" Type="varchar" MaxLength="4" />
-          <Property Name="AddressID" Type="int" />
-          <Property Name="Phone1" Type="varchar" MaxLength="20" />
-          <Property Name="Phone2" Type="varchar" MaxLength="20" />
-          <Property Name="eMail" Type="varchar" MaxLength="50" />
-          <Property Name="Role" Type="varchar" MaxLength="25" />
-        </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="CompanyID" />
@@ -165,13 +171,41 @@
           <Property Name="CompanyID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CompanyName" Type="varchar" Nullable="false" MaxLength="100" />
           <Property Name="FilmSubmissionId" Type="int" Nullable="false" />
-          <Property Name="CorporateParentID" Type="int" Nullable="false" />
-          <Property Name="Member" Type="tinyint" Nullable="false" />
-          <Property Name="Phone" Type="varchar" MaxLength="25" />
-          <Property Name="FAX" Type="varchar" MaxLength="25" />
+          <Property Name="RelTypeId" Type="int" Nullable="false" />
+          <Property Name="RelDate" Type="datetime" />
+          <Property Name="Phone" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="FAX" Type="varchar" Nullable="false" MaxLength="25" />
           <Property Name="AddressID" Type="int" Nullable="false" />
           <Property Name="URL" Type="varchar" MaxLength="50" />
           <Property Name="Valid" Type="int" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompanyContact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="FilmSubmissionId" Type="int" Nullable="false" />
+          <Property Name="LastName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="FirstName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="MidName" Type="char" Nullable="false" MaxLength="1" />
+          <Property Name="Suffix" Type="varchar" Nullable="false" MaxLength="4" />
+          <Property Name="AddressID" Type="int" Nullable="false" />
+          <Property Name="Phone1" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="Phone2" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="eMail" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContactRole">
+          <Key>
+            <PropertyRef Name="ContactRoleID" />
+          </Key>
+          <Property Name="ContactRoleID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -260,6 +294,13 @@
           <Property Name="PostScreeningActionId" Type="int" Nullable="false" />
           <Property Name="Description" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
+        <EntityType Name="RelType">
+          <Key>
+            <PropertyRef Name="RelTypeID" />
+          </Key>
+          <Property Name="RelTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Screener">
           <Key>
             <PropertyRef Name="ScreenerId" />
@@ -340,13 +381,13 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CoContact_Company">
-          <End Role="Company" Type="CaraOnlineForms_DevModel.Store.Company" Multiplicity="0..1" />
-          <End Role="CoContact" Type="CaraOnlineForms_DevModel.Store.CoContact" Multiplicity="*" />
+          <End Role="Company" Type="CaraOnlineForms_DevModel.Store.Company" Multiplicity="1" />
+          <End Role="CompanyContact" Type="CaraOnlineForms_DevModel.Store.CompanyContact" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="CompanyID" />
             </Principal>
-            <Dependent Role="CoContact">
+            <Dependent Role="CompanyContact">
               <PropertyRef Name="CompanyID" />
             </Dependent>
           </ReferentialConstraint>
@@ -372,6 +413,66 @@
             </Principal>
             <Dependent Role="Company">
               <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Company_RelType">
+          <End Role="RelType" Type="CaraOnlineForms_DevModel.Store.RelType" Multiplicity="1" />
+          <End Role="Company" Type="CaraOnlineForms_DevModel.Store.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelType">
+              <PropertyRef Name="RelTypeID" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="RelTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Company_User">
+          <End Role="User" Type="CaraOnlineForms_DevModel.Store.User" Multiplicity="1" />
+          <End Role="Company" Type="CaraOnlineForms_DevModel.Store.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyContact_Address">
+          <End Role="Address" Type="CaraOnlineForms_DevModel.Store.Address" Multiplicity="1" />
+          <End Role="CompanyContact" Type="CaraOnlineForms_DevModel.Store.CompanyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressID" />
+            </Principal>
+            <Dependent Role="CompanyContact">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyContact_Role">
+          <End Role="ContactRole" Type="CaraOnlineForms_DevModel.Store.ContactRole" Multiplicity="1" />
+          <End Role="CompanyContact" Type="CaraOnlineForms_DevModel.Store.CompanyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactRole">
+              <PropertyRef Name="ContactRoleID" />
+            </Principal>
+            <Dependent Role="CompanyContact">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyContact_User">
+          <End Role="User" Type="CaraOnlineForms_DevModel.Store.User" Multiplicity="1" />
+          <End Role="CompanyContact" Type="CaraOnlineForms_DevModel.Store.CompanyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="CompanyContact">
+              <PropertyRef Name="ModifiedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -620,24 +721,46 @@
             <End Role="ScreenerAttribute" EntitySet="ScreenerAttributes" />
           </AssociationSet>
           <EntitySet Name="Addresses" EntityType="CaraOnlineForms_DevModel.Address" />
-          <EntitySet Name="CoContacts" EntityType="CaraOnlineForms_DevModel.CoContact" />
+          <EntitySet Name="CertificateMailings" EntityType="CaraOnlineForms_DevModel.CertificateMailing" />
+          <AssociationSet Name="FK_CertificateMailing_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_CertificateMailing_FilmSubmission">
+            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
+            <End Role="CertificateMailing" EntitySet="CertificateMailings" />
+          </AssociationSet>
           <EntitySet Name="Companies" EntityType="CaraOnlineForms_DevModel.Company" />
+          <EntitySet Name="CompanyContacts" EntityType="CaraOnlineForms_DevModel.CompanyContact" />
           <AssociationSet Name="FK_Company_Address" Association="CaraOnlineForms_DevModel.FK_Company_Address">
             <End Role="Address" EntitySet="Addresses" />
             <End Role="Company" EntitySet="Companies" />
           </AssociationSet>
+          <AssociationSet Name="FK_CompanyContact_Address" Association="CaraOnlineForms_DevModel.FK_CompanyContact_Address">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="CompanyContact" EntitySet="CompanyContacts" />
+          </AssociationSet>
           <AssociationSet Name="FK_CoContact_Company" Association="CaraOnlineForms_DevModel.FK_CoContact_Company">
             <End Role="Company" EntitySet="Companies" />
-            <End Role="CoContact" EntitySet="CoContacts" />
+            <End Role="CompanyContact" EntitySet="CompanyContacts" />
           </AssociationSet>
           <AssociationSet Name="FK_Company_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_Company_FilmSubmission">
             <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
             <End Role="Company" EntitySet="Companies" />
           </AssociationSet>
-          <EntitySet Name="CertificateMailings" EntityType="CaraOnlineForms_DevModel.CertificateMailing" />
-          <AssociationSet Name="FK_CertificateMailing_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_CertificateMailing_FilmSubmission">
-            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
-            <End Role="CertificateMailing" EntitySet="CertificateMailings" />
+          <AssociationSet Name="FK_Company_User" Association="CaraOnlineForms_DevModel.FK_Company_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyContact_User" Association="CaraOnlineForms_DevModel.FK_CompanyContact_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="CompanyContact" EntitySet="CompanyContacts" />
+          </AssociationSet>
+          <EntitySet Name="ContactRoles" EntityType="CaraOnlineForms_DevModel.ContactRole" />
+          <EntitySet Name="RelTypes" EntityType="CaraOnlineForms_DevModel.RelType" />
+          <AssociationSet Name="FK_Company_RelType" Association="CaraOnlineForms_DevModel.FK_Company_RelType">
+            <End Role="RelType" EntitySet="RelTypes" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyContact_Role" Association="CaraOnlineForms_DevModel.FK_CompanyContact_Role">
+            <End Role="ContactRole" EntitySet="ContactRoles" />
+            <End Role="CompanyContact" EntitySet="CompanyContacts" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Country">
@@ -691,6 +814,8 @@
           <NavigationProperty Name="FilmSubmissions1" Relationship="CaraOnlineForms_DevModel.FK_FilmSubmission_User" FromRole="User" ToRole="FilmSubmission" />
           <NavigationProperty Name="PasswordToResets" Relationship="CaraOnlineForms_DevModel.FK_PasswordToReset_User" FromRole="User" ToRole="PasswordToReset" />
           <NavigationProperty Name="Screeners" Relationship="CaraOnlineForms_DevModel.FK_Screener_ModifiedBy" FromRole="User" ToRole="Screener" />
+          <NavigationProperty Name="Companies" Relationship="CaraOnlineForms_DevModel.FK_Company_User" FromRole="User" ToRole="Company" />
+          <NavigationProperty Name="CompanyContacts" Relationship="CaraOnlineForms_DevModel.FK_CompanyContact_User" FromRole="User" ToRole="CompanyContact" />
           </EntityType>
         <Association Name="FK_EmailsToConfirm_User">
           <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
@@ -749,8 +874,8 @@
           <NavigationProperty Name="User1" Relationship="CaraOnlineForms_DevModel.FK_FilmSubmission_User" FromRole="FilmSubmission" ToRole="User" />
           <NavigationProperty Name="Participants" Relationship="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission" FromRole="FilmSubmission" ToRole="Participant" />
           <NavigationProperty Name="Screeners" Relationship="CaraOnlineForms_DevModel.FK_Screener_FilmSubmission" FromRole="FilmSubmission" ToRole="Screener" />
-          <NavigationProperty Name="Companies" Relationship="CaraOnlineForms_DevModel.FK_Company_FilmSubmission" FromRole="FilmSubmission" ToRole="Company" />
           <NavigationProperty Name="CertificateMailings" Relationship="CaraOnlineForms_DevModel.FK_CertificateMailing_FilmSubmission" FromRole="FilmSubmission" ToRole="CertificateMailing" />
+          <NavigationProperty Name="Companies" Relationship="CaraOnlineForms_DevModel.FK_Company_FilmSubmission" FromRole="FilmSubmission" ToRole="Company" />
         </EntityType>
         <Association Name="FK_FilmAltTitle_Film">
           <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
@@ -1011,78 +1136,8 @@
           <Property Type="String" Name="PostalCode" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Country" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Companies" Relationship="CaraOnlineForms_DevModel.FK_Company_Address" FromRole="Address" ToRole="Company" />
+          <NavigationProperty Name="CompanyContacts" Relationship="CaraOnlineForms_DevModel.FK_CompanyContact_Address" FromRole="Address" ToRole="CompanyContact" />
         </EntityType>
-        <EntityType Name="CoContact">
-          <Key>
-            <PropertyRef Name="CoContactID" />
-          </Key>
-          <Property Type="Int32" Name="CoContactID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="CompanyID" />
-          <Property Type="String" Name="LastName" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="FirstName" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MidName" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="Suffix" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="AddressID" />
-          <Property Type="String" Name="Phone1" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Phone2" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="eMail" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Role" MaxLength="25" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Company" Relationship="CaraOnlineForms_DevModel.FK_CoContact_Company" FromRole="CoContact" ToRole="Company" />
-        </EntityType>
-        <EntityType Name="Company">
-          <Key>
-            <PropertyRef Name="CompanyID" />
-          </Key>
-          <Property Type="Int32" Name="CompanyID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="FilmSubmissionId" Nullable="false" />
-          <Property Type="Int32" Name="CorporateParentID" Nullable="false" />
-          <Property Type="Byte" Name="Member" Nullable="false" />
-          <Property Type="String" Name="Phone" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="FAX" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="AddressID" Nullable="false" />
-          <Property Type="String" Name="URL" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="Valid" Nullable="false" />
-          <NavigationProperty Name="Address" Relationship="CaraOnlineForms_DevModel.FK_Company_Address" FromRole="Company" ToRole="Address" />
-          <NavigationProperty Name="CoContacts" Relationship="CaraOnlineForms_DevModel.FK_CoContact_Company" FromRole="Company" ToRole="CoContact" />
-          <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_Company_FilmSubmission" FromRole="Company" ToRole="FilmSubmission" />
-        </EntityType>
-        <Association Name="FK_Company_Address">
-          <End Type="CaraOnlineForms_DevModel.Address" Role="Address" Multiplicity="1" />
-          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Address">
-              <PropertyRef Name="AddressID" />
-            </Principal>
-            <Dependent Role="Company">
-              <PropertyRef Name="AddressID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CoContact_Company">
-          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="0..1" />
-          <End Type="CaraOnlineForms_DevModel.CoContact" Role="CoContact" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="CoContact">
-              <PropertyRef Name="CompanyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Company_FilmSubmission">
-          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
-          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FilmSubmission">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Principal>
-            <Dependent Role="Company">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="CertificateMailing">
           <Key>
             <PropertyRef Name="CertificateMailingId" />
@@ -1118,6 +1173,163 @@
             </Principal>
             <Dependent Role="CertificateMailing">
               <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Type="Int32" Name="CompanyID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="FilmSubmissionId" Nullable="false" />
+          <Property Type="Int32" Name="RelTypeId" Nullable="false" />
+          <Property Type="DateTime" Name="RelDate" Precision="3" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FAX" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="AddressID" Nullable="false" />
+          <Property Type="String" Name="URL" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="Valid" Nullable="false" />
+          <Property Type="DateTime" Name="ModifiedDate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
+          <NavigationProperty Name="Address" Relationship="CaraOnlineForms_DevModel.FK_Company_Address" FromRole="Company" ToRole="Address" />
+          <NavigationProperty Name="CompanyContacts" Relationship="CaraOnlineForms_DevModel.FK_CoContact_Company" FromRole="Company" ToRole="CompanyContact" />
+          <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_Company_FilmSubmission" FromRole="Company" ToRole="FilmSubmission" />
+          <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_Company_User" FromRole="Company" ToRole="User" />
+          <NavigationProperty Name="RelType" Relationship="CaraOnlineForms_DevModel.FK_Company_RelType" FromRole="Company" ToRole="RelType" />
+        </EntityType>
+        <EntityType Name="CompanyContact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Type="Int32" Name="ContactID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="CompanyID" Nullable="false" />
+          <Property Type="Int32" Name="FilmSubmissionId" Nullable="false" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MidName" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="Suffix" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="AddressID" Nullable="false" />
+          <Property Type="String" Name="Phone1" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Phone2" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="eMail" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="RoleId" Nullable="false" />
+          <Property Type="DateTime" Name="ModifiedDate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
+          <NavigationProperty Name="Address" Relationship="CaraOnlineForms_DevModel.FK_CompanyContact_Address" FromRole="CompanyContact" ToRole="Address" />
+          <NavigationProperty Name="Company" Relationship="CaraOnlineForms_DevModel.FK_CoContact_Company" FromRole="CompanyContact" ToRole="Company" />
+          <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_CompanyContact_User" FromRole="CompanyContact" ToRole="User" />
+          <NavigationProperty Name="ContactRole" Relationship="CaraOnlineForms_DevModel.FK_CompanyContact_Role" FromRole="CompanyContact" ToRole="ContactRole" />
+        </EntityType>
+        <Association Name="FK_Company_Address">
+          <End Type="CaraOnlineForms_DevModel.Address" Role="Address" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressID" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyContact_Address">
+          <End Type="CaraOnlineForms_DevModel.Address" Role="Address" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.CompanyContact" Role="CompanyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressID" />
+            </Principal>
+            <Dependent Role="CompanyContact">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CoContact_Company">
+          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.CompanyContact" Role="CompanyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="CompanyContact">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Company_FilmSubmission">
+          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FilmSubmission">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Company_User">
+          <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyContact_User">
+          <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.CompanyContact" Role="CompanyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="CompanyContact">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ContactRole">
+          <Key>
+            <PropertyRef Name="ContactRoleID" />
+          </Key>
+          <Property Type="Int32" Name="ContactRoleID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CompanyContacts" Relationship="CaraOnlineForms_DevModel.FK_CompanyContact_Role" FromRole="ContactRole" ToRole="CompanyContact" />
+        </EntityType>
+        <EntityType Name="RelType">
+          <Key>
+            <PropertyRef Name="RelTypeID" />
+          </Key>
+          <Property Type="Int32" Name="RelTypeID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Companies" Relationship="CaraOnlineForms_DevModel.FK_Company_RelType" FromRole="RelType" ToRole="Company" />
+        </EntityType>
+        <Association Name="FK_Company_RelType">
+          <End Type="CaraOnlineForms_DevModel.RelType" Role="RelType" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelType">
+              <PropertyRef Name="RelTypeID" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="RelTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyContact_Role">
+          <End Type="CaraOnlineForms_DevModel.ContactRole" Role="ContactRole" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.CompanyContact" Role="CompanyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactRole">
+              <PropertyRef Name="ContactRoleID" />
+            </Principal>
+            <Dependent Role="CompanyContact">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1316,39 +1528,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CoContacts">
-            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.CoContact">
-              <MappingFragment StoreEntitySet="CoContact">
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="eMail" ColumnName="eMail" />
-                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
-                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
-                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
-                <ScalarProperty Name="Suffix" ColumnName="Suffix" />
-                <ScalarProperty Name="MidName" ColumnName="MidName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
-                <ScalarProperty Name="CoContactID" ColumnName="CoContactID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Companies">
-            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.Company">
-              <MappingFragment StoreEntitySet="Company">
-                <ScalarProperty Name="Valid" ColumnName="Valid" />
-                <ScalarProperty Name="URL" ColumnName="URL" />
-                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
-                <ScalarProperty Name="FAX" ColumnName="FAX" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Member" ColumnName="Member" />
-                <ScalarProperty Name="CorporateParentID" ColumnName="CorporateParentID" />
-                <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CertificateMailings">
             <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.CertificateMailing">
               <MappingFragment StoreEntitySet="CertificateMailing">
@@ -1372,6 +1551,60 @@
                 <ScalarProperty Name="Original" ColumnName="Original" />
                 <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
                 <ScalarProperty Name="CertificateMailingId" ColumnName="CertificateMailingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="Valid" ColumnName="Valid" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="RelDate" ColumnName="RelDate" />
+                <ScalarProperty Name="RelTypeId" ColumnName="RelTypeId" />
+                <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyContacts">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.CompanyContact">
+              <MappingFragment StoreEntitySet="CompanyContact">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="eMail" ColumnName="eMail" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="Suffix" ColumnName="Suffix" />
+                <ScalarProperty Name="MidName" ColumnName="MidName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContactRoles">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.ContactRole">
+              <MappingFragment StoreEntitySet="ContactRole">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ContactRoleID" ColumnName="ContactRoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelTypes">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.RelType">
+              <MappingFragment StoreEntitySet="RelType">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="RelTypeID" ColumnName="RelTypeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

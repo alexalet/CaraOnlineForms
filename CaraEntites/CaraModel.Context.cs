@@ -41,8 +41,10 @@ namespace CaraEntites
         public DbSet<Attribute> Attributes { get; set; }
         public DbSet<ScreenerAttribute> ScreenerAttributes { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<CoContact> CoContacts { get; set; }
-        public DbSet<Company> Companies { get; set; }
         public DbSet<CertificateMailing> CertificateMailings { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<CompanyContact> CompanyContacts { get; set; }
+        public DbSet<ContactRole> ContactRoles { get; set; }
+        public DbSet<RelType> RelTypes { get; set; }
     }
 }

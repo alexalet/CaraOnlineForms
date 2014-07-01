@@ -135,6 +135,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\NavMenuController.cs" />
@@ -157,6 +158,8 @@
     </Compile>
     <Compile Include="ViewModels\Captcha.cs" />
     <Compile Include="ViewModels\CaptchaResult.cs" />
+    <Compile Include="ViewModels\ContactViewModel.cs" />
+    <Compile Include="ViewModels\CompanyViewModel.cs" />
     <Compile Include="ViewModels\ScreenerViewModel.cs" />
     <Compile Include="ViewModels\ScreenerInfoViewModel.cs" />
     <Compile Include="ViewModels\CountryViewModel.cs" />
@@ -168,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\Background.jpg" />
+    <Content Include="Content\Images\busy.gif" />
     <Content Include="Content\Images\MPAA_logo.png" />
     <Content Include="Content\superfish-navbar.css" />
     <Content Include="Content\superfish-vertical.css" />
@@ -304,6 +308,8 @@
     <Content Include="Views\Screener\_TimePicker.cshtml" />
     <Content Include="Views\Contacts\Contacts.cshtml" />
     <Content Include="Views\Contacts\_CertificateMailingRecipient.cshtml" />
+    <Content Include="Views\Company\_CompanyEdit.cshtml" />
+    <Content Include="Views\Company\Companies.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

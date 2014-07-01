@@ -1,0 +1,52 @@
+﻿@using CaraEntites;
+@using ViewModels;
+@model CompaniesViewModel
+@{
+    ViewBag.Title = "Contacts";
+    Html.RenderAction("_WorkFlow", "NavMenu", new { StepId = "Company" });
+}
+
+<script>
+    function AddCompany() {
+        var $btn = $('<a></a>').attr('href', '@Url.Action("EditCompanyInfo")' + '?companyId=-1&filmId=' + '@Model.FilmSubmissionId');    //companyId;
+        dialogSelfSubmitting($btn, "dlgAddEditCompany", "Add Company", 650, null, false);
+
+    }
+
+    function NextPage(url) {
+        document.location.href = url;
+    }
+
+    @{ if (ViewBag.Message != null)
+       {
+            @:$.growlUI('', '@ViewBag.Message');
+            }
+    }
+</script>
+<br />
+<div id="Companies">
+    <fieldset>
+        <legend>Companies/Contacts</legend>
+        <table>
+            <thead>
+            </thead>
+            <tbody>
+                @foreach (Company comp in Model.Companies)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink("Edit", "EditCompanyInfo", new { companyId = comp.CompanyID }, new { @class = "gridButtonLink" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Delete", "DeleteCompany", new { companyId = comp.CompanyID }, new { @class = "gridButtonLink" })
+                        </td>
+                        <td>Company Name: @comp.CompanyName<br />
+                            Company Type: @comp.RelType
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+<input type="button" value="Add Company" style="margin-left: 10px; float: left" onclick="AddCompany()" />

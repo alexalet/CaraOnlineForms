@@ -12,23 +12,16 @@ namespace CaraEntites
     using System;
     using System.Collections.Generic;
     
-    public partial class Address
+    public partial class RelType
     {
-        public Address()
+        public RelType()
         {
             this.Companies = new HashSet<Company>();
-            this.CompanyContacts = new HashSet<CompanyContact>();
         }
     
-        public int AddressID { get; set; }
-        public string Addr1 { get; set; }
-        public string Addr2 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string PostalCode { get; set; }
-        public string Country { get; set; }
+        public int RelTypeID { get; set; }
+        public string Description { get; set; }
     
         public virtual ICollection<Company> Companies { get; set; }
-        public virtual ICollection<CompanyContact> CompanyContacts { get; set; }
     }
 }
