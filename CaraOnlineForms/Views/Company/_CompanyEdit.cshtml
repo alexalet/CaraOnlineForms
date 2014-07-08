@@ -6,6 +6,11 @@
     var _beforeChanges = '';
     $(document).ready(function () {
         _beforeChanges = $("#frmCompanyInfo").serialize();
+
+        $("#frmCompanyInfo").find("input[type!='hidden'], select").not('.notRequired').each(function (index) {
+            $(this).addClass("yellowBack");
+        });
+        //MakeYellow("#frmCompanyInfo");
     });
 
     // -- if any field on the form is changed, ask the user if he really wants to close without saving the changes.
@@ -20,16 +25,35 @@
         }
     }   //-- End Close Dialog
 
-    function SaveCompanyInfo() {
-        var $btn = $('<a></a>').attr('href', '@Url.Action("SaveCompanyInfo")');
-        var callback = function () {
-            $('#dlgAddEditCompany').remove();
-            //ReloadContacts(nextStep);
-        };
-        //$("#frmCompanyInfo").submit();
-        //$('#dlgAddEditCompany').remove();
-        callAction($btn, $('#Companies'), false, callback, "Company Info has been updated", $('#frmCompanyInfo'));
+    function ValidateForm(formId) {
+        var errors = new Array();
+        $("#" + formId).find("input[type!='hidden'], select").not('.notRequired').each(function (index) {
+            var name = $(this).attr("name");
+            if ($(this).val().trim() == "" || $(this).val().trim() == "-1")    //-1 is for some dropdowns
+                errors.push(name + " is required");
+            if (name.toLowerCase() == "email" && $(this).val() != "") {
+                if (!ValidateEmailAddress($(this).val()))
+                    errors.push("Emai address is incorrect")
+            }
+        });
+        return errors;
     }
+
+    function SaveCompanyInfo() {
+        var errors = ValidateForm("frmCompanyInfo");
+        if (errors.length == 0) {
+            var $btn = $('<a></a>').attr('href', '@Url.Action("SaveCompanyInfo")');
+            var callback = function () {
+                $('#dlgAddEditCompany').remove();
+                ReloadPage();
+            };
+
+            callAction($btn, $('#Companies'), false, callback, "Company Info has been updated", $('#frmCompanyInfo'));
+        }
+        else {
+            DisplayErrors(errors, "Error");
+        }
+    }  // -- End SaveCompanyInfo
 
 </script>
 <form id="frmCompanyInfo" action="@Url.Action("SaveCompanyInfo")">
@@ -55,7 +79,7 @@
                 <span class="inline-block">Address 1:&nbsp;
                 @Html.TextBoxFor(m => m.Address.Addr1, new { @maxlength = "50", @style = "width:200px;" })
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbspAddress 2:&nbsp
-                @Html.TextBoxFor(m => m.Address.Addr2, new { @maxlength = "50", @style = "width:190px;" })
+                @Html.TextBoxFor(m => m.Address.Addr2, new { @maxlength = "50", @style = "width:190px;", @class="notRequired" })
                 </span>
             </div>
             <div style="margin-bottom: 10px;">
@@ -69,7 +93,7 @@
             </div>
             <div style="margin-bottom: 10px;">
                 <span class="inline-block">Country:&nbsp;&nbsp;&nbsp;&nbsp;
-                @Html.TextBoxFor(m => m.Address.Country, new { @maxlength = "50", @style = "width:250px;" })
+                @Html.TextBoxFor(m => m.Address.Country, new { @maxlength = "50", @style = "width:250px;", @class="notRequired" })
                 </span>
             </div>
             <div style="margin-bottom: 10px;">
@@ -87,6 +111,6 @@
         </div>
     </div>
 
-    <input type="button" style="margin-left: 20px; margin-top: 10px;" value="Save Company Info" class="saveCompanyInfo green" onclick="SaveCompanyInfo()" />
-    <input type="button" value="Close" class="rightFloat" style="margin-right: 20px;" onclick="CloseDlgCompanyInfo()" />
+    <input type="button" style="margin-left: 20px; margin-top: 10px;" value="Save Company Info" class="saveCompanyInfo green notRequired" onclick="SaveCompanyInfo()" />
+    <input type="button" value="Close" class="rightFloat notRequired" style="margin-right: 20px;margin-top: 10px;" onclick="CloseDlgCompanyInfo()" />
 </form>

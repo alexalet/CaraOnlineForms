@@ -60,3 +60,4 @@ function jQueryTableStylingPartial(fragment) {
     $(".grid-footer a", fragment).attr('href', 'javascript:void(0)');
     $(".webgrid-header a", fragment).attr('href', 'javascript:void(0)');
 }
+

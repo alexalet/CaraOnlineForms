@@ -7,46 +7,116 @@
 }
 
 <script>
+    $(document).ready(function () {
+        _cache = $('#frmCompanies').serialize();
+    });
     function AddCompany() {
         var $btn = $('<a></a>').attr('href', '@Url.Action("EditCompanyInfo")' + '?companyId=-1&filmId=' + '@Model.FilmSubmissionId');    //companyId;
         dialogSelfSubmitting($btn, "dlgAddEditCompany", "Add Company", 650, null, false);
 
     }
 
-    function NextPage(url) {
-        document.location.href = url;
+    function ReloadPage() {
+        document.location.reload(true);
     }
 
     @{ if (ViewBag.Message != null)
        {
             @:$.growlUI('', '@ViewBag.Message');
-            }
+                    }
+    }
+
+
+    function EditCompany($btn) {
+        var $arg = $('<a></a>').attr('href', '@Url.Action("EditCompanyInfo")' + '?companyId=' + $btn.data('compid') + '&filmId=' + '@Model.FilmSubmissionId');
+        dialogSelfSubmitting($arg, "dlgAddEditCompany", "Edit Company", 650, null, false);
+    }
+
+    function DeleteCompany($btn) {
+
+        var callBack = function () {
+            var $arg = $('<a></a>').attr('href', '@Url.Action("DeleteCompany")' + '?companyId=' + $btn.data('compid') + '&filmId=' + '@Model.FilmSubmissionId');
+            callAction($arg, $('#Companies'), false, ReloadPage(), "Company has been deleted", $('#frmCompanies'));
+        };
+        var msg = "This Company and all Contacts <span style='color:red'>will be deleted permanently.</span><br/>Do you want to delete?";
+        confirmActionYesNo(msg, "Confirm Delete", "Yes", "No", callBack, function () { });
+
+    }
+
+    function AddContact($btn) {
+        var $arg = $('<a></a>').attr('href', '@Url.Action("EditCompanyContact")' + '?companyId=' + $btn.data('compid') + '&contactId=-1' + '&filmId=' + '@Model.FilmSubmissionId');
+        dialogSelfSubmitting($arg, "dlgAddEditCompanyContact", "Add Contact", 950, null, false);
+    }
+
+    function EditCompanyContact($btn) {
+        var $arg = $('<a></a>').attr('href', '@Url.Action("EditCompanyContact")' + '?companyId=' + $btn.data('compid') + '&contactId=' + $btn.data('contid') + '&filmId=' + '@Model.FilmSubmissionId');
+        dialogSelfSubmitting($arg, "dlgAddEditCompanyContact", "Add Contact", 950, null, false);
+    }
+
+    function DeleteCompanyContact($btn) {
+
+        var callBack = function () {
+            var $arg = $('<a></a>').attr('href', '@Url.Action("DeleteCompanyContact")' + '?companyId=' + $btn.data('compid') + '&contactId=' + $btn.data('contid') + '&filmId=' + '@Model.FilmSubmissionId');
+            callAction($arg, $('#Companies'), false, ReloadPage(), "Contact has been deleted", $('#frmCompanies'));
+        };
+        var msg = "This Contact <span style='color:red'>will be deleted permanently.</span><br/>Do you want to delete?";
+        confirmActionYesNo(msg, "Confirm Delete", "Yes", "No", callBack, function () { });
+
     }
 </script>
-<br />
-<div id="Companies">
-    <fieldset>
-        <legend>Companies/Contacts</legend>
-        <table>
-            <thead>
-            </thead>
-            <tbody>
-                @foreach (Company comp in Model.Companies)
-                {
+<form id="frmCompanies">
+    <br />
+    <div id="Companies">
+        <fieldset>
+            <legend>Companies/Contacts</legend>
+            <table style="border-collapse: collapse; border: 1px solid darkblue; border-radius:5px;border-width:1px; font-size:13px;width:100%;">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.ActionLink("Edit", "EditCompanyInfo", new { companyId = comp.CompanyID }, new { @class = "gridButtonLink" })
-                        </td>
-                        <td>
-                            @Html.ActionLink("Delete", "DeleteCompany", new { companyId = comp.CompanyID }, new { @class = "gridButtonLink" })
-                        </td>
-                        <td>Company Name: @comp.CompanyName<br />
-                            Company Type: @comp.RelType
-                        </td>
+                        <td></td>
+                        <td>Companies</td>
+                        <td>Contacts</td>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </fieldset>
-</div>
-<input type="button" value="Add Company" style="margin-left: 10px; float: left" onclick="AddCompany()" />
+                </thead>
+                <tbody>
+                    @foreach (Company comp in Model.Companies)
+                    {
+                        <tr style="vertical-align: top;border: 1px solid darkblue; border-radius:5px;border-width:1px;width:10%;">
+                            <td style="border: 1px solid darkblue; border-radius:5px;border-width:1px;padding:5px;">
+                                <input type="button" value="Edit" id="@comp.CompanyID" data-compid="@comp.CompanyID" class="editCompany" onclick="EditCompany($(this)); return false" style="font-size: 0.75em !important" />
+                                <input type="button" value="Delete" data-compid="@comp.CompanyID" class="deleteCompany" onclick="DeleteCompany($(this)); return false" style="font-size: 0.75em !important" /><br />
+                                <input type="button" value="Add Contact" data-compid="@comp.CompanyID" class="addContact" onclick="AddContact($(this)); return false" style="font-size: 0.75em !important" />
+                            </td>
+                            <td style="border: 1px solid darkblue; border-radius:15px;border-width:1px;width:40%;padding:5px;">Company Name: @comp.CompanyName <br />Company Type: @comp.RelType.Description<br />
+                                Address: @comp.Address.Addr1 &nbsp;@comp.Address.Addr2
+                                <br />
+                                City: @comp.Address.City &nbsp;State: @comp.Address.State @comp.Address.Country &nbsp;Zip: @comp.Address.PostalCode
+                                <br />
+                                Phone: @comp.Phone   &nbsp;&nbsp;Fax: @comp.FAX<br />
+                            </td>
+
+                            <td style="border: 1px solid darkblue; border-radius:5px;border-width:1px;width:50%;">
+                                <table style="border-collapse: collapse; border-color: blue; border-radius:15px;border-width:1px; font-size:13px;" border="1">
+                                    @foreach (CompanyContact cont in comp.CompanyContacts)
+                                    {
+                                        <tr style="vertical-align: top">
+                                            <td style="border: 1px solid green; border-radius:5px;border-width:1px;width:10%; padding:5px;">
+                                                <input type="button" value="Edit Contact" data-compid="@comp.CompanyID" data-contid="@cont.ContactID" class="editContact" onclick="EditCompanyContact($(this)); return false" style="font-size: 0.75em !important" /><br />
+                                                <input type="button" value="Delete Contact" data-compid="@comp.CompanyID" data-contid="@cont.ContactID" class="deleteContact" onclick="DeleteCompanyContact($(this)); return false" style="font-size: 0.75em !important" />
+                                            </td>
+                                            <td style="border: 1px solid green; border-radius:5px;border-width:1px;width:90%; padding:5px;">
+                                                @cont.Suffix @cont.FirstName @cont.MidName @cont.LastName <br />
+                                                Address: @cont.Address.Addr1  @cont.Address.Addr2, @cont.Address.City @cont.Address.State @cont.Address.PostalCode<br />
+                                                Email: @cont.eMail Role: @cont.ContactRole.Description
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+    <input type="button" value="Add Company" style="margin-left: 10px; float: left; font-size: 0.75em !important" onclick="AddCompany()" />
+</form>

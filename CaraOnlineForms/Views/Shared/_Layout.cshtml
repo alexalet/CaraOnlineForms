@@ -61,8 +61,8 @@
                 }
             };
             
-            if (_cache != $('form').first().serialize() || dirtyFormId != "") {
-                confirmActionYesNoCancel("The current page has been modified.<br/>Woud You like save changes?", "Save changes?", "Yes", "No", callbackYes, callbackNo);
+            if (_cache != $('form').first().serialize() || dirtyFormId != "") {  
+                   confirmActionYesNoCancel("The current page has been modified.<br/>Woud You like save changes?", "Save changes?", "Yes", "No", callbackYes, callbackNo);
             } else {
                 callbackNo();
             }

@@ -310,6 +310,7 @@
     <Content Include="Views\Contacts\_CertificateMailingRecipient.cshtml" />
     <Content Include="Views\Company\_CompanyEdit.cshtml" />
     <Content Include="Views\Company\Companies.cshtml" />
+    <Content Include="Views\Company\_CompanyContactEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

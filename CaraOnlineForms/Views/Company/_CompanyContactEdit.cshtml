@@ -1,0 +1,125 @@
+﻿@using CaraEntites;
+@using ViewModels;
+@model CompanyContact
+<script>
+    var _beforeChanges = '';
+    $(document).ready(function () {
+        _beforeChanges = $("#frmCompanyContact").serialize();
+
+        $("#frmCompanyContact").find("input[type!='hidden'], select").not('.notRequired').each(function (index) {
+            $(this).addClass("yellowBack");
+        });
+    });
+
+    function ValidateEmailAddress(email) {
+        var ck_email = new RegExp(/^([\w-]+(?:\.[\w-]+)*)@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i);
+        return ck_email.test(email);
+
+    }//--end ValidateEmailAddress --
+
+    function ValidateForm(formId) {
+        var errors = new Array();
+        $("#" + formId).find("input[type!='hidden'], select").not('.notRequired').each(function (index) {
+            var name = $(this).attr("name");
+            if ($(this).val().trim() == "" || $(this).val().trim() == "-1")   //-1 is for some dropdowns
+                errors.push(name + " is required");
+            if (name.toLowerCase() == "email" && $(this).val() != "") {
+                if (!ValidateEmailAddress($(this).val()))
+                    errors.push("Emai address is incorrect")
+            }
+        });
+        return errors;
+    }
+
+    // -- if any field on the form is changed, ask the user if he really wants to close without saving the changes.
+    // if yes, close the form, if not, focus on the Save button
+    function CloseDlgCompanyContact() {
+        if (_beforeChanges != $("#frmCompanyContact").serialize()) {
+            var msg = "This Company Contact has been changed.<br/><span style='color:red'>If you close now, the changes will be lost.</span><br/>Do you want to close?";
+            confirmActionYesNo(msg, "Confirm", "No, don't close", "Yes, close", function () { $('.saveCompanyContact').focus() }, function () { $('#dlgAddEditCompanyContact').remove() });
+        }
+        else {
+            $('#dlgAddEditCompanyContact').remove();
+        }
+    }   //-- End Close Dialog
+
+    function SaveCompanyContact() {
+        var errors = ValidateForm("frmCompanyContact");
+        if (errors.length == 0) {
+            var $btn = $('<a></a>').attr('href', '@Url.Action("SaveCompanyContact")');
+            var callback = function () {
+                $('#dlgAddEditCompanyContact').remove();
+                ReloadPage();
+            };
+            callAction($btn, $('#Companies'), false, callback, "Company Contact has been updated", $('#frmCompanyContact'));
+        }
+        else {
+            DisplayErrors(errors, "Error");
+        }
+    }
+
+
+</script>
+<form id="frmCompanyContact" action="@Url.Action("SaveCompanyContact")">
+    @{
+        List<SelectListItem> Roles = new List<SelectListItem>();
+        Roles.Add(new SelectListItem { Text = "", Value = "-1" });
+        Roles.Add(new SelectListItem { Text = "Accepting Person", Value = "1" });
+        Roles.Add(new SelectListItem { Text = "Advertising Contact", Value = "2" });
+        Roles.Add(new SelectListItem { Text = "Film Contact", Value = "3" });
+        Roles.Add(new SelectListItem { Text = "Scheduling Contact", Value = "4" });
+
+        List<SelectListItem> Suffixes = new List<SelectListItem>();
+        Suffixes.Add(new SelectListItem { Text = "", Value = "" });
+        Suffixes.Add(new SelectListItem { Text = "Mr.", Value = "Mr." });
+        Suffixes.Add(new SelectListItem { Text = "Mrs.", Value = "Mrs." });
+        Suffixes.Add(new SelectListItem { Text = "Ms.", Value = "Ms." });
+
+    }
+    @Html.HiddenFor(m => m.FilmSubmissionId)
+    @Html.HiddenFor(m => m.CompanyID)
+    @Html.HiddenFor(m => m.ContactID)
+    @Html.HiddenFor(m => m.Address.AddressID)
+    <div style="font-size: smaller;">
+        <div style="margin-bottom: 10px; margin-top: 7px;">
+            <span class="inline-block">First Name:&nbsp;
+                @Html.TextBoxFor(m => m.FirstName, new { @maxlength = "50", @style = "width:200px;" })
+                &nbsp;&nbsp;&nbsp; Middle Name:&nbsp
+                @Html.TextBoxFor(m => m.MidName, new { @maxlength = "10", @style = "width:50px;" })
+                &nbsp;&nbsp;&nbsp;&nbsp; Last Name:&nbsp
+                @Html.TextBoxFor(m => m.LastName, new { @maxlength = "50", @style = "width:190px;" })
+                &nbsp;&nbsp;&nbsp;&nbsp; Suff:&nbsp
+                @Html.DropDownListFor(m => m.Suffix, Suffixes)
+            </span>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <span class="inline-block">Address 1:&nbsp;&nbsp;
+                @Html.TextBoxFor(m => m.Address.Addr1, new { @maxlength = "50", @style = "width:200px;" })
+                <span class="inline-block" style="margin-left:40px;">Address 2:</span> @Html.TextBoxFor(m => m.Address.Addr2, new { @maxlength = "50", @style = "width:180px;", @class="notRequired" })
+                &nbsp;&nbsp;&nbsp;&nbsp; City:&nbsp; @Html.TextBoxFor(m => m.Address.City, new { @maxlength = "50", @style = "width:245px;" })
+            </span>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <span class="inline-block" style="margin-right:40px;">State:</span>
+            @Html.TextBoxFor(m => m.Address.State, new { @maxlength = "2", @style = "width:30px;" })&nbsp;&nbsp;
+            Zip:&nbsp;
+            @Html.TextBoxFor(m => m.Address.PostalCode, new { @maxlength = "10", @style = "width:103px;" })&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="inline-block" style="margin-right:30px;">Country:</span>
+            @Html.TextBoxFor(m => m.Address.Country, new { @maxlength = "50", @style = "width:250px;", @class="notRequired" })
+            
+        </div>
+        <div style="margin-bottom: 5px;">
+            Phone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.TextBoxFor(m => m.Phone1, new { @maxlength = "20", @style = "width:100px;" })&nbsp;&nbsp;
+            Fax:&nbsp; @Html.TextBoxFor(m => m.Phone2, new { @maxlength = "50", @style = "width:100px;" })&nbsp;&nbsp;
+            Email:&nbsp;
+            @Html.TextBoxFor(m => m.eMail, new { @maxlength = "20", @style = "width:200px;" })&nbsp;&nbsp;
+            Company Role:&nbsp;
+            @Html.DropDownListFor(m => m.RoleId, Roles)
+        </div>
+
+    </div>
+    <input type="button" style="margin-left: 20px; margin-top: 10px;" value="Save Contact" class="saveCompanyContact notRequired" onclick="SaveCompanyContact()" />
+    <input type="button" value="Close" class="rightFloat notRequired" style="margin-right: 20px; margin-top: 10px;" onclick="CloseDlgCompanyContact()" />
+</form>
+

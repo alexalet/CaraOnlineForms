@@ -57,7 +57,7 @@
             var name = $(this).attr("name");
             if ($(this).val().trim() == "")
                 errors.push(name + " is required");
-            if (name == "Email" && $(this).val()!="") {
+            if (name.toLowerCase() == "email" && $(this).val() != "") {
                 if(!ValidateEmailAddress($(this).val()))
                     errors.push("Emai address is incorrect")
             }
@@ -94,7 +94,7 @@
                 <span style="margin-right: 62px;">City:</span>&nbsp;<input type="text" name="City" style="width:100px;" class="yellowBack" maxlength="95" value="@(Model.City ?? "")"/>&nbsp;&nbsp;&nbsp;
                 <span style="margin-right: 5px;">State:</span>&nbsp;<input type="text" name="State" style="width:20px;" maxlength="3" class="yellowBack" value="@(Model.State ?? "")"/>&nbsp;&nbsp;&nbsp;
                 <span style="margin-right: 8px; margin-left: 2px;">&nbsp;Zip:</span>&nbsp;<input type="text" name="Zip" style="width:80px;" maxlength="10" class="yellowBack" value="@(Model.Zip ?? "")"/>&nbsp;&nbsp;&nbsp;
-                <span style="margin-right: 5px; margin-left: 5px;">Country:</span>&nbsp;<input type="text" class="width200 notRequired" name="Country" style="maxlength="95" value="@(Model.Country ?? "")"/>&nbsp;&nbsp;&nbsp;
+                <span style="margin-right: 5px; margin-left: 5px;">Country:</span>&nbsp;<input type="text" class="width200 notRequired" name="Country" maxlength="95" value="@(Model.Country ?? "")"/>&nbsp;&nbsp;&nbsp;
             </div>
             <div style="margin-bottom: 7px;">
                 <span style="margin-right: 46px;">Phone:</span>&nbsp;<input type="text" name="Phone" class="width150 yellowBack" maxlength="50" value="@(Model.Phone ?? "")"/>

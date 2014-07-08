@@ -36,6 +36,7 @@
     </style>
     <script>
         $(function () {
+            _cache = $('#Participants').serialize();
             $('.AddMore').click(function () {
                 var name = $(this).attr('name');
                 var fieldset = $(this).closest('fieldset');
@@ -67,7 +68,7 @@
     Html.RenderAction("_WorkFlow", "NavMenu", new {StepId="Participants" });
 }
 <body>
-    <form action="@Url.Action("SaveParticipants")">
+    <form id="Participants" action="@Url.Action("SaveParticipants")">
         <fieldset>
             <legend>Actor(s):</legend>
             @for (int i = 0; i < actors.Count; i++)
