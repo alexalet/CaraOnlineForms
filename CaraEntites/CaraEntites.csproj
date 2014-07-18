@@ -81,6 +81,9 @@
     <Compile Include="CompanyContact.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CompanyRightsType.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ContactRole.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
@@ -113,6 +116,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelType.cs">
+      <DependentUpon>CaraModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RightsType.cs">
       <DependentUpon>CaraModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Screener.cs">

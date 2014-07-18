@@ -10,7 +10,13 @@
         $("#frmCompanyInfo").find("input[type!='hidden'], select").not('.notRequired').each(function (index) {
             $(this).addClass("yellowBack");
         });
-        //MakeYellow("#frmCompanyInfo");
+
+        $(document).ready(function () {
+            var $relType = $('#RelTypeId').val().toUpperCase();
+            //ShowRelDate(/SUBMITTER/i.test($relType));
+
+        });
+
     });
 
     // -- if any field on the form is changed, ask the user if he really wants to close without saving the changes.
@@ -60,13 +66,21 @@
     @{
         List<SelectListItem> RelTypes = new List<SelectListItem>();
         RelTypes.Add(new SelectListItem { Text = "", Value = "-1" });
+        RelTypes.Add(new SelectListItem { Text = "Theatrical Distributor", Value = "8" });
+        RelTypes.Add(new SelectListItem { Text = "Home Entertainment Distributor", Value = "9" });
+        RelTypes.Add(new SelectListItem { Text = "VOD Distributor", Value = "4" });
         RelTypes.Add(new SelectListItem { Text = "Video Distributor", Value = "1" });
+        RelTypes.Add(new SelectListItem { Text = "Internet Distributor", Value = "10" });
+        RelTypes.Add(new SelectListItem { Text = "Other Distributor", Value = "6" });
+        RelTypes.Add(new SelectListItem { Text = "Distributor", Value = "5" });
+        RelTypes.Add(new SelectListItem { Text = "Submitter", Value = "11" });
         RelTypes.Add(new SelectListItem { Text = "Production Company", Value = "2" });
         RelTypes.Add(new SelectListItem { Text = "Rating Applicant", Value = "3" });
-        RelTypes.Add(new SelectListItem { Text = "VOD Distributor", Value = "4" });
-        RelTypes.Add(new SelectListItem { Text = "Distributor", Value = "5" });
-        RelTypes.Add(new SelectListItem { Text = "Other Distributor", Value = "6" });
         RelTypes.Add(new SelectListItem { Text = "Advertising Company", Value = "7" });
+        
+        
+        
+        
     }
     @Html.HiddenFor(m => m.FilmSubmissionId)
     @Html.HiddenFor(m => m.CompanyID)
@@ -79,7 +93,7 @@
                 <span class="inline-block">Address 1:&nbsp;
                 @Html.TextBoxFor(m => m.Address.Addr1, new { @maxlength = "50", @style = "width:200px;" })
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbspAddress 2:&nbsp
-                @Html.TextBoxFor(m => m.Address.Addr2, new { @maxlength = "50", @style = "width:190px;", @class="notRequired" })
+                @Html.TextBoxFor(m => m.Address.Addr2, new { @maxlength = "50", @style = "width:190px;", @class = "notRequired" })
                 </span>
             </div>
             <div style="margin-bottom: 10px;">
@@ -93,7 +107,7 @@
             </div>
             <div style="margin-bottom: 10px;">
                 <span class="inline-block">Country:&nbsp;&nbsp;&nbsp;&nbsp;
-                @Html.TextBoxFor(m => m.Address.Country, new { @maxlength = "50", @style = "width:250px;", @class="notRequired" })
+                @Html.TextBoxFor(m => m.Address.Country, new { @maxlength = "50", @style = "width:250px;", @class = "notRequired" })
                 </span>
             </div>
             <div style="margin-bottom: 10px;">
@@ -107,10 +121,24 @@
                 @Html.DropDownListFor(m => m.RelTypeId, RelTypes)&nbsp;&nbsp; &nbsp;
                 </span>
             </div>
-
+            @{
+                bool theatrical = (Model.CompanyRightsTypes.FirstOrDefault(x => x.RightsTypeId == 1) == null ? false : true);
+                bool dvd = (Model.CompanyRightsTypes.FirstOrDefault(x => x.RightsTypeId == 2) == null ? false : true);
+                bool vod = (Model.CompanyRightsTypes.FirstOrDefault(x => x.RightsTypeId == 3) == null ? false : true);
+                bool internet = (Model.CompanyRightsTypes.FirstOrDefault(x => x.RightsTypeId == 4) == null ? false : true);
+                bool other = (Model.CompanyRightsTypes.FirstOrDefault(x => x.RightsTypeId == 5) == null ? false : true);
+            }
+            <div class="rightsTypes">Company Rights:
+            Theatrical: <input type="checkbox" name="CompanyRightsTypes" id="theatrical" value="1" checked="@theatrical">
+            DVD: <input type="checkbox" name="CompanyRightsTypes" value="2" checked="@dvd">
+            VOD: <input type="checkbox" name="CompanyRightsTypes" value="3" checked="@vod">
+            Internet: <input type="checkbox" name="CompanyRightsTypes" value="4" checked="@internet">
+            Other: <input type="checkbox" name="CompanyRightsTypes" value="5" checked="@other">
+            </div>
         </div>
+
     </div>
 
     <input type="button" style="margin-left: 20px; margin-top: 10px;" value="Save Company Info" class="saveCompanyInfo green notRequired" onclick="SaveCompanyInfo()" />
-    <input type="button" value="Close" class="rightFloat notRequired" style="margin-right: 20px;margin-top: 10px;" onclick="CloseDlgCompanyInfo()" />
+    <input type="button" value="Close" class="rightFloat notRequired" style="margin-right: 20px; margin-top: 10px;" onclick="CloseDlgCompanyInfo()" />
 </form>

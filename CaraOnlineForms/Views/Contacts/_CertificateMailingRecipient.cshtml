@@ -100,7 +100,7 @@
                 <span style="margin-right: 46px;">Phone:</span>&nbsp;<input type="text" name="Phone" class="width150 yellowBack" maxlength="50" value="@(Model.Phone ?? "")"/>
                 <span style="margin-right: 5px; margin-left: 20px;">Fax:</span>&nbsp;<input type="text" name="Fax" class="width150 yellowBack" maxlength="50" value="@(Model.Fax ?? "")"/>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span style="margin-right: 5px;">Email:</span>&nbsp;<input type="text" name="Email" class="width200 yellowBack" maxlength="50" value="@(Model.Email ?? "")"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="radio" value="true" name="Original" id="Original" @(Model.Original==true ? "checked" : "") /><label for="Original">Original</label>
+                Send Certificate:<input type="radio" value="true" name="Original" id="Original" @(Model.Original==true ? "checked" : "") /><label for="Original">Original</label>
                 <input type="radio" value="false" name="Original" id="Copy" @(Model.Original==false ? "checked" : "") /><label for="Copy">Copy</label>
             </div>
             <input type="hidden" name="CertificateMailingId" class="certId" style="width:10px;margin-left:-100px;" value="@(Model.CertificateMailingId)"/>

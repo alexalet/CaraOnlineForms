@@ -11,11 +11,6 @@
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_EmailsToConfirm_User" />
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.FilmAltTitle" Width="1.5" PointX="4.875" PointY="1.875" />
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.Participant" Width="1.5" PointX="5.75" PointY="4.875" />
-        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.FilmSubmission" Width="1.5" PointX="3.625" PointY="4.25" />
-        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_FilmAltTitle_Film" />
-        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Film_User" />
-        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_FilmSubmission_User" />
-        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission" />
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.PasswordToReset" Width="1.5" PointX="1.5" PointY="7.25" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_PasswordToReset_User" />
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.EmailNote" Width="1.5" PointX="7" PointY="1.875" />
@@ -24,7 +19,6 @@
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.PostScreeningAction" Width="1.5" PointX="3.125" PointY="10.875" />
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.Screener" Width="1.5" PointX="0.875" PointY="10" />
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.ScreenerGenre" Width="1.5" PointX="0.75" PointY="14.25" />
-        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Screener_FilmSubmission" ></AssociationConnector>
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Screener_Format" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_ScreenerGenre_Genre" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Screener_PostScreeningAction" />
@@ -34,21 +28,30 @@
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.ScreenerAttribute" Width="1.5" PointX="0.5" PointY="18.375" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_ScreenerAttribute_Attribute" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_ScreenerAttribute_Screener" />
-        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.Address" Width="1.5" PointX="9.625" PointY="4.25" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.Address" Width="1.5" PointX="8" PointY="4.375" />
         <EntityTypeShape EntityType="CaraOnlineForms_DevModel.CertificateMailing" Width="1.5" PointX="5.375" PointY="10.375" />
-        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_CertificateMailing_FilmSubmission" />
-        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.Company" Width="1.5" PointX="7.5" PointY="14.375" />
-        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.CompanyContact" Width="1.5" PointX="10.75" PointY="15.625" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.Company" Width="1.5" PointX="5.375" PointY="15.75" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.CompanyContact" Width="1.5" PointX="9.5" PointY="15.625" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Company_Address" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_CompanyContact_Address" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_CoContact_Company" />
-        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Company_FilmSubmission" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Company_User" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_CompanyContact_User" />
-        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.ContactRole" Width="1.5" PointX="10.75" PointY="20.375" />
-        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.RelType" Width="1.5" PointX="7.5" PointY="19" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.ContactRole" Width="1.5" PointX="9.5" PointY="20.375" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.RelType" Width="1.5" PointX="6.25" PointY="20.5" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Company_RelType" />
         <AssociationConnector Association="CaraOnlineForms_DevModel.FK_CompanyContact_Role" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.RightsType" Width="1.5" PointX="0.5" PointY="23.25" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.FilmSubmission" Width="1.5" PointX="3.5" PointY="3.75" />
+        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_CertificateMailing_FilmSubmission" />
+        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Company_FilmSubmission" />
+        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_FilmAltTitle_Film" />
+        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission" />
+        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_Screener_FilmSubmission" />
+        <EntityTypeShape EntityType="CaraOnlineForms_DevModel.CompanyRightsType" Width="1.5" PointX="0.5" PointY="20.5" />
+        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_CompanyRightsType_Company" />
+        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_CompanyRightsType_FilmSubmission" />
+        <AssociationConnector Association="CaraOnlineForms_DevModel.FK_CompanyRightsType_RightsType" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

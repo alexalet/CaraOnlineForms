@@ -62,6 +62,7 @@
         {
             Html.RenderAction("_WorkFlow", "NavMenu", new { StepId = "Title" });
         }
+        
     }
 
     <div class="clear"></div>
@@ -88,9 +89,21 @@
                    }
                 }
             </div>
+            <div style="margin-top:10px; font-size:11px;">
+                Do any scenes include a language other than English for which subtitles are NOT included? @Html.CheckBoxFor(m=>m.IncludeOtherLanguage)
+            </div>
+            <div style="margin-top:10px; font-size:11px;">
+                Has this motion picture been exhibited or distributed unrated? @Html.CheckBoxFor(m=>m.IsDistributedUnrated)
+                <span class="isDistributedUnrated">If yes, please explain @Html.TextBoxFor(m=>m.DistributedUnrated)</span>
+            </div>
             <div class="clear">
                 <div class="clear" style="margin-top: 20px;">Synopsis:</div>
                 @Html.TextAreaFor(m => m.Synopsis, new { @style = "width: 700px", rows = "10", cols = "10" })
+            </div>
+            <div style="margin-top:10px; font-size:11px;">
+                <span style="margin-right:15px;">US Film Locations @Html.TextBoxFor(m=>m.USFilmLocation)</span>
+                <span style="margin-right:15px;">Canada Film Locations @Html.TextBoxFor(m=>m.CanadaFilmLocation)</span>
+                <span>Foreign Film Locations @Html.TextBoxFor(m=>m.ForeignFilmLocation)</span>
             </div>
             <div>
                 <input type="button" value="Submit" style="margin-top: 10px;" onclick="GoToNextPage()" />

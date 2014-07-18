@@ -29,11 +29,11 @@ namespace CaraEntites
         public System.DateTime ModifiedDate { get; set; }
         public int ModifiedBy { get; set; }
     
-        public virtual FilmSubmission FilmSubmission { get; set; }
         public virtual Format Format { get; set; }
         public virtual PostScreeningAction PostScreeningAction { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<ScreenerGenre> ScreenerGenres { get; set; }
         public virtual ICollection<ScreenerAttribute> ScreenerAttributes { get; set; }
+        public virtual FilmSubmission FilmSubmission { get; set; }
     }
 }

@@ -16,11 +16,12 @@ namespace CaraEntites
     {
         public FilmSubmission()
         {
+            this.CertificateMailings = new HashSet<CertificateMailing>();
+            this.Companies = new HashSet<Company>();
             this.FilmAltTitles = new HashSet<FilmAltTitle>();
             this.Participants = new HashSet<Participant>();
             this.Screeners = new HashSet<Screener>();
-            this.CertificateMailings = new HashSet<CertificateMailing>();
-            this.Companies = new HashSet<Company>();
+            this.CompanyRightsTypes = new HashSet<CompanyRightsType>();
         }
     
         public int FilmSubmissionId { get; set; }
@@ -31,6 +32,12 @@ namespace CaraEntites
         public string EIDR { get; set; }
         public string OtherID { get; set; }
         public string Synopsis { get; set; }
+        public string USFilmLocation { get; set; }
+        public string CanadaFilmLocation { get; set; }
+        public string ForeignFilmLocation { get; set; }
+        public bool IncludeOtherLanguage { get; set; }
+        public bool IsDistributedUnrated { get; set; }
+        public string DistributedUnrated { get; set; }
         public bool Deleted { get; set; }
         public Nullable<System.DateTime> Submitted { get; set; }
         public Nullable<System.DateTime> AcceptedByCARA { get; set; }
@@ -39,12 +46,11 @@ namespace CaraEntites
         public System.DateTime ModifiedDate { get; set; }
         public System.DateTime CreatedDate { get; set; }
     
-        public virtual ICollection<FilmAltTitle> FilmAltTitles { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
-        public virtual ICollection<Participant> Participants { get; set; }
-        public virtual ICollection<Screener> Screeners { get; set; }
         public virtual ICollection<CertificateMailing> CertificateMailings { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
+        public virtual ICollection<FilmAltTitle> FilmAltTitles { get; set; }
+        public virtual ICollection<Participant> Participants { get; set; }
+        public virtual ICollection<Screener> Screeners { get; set; }
+        public virtual ICollection<CompanyRightsType> CompanyRightsTypes { get; set; }
     }
 }

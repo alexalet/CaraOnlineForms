@@ -10,7 +10,7 @@
         new { StepId = "Contacts", Label = "Right Holders", URL = Url.Action("GetMailingList", "Contacts",new {filmId=Model.FilmSubmitionId })},
         new { StepId = "Screener", Label = "Screener", URL = Url.Action("Screener", "Screener",new {filmId=Model.FilmSubmitionId })},
         new { StepId = "Company", Label = "Company/Contacts", URL = Url.Action("Companies", "Company",new {filmId=Model.FilmSubmitionId })},
-        new { StepId = "Submit", Label = "Submit Picture", URL = Url.Action("SubmitPicture", "SubmitPicture")}
+        new { StepId = "Summary", Label = "Submit Picture", URL = Url.Action("Summary", "Summary")}
     };
 
     if (Model.FilmTitle != null)

@@ -17,6 +17,7 @@ namespace CaraEntites
         public Company()
         {
             this.CompanyContacts = new HashSet<CompanyContact>();
+            this.CompanyRightsTypes = new HashSet<CompanyRightsType>();
         }
     
         public int CompanyID { get; set; }
@@ -34,8 +35,9 @@ namespace CaraEntites
     
         public virtual Address Address { get; set; }
         public virtual ICollection<CompanyContact> CompanyContacts { get; set; }
-        public virtual FilmSubmission FilmSubmission { get; set; }
         public virtual User User { get; set; }
         public virtual RelType RelType { get; set; }
+        public virtual FilmSubmission FilmSubmission { get; set; }
+        public virtual ICollection<CompanyRightsType> CompanyRightsTypes { get; set; }
     }
 }

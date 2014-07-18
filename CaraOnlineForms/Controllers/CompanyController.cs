@@ -32,16 +32,18 @@ namespace CaraOnlineForms.Controllers
             Company model = new CompanyRepository().GetCompany(companyId);
             if (model == null)
             {
-                model = new Company { CompanyID = -1, FilmSubmissionId = filmId, Address = new Address { AddressID = -1 } };
+                model = new Company { CompanyID = -1, FilmSubmissionId = filmId, Address = new Address { AddressID = -1 }};
+                //List<CompanyRightsType> rightsTypes=new List<CompanyRightsType>{new CompanyRightsType{
+
             }
             
             return PartialView("_CompanyEdit", model);
         }
 
-        public JsonResult SaveCompanyInfo(Company company)
+        public JsonResult SaveCompanyInfo(Company company, List<int> CompanyRightsTypes)
         {
             NameValueCollection errors = new NameValueCollection();
-            var res = new CompanyRepository().SaveCompanyInfo(company,User.UserId);
+            var res = new CompanyRepository().SaveCompanyInfo(company, CompanyRightsTypes, User.UserId);
             ViewBag.Message = "Changes have been saved";
             return Json(new
             {

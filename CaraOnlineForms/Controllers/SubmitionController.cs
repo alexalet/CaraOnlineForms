@@ -27,6 +27,7 @@ namespace CaraOnlineForms.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public ActionResult SaveTitle(FilmSubmission film, List<string> AltTitle, string NextPage)
         {
             // UserID of the saved film must be taken from session

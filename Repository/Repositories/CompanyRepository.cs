@@ -19,6 +19,7 @@ namespace Repository
                 .Include(x => x.Address)
                 .Include(z=>z.RelType)
                 .Include(u=>u.CompanyContacts)
+                .Include(e=>e.CompanyRightsTypes)
                 .Where(y => y.FilmSubmissionId == filmSubmissionId).ToList();
         }
 
@@ -33,10 +34,11 @@ namespace Repository
                 .Include(x => x.Address)
                 .Include(z => z.RelType)
                 .Include(u => u.CompanyContacts)
+                .Include(e => e.CompanyRightsTypes)
                 .FirstOrDefault(x => x.CompanyID == companyId);
         }
 
-        public bool SaveCompanyInfo(Company company,int userId)
+        public bool SaveCompanyInfo(Company company,List<int> companyRightsTypes,int userId)
         {
             //first, save Address
             int addrId = 0;
@@ -78,6 +80,22 @@ namespace Repository
                 _context.SaveChanges();
 
             }
+            //now handle CompanyRightsTypes:
+            // first, delete them...
+            List<CompanyRightsType> types = _context.CompanyRightsTypes.Where(x => x.CompanyId == compOld.CompanyID).ToList();
+            foreach (CompanyRightsType t in types)
+            {
+                _context.CompanyRightsTypes.Remove(t);
+            }
+            _context.SaveChanges();
+            //now, recreate them
+            foreach (int i in companyRightsTypes)
+            {
+                CompanyRightsType type = new CompanyRightsType { CompanyId = compOld.CompanyID, FilmSubmissionId = compOld.FilmSubmissionId, RightsTypeId = i };
+                _context.CompanyRightsTypes.Add(type);
+                _context.SaveChanges();
+            }
+
             return true;
         }
 

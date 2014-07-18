@@ -11,6 +11,7 @@
           <EntitySet Name="CertificateMailing" EntityType="CaraOnlineForms_DevModel.Store.CertificateMailing" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Company" EntityType="CaraOnlineForms_DevModel.Store.Company" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CompanyContact" EntityType="CaraOnlineForms_DevModel.Store.CompanyContact" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompanyRightsType" EntityType="CaraOnlineForms_DevModel.Store.CompanyRightsType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ContactRole" EntityType="CaraOnlineForms_DevModel.Store.ContactRole" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Country" EntityType="CaraOnlineForms_DevModel.Store.Country" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmailNotes" EntityType="CaraOnlineForms_DevModel.Store.EmailNotes" store:Type="Tables" Schema="dbo" />
@@ -22,6 +23,7 @@
           <EntitySet Name="PasswordToReset" EntityType="CaraOnlineForms_DevModel.Store.PasswordToReset" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PostScreeningAction" EntityType="CaraOnlineForms_DevModel.Store.PostScreeningAction" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RelType" EntityType="CaraOnlineForms_DevModel.Store.RelType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RightsType" EntityType="CaraOnlineForms_DevModel.Store.RightsType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Screener" EntityType="CaraOnlineForms_DevModel.Store.Screener" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ScreenerAttribute" EntityType="CaraOnlineForms_DevModel.Store.ScreenerAttribute" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ScreenerGenre" EntityType="CaraOnlineForms_DevModel.Store.ScreenerGenre" store:Type="Tables" Schema="dbo" />
@@ -63,21 +65,25 @@
             <End Role="User" EntitySet="User" />
             <End Role="CompanyContact" EntitySet="CompanyContact" />
           </AssociationSet>
+          <AssociationSet Name="FK_CompanyRightsType_Company" Association="CaraOnlineForms_DevModel.Store.FK_CompanyRightsType_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="CompanyRightsType" EntitySet="CompanyRightsType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyRightsType_FilmSubmission" Association="CaraOnlineForms_DevModel.Store.FK_CompanyRightsType_FilmSubmission">
+            <End Role="FilmSubmission" EntitySet="FilmSubmission" />
+            <End Role="CompanyRightsType" EntitySet="CompanyRightsType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyRightsType_RightsType" Association="CaraOnlineForms_DevModel.Store.FK_CompanyRightsType_RightsType">
+            <End Role="RightsType" EntitySet="RightsType" />
+            <End Role="CompanyRightsType" EntitySet="CompanyRightsType" />
+          </AssociationSet>
           <AssociationSet Name="FK_EmailsToConfirm_User" Association="CaraOnlineForms_DevModel.Store.FK_EmailsToConfirm_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserToConfirm" EntitySet="UserToConfirm" />
           </AssociationSet>
-          <AssociationSet Name="FK_Film_User" Association="CaraOnlineForms_DevModel.Store.FK_Film_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="FilmSubmission" EntitySet="FilmSubmission" />
-          </AssociationSet>
           <AssociationSet Name="FK_FilmAltTitle_Film" Association="CaraOnlineForms_DevModel.Store.FK_FilmAltTitle_Film">
             <End Role="FilmSubmission" EntitySet="FilmSubmission" />
             <End Role="FilmAltTitle" EntitySet="FilmAltTitle" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FilmSubmission_User" Association="CaraOnlineForms_DevModel.Store.FK_FilmSubmission_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="FilmSubmission" EntitySet="FilmSubmission" />
           </AssociationSet>
           <AssociationSet Name="FK_Participant_FilmSubmission" Association="CaraOnlineForms_DevModel.Store.FK_Participant_FilmSubmission">
             <End Role="FilmSubmission" EntitySet="FilmSubmission" />
@@ -200,6 +206,15 @@
           <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CompanyRightsType">
+          <Key>
+            <PropertyRef Name="CompanyRightsTypeId" />
+          </Key>
+          <Property Name="CompanyRightsTypeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FilmSubmissionId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="RightsTypeId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ContactRole">
           <Key>
             <PropertyRef Name="ContactRoleID" />
@@ -243,6 +258,12 @@
           <Property Name="EIDR" Type="nvarchar" MaxLength="60" />
           <Property Name="OtherID" Type="nvarchar" MaxLength="60" />
           <Property Name="Synopsis" Type="nvarchar" />
+          <Property Name="USFilmLocation" Type="varchar" MaxLength="50" />
+          <Property Name="CanadaFilmLocation" Type="varchar" MaxLength="50" />
+          <Property Name="ForeignFilmLocation" Type="varchar" MaxLength="50" />
+          <Property Name="IncludeOtherLanguage" Type="bit" Nullable="false" />
+          <Property Name="IsDistributedUnrated" Type="bit" Nullable="false" />
+          <Property Name="DistributedUnrated" Type="varchar" MaxLength="50" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="Submitted" Type="datetime" />
           <Property Name="AcceptedByCARA" Type="datetime" />
@@ -300,6 +321,13 @@
           </Key>
           <Property Name="RelTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Description" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="RightsType">
+          <Key>
+            <PropertyRef Name="RightsTypeId" />
+          </Key>
+          <Property Name="RightsTypeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RightsTypeDescription" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="Screener">
           <Key>
@@ -476,6 +504,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CompanyRightsType_Company">
+          <End Role="Company" Type="CaraOnlineForms_DevModel.Store.Company" Multiplicity="1" />
+          <End Role="CompanyRightsType" Type="CaraOnlineForms_DevModel.Store.CompanyRightsType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="CompanyRightsType">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyRightsType_FilmSubmission">
+          <End Role="FilmSubmission" Type="CaraOnlineForms_DevModel.Store.FilmSubmission" Multiplicity="1" />
+          <End Role="CompanyRightsType" Type="CaraOnlineForms_DevModel.Store.CompanyRightsType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FilmSubmission">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Principal>
+            <Dependent Role="CompanyRightsType">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyRightsType_RightsType">
+          <End Role="RightsType" Type="CaraOnlineForms_DevModel.Store.RightsType" Multiplicity="1" />
+          <End Role="CompanyRightsType" Type="CaraOnlineForms_DevModel.Store.CompanyRightsType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RightsType">
+              <PropertyRef Name="RightsTypeId" />
+            </Principal>
+            <Dependent Role="CompanyRightsType">
+              <PropertyRef Name="RightsTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EmailsToConfirm_User">
           <End Role="User" Type="CaraOnlineForms_DevModel.Store.User" Multiplicity="1" />
           <End Role="UserToConfirm" Type="CaraOnlineForms_DevModel.Store.UserToConfirm" Multiplicity="*" />
@@ -484,18 +548,6 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="UserToConfirm">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Film_User">
-          <End Role="User" Type="CaraOnlineForms_DevModel.Store.User" Multiplicity="1" />
-          <End Role="FilmSubmission" Type="CaraOnlineForms_DevModel.Store.FilmSubmission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="FilmSubmission">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -509,18 +561,6 @@
             </Principal>
             <Dependent Role="FilmAltTitle">
               <PropertyRef Name="FilmSubmissionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FilmSubmission_User">
-          <End Role="User" Type="CaraOnlineForms_DevModel.Store.User" Multiplicity="1" />
-          <End Role="FilmSubmission" Type="CaraOnlineForms_DevModel.Store.FilmSubmission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="FilmSubmission">
-              <PropertyRef Name="ModifiedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -658,23 +698,6 @@
           </AssociationSet>
           <EntitySet Name="FilmAltTitles" EntityType="CaraOnlineForms_DevModel.FilmAltTitle" />
           <EntitySet Name="Participants" EntityType="CaraOnlineForms_DevModel.Participant" />
-          <EntitySet Name="FilmSubmissions" EntityType="CaraOnlineForms_DevModel.FilmSubmission" />
-          <AssociationSet Name="FK_FilmAltTitle_Film" Association="CaraOnlineForms_DevModel.FK_FilmAltTitle_Film">
-            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
-            <End Role="FilmAltTitle" EntitySet="FilmAltTitles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Film_User" Association="CaraOnlineForms_DevModel.FK_Film_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FilmSubmission_User" Association="CaraOnlineForms_DevModel.FK_FilmSubmission_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Participant_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission">
-            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
-            <End Role="Participant" EntitySet="Participants" />
-          </AssociationSet>
           <EntitySet Name="PasswordToResets" EntityType="CaraOnlineForms_DevModel.PasswordToReset" />
           <AssociationSet Name="FK_PasswordToReset_User" Association="CaraOnlineForms_DevModel.FK_PasswordToReset_User">
             <End Role="User" EntitySet="Users" />
@@ -686,10 +709,6 @@
           <EntitySet Name="PostScreeningActions" EntityType="CaraOnlineForms_DevModel.PostScreeningAction" />
           <EntitySet Name="Screeners" EntityType="CaraOnlineForms_DevModel.Screener" />
           <EntitySet Name="ScreenerGenres" EntityType="CaraOnlineForms_DevModel.ScreenerGenre" />
-          <AssociationSet Name="FK_Screener_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_Screener_FilmSubmission">
-            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
-            <End Role="Screener" EntitySet="Screeners" />
-          </AssociationSet>
           <AssociationSet Name="FK_Screener_Format" Association="CaraOnlineForms_DevModel.FK_Screener_Format">
             <End Role="Format" EntitySet="Formats" />
             <End Role="Screener" EntitySet="Screeners" />
@@ -722,10 +741,6 @@
           </AssociationSet>
           <EntitySet Name="Addresses" EntityType="CaraOnlineForms_DevModel.Address" />
           <EntitySet Name="CertificateMailings" EntityType="CaraOnlineForms_DevModel.CertificateMailing" />
-          <AssociationSet Name="FK_CertificateMailing_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_CertificateMailing_FilmSubmission">
-            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
-            <End Role="CertificateMailing" EntitySet="CertificateMailings" />
-          </AssociationSet>
           <EntitySet Name="Companies" EntityType="CaraOnlineForms_DevModel.Company" />
           <EntitySet Name="CompanyContacts" EntityType="CaraOnlineForms_DevModel.CompanyContact" />
           <AssociationSet Name="FK_Company_Address" Association="CaraOnlineForms_DevModel.FK_Company_Address">
@@ -739,10 +754,6 @@
           <AssociationSet Name="FK_CoContact_Company" Association="CaraOnlineForms_DevModel.FK_CoContact_Company">
             <End Role="Company" EntitySet="Companies" />
             <End Role="CompanyContact" EntitySet="CompanyContacts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_Company_FilmSubmission">
-            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
-            <End Role="Company" EntitySet="Companies" />
           </AssociationSet>
           <AssociationSet Name="FK_Company_User" Association="CaraOnlineForms_DevModel.FK_Company_User">
             <End Role="User" EntitySet="Users" />
@@ -761,6 +772,41 @@
           <AssociationSet Name="FK_CompanyContact_Role" Association="CaraOnlineForms_DevModel.FK_CompanyContact_Role">
             <End Role="ContactRole" EntitySet="ContactRoles" />
             <End Role="CompanyContact" EntitySet="CompanyContacts" />
+          </AssociationSet>
+          <EntitySet Name="RightsTypes" EntityType="CaraOnlineForms_DevModel.RightsType" />
+          <EntitySet Name="FilmSubmissions" EntityType="CaraOnlineForms_DevModel.FilmSubmission" />
+          <AssociationSet Name="FK_CertificateMailing_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_CertificateMailing_FilmSubmission">
+            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
+            <End Role="CertificateMailing" EntitySet="CertificateMailings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_Company_FilmSubmission">
+            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FilmAltTitle_Film" Association="CaraOnlineForms_DevModel.FK_FilmAltTitle_Film">
+            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
+            <End Role="FilmAltTitle" EntitySet="FilmAltTitles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Participant_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission">
+            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
+            <End Role="Participant" EntitySet="Participants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Screener_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_Screener_FilmSubmission">
+            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
+            <End Role="Screener" EntitySet="Screeners" />
+          </AssociationSet>
+          <EntitySet Name="CompanyRightsTypes" EntityType="CaraOnlineForms_DevModel.CompanyRightsType" />
+          <AssociationSet Name="FK_CompanyRightsType_Company" Association="CaraOnlineForms_DevModel.FK_CompanyRightsType_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CompanyRightsType" EntitySet="CompanyRightsTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyRightsType_FilmSubmission" Association="CaraOnlineForms_DevModel.FK_CompanyRightsType_FilmSubmission">
+            <End Role="FilmSubmission" EntitySet="FilmSubmissions" />
+            <End Role="CompanyRightsType" EntitySet="CompanyRightsTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyRightsType_RightsType" Association="CaraOnlineForms_DevModel.FK_CompanyRightsType_RightsType">
+            <End Role="RightsType" EntitySet="RightsTypes" />
+            <End Role="CompanyRightsType" EntitySet="CompanyRightsTypes" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Country">
@@ -810,8 +856,6 @@
           <Property Type="Int32" Name="ParentCompanyId" />
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
           <NavigationProperty Name="UserToConfirms" Relationship="CaraOnlineForms_DevModel.FK_EmailsToConfirm_User" FromRole="User" ToRole="UserToConfirm" />
-          <NavigationProperty Name="FilmSubmissions" Relationship="CaraOnlineForms_DevModel.FK_Film_User" FromRole="User" ToRole="FilmSubmission" />
-          <NavigationProperty Name="FilmSubmissions1" Relationship="CaraOnlineForms_DevModel.FK_FilmSubmission_User" FromRole="User" ToRole="FilmSubmission" />
           <NavigationProperty Name="PasswordToResets" Relationship="CaraOnlineForms_DevModel.FK_PasswordToReset_User" FromRole="User" ToRole="PasswordToReset" />
           <NavigationProperty Name="Screeners" Relationship="CaraOnlineForms_DevModel.FK_Screener_ModifiedBy" FromRole="User" ToRole="Screener" />
           <NavigationProperty Name="Companies" Relationship="CaraOnlineForms_DevModel.FK_Company_User" FromRole="User" ToRole="Company" />
@@ -850,81 +894,6 @@
           <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
           <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission" FromRole="Participant" ToRole="FilmSubmission" />
         </EntityType>
-        <EntityType Name="FilmSubmission">
-          <Key>
-            <PropertyRef Name="FilmSubmissionId" />
-          </Key>
-          <Property Type="Int32" Name="FilmSubmissionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="FilmTitle" Nullable="false" MaxLength="120" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="UserId" Nullable="false" />
-          <Property Type="String" Name="ISAN" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ISANCheck" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="EIDR" MaxLength="60" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="OtherID" MaxLength="60" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Synopsis" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="Deleted" Nullable="false" />
-          <Property Type="DateTime" Name="Submitted" Precision="3" />
-          <Property Type="DateTime" Name="AcceptedByCARA" Precision="3" />
-          <Property Type="DateTime" Name="ReturnedByCARA" Precision="3" />
-          <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
-          <Property Type="DateTime" Name="ModifiedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <NavigationProperty Name="FilmAltTitles" Relationship="CaraOnlineForms_DevModel.FK_FilmAltTitle_Film" FromRole="FilmSubmission" ToRole="FilmAltTitle" />
-          <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_Film_User" FromRole="FilmSubmission" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="CaraOnlineForms_DevModel.FK_FilmSubmission_User" FromRole="FilmSubmission" ToRole="User" />
-          <NavigationProperty Name="Participants" Relationship="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission" FromRole="FilmSubmission" ToRole="Participant" />
-          <NavigationProperty Name="Screeners" Relationship="CaraOnlineForms_DevModel.FK_Screener_FilmSubmission" FromRole="FilmSubmission" ToRole="Screener" />
-          <NavigationProperty Name="CertificateMailings" Relationship="CaraOnlineForms_DevModel.FK_CertificateMailing_FilmSubmission" FromRole="FilmSubmission" ToRole="CertificateMailing" />
-          <NavigationProperty Name="Companies" Relationship="CaraOnlineForms_DevModel.FK_Company_FilmSubmission" FromRole="FilmSubmission" ToRole="Company" />
-        </EntityType>
-        <Association Name="FK_FilmAltTitle_Film">
-          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
-          <End Type="CaraOnlineForms_DevModel.FilmAltTitle" Role="FilmAltTitle" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FilmSubmission">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Principal>
-            <Dependent Role="FilmAltTitle">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Film_User">
-          <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
-          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="FilmSubmission">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FilmSubmission_User">
-          <End Type="CaraOnlineForms_DevModel.User" Role="User" Multiplicity="1" />
-          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="FilmSubmission">
-              <PropertyRef Name="ModifiedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Participant_FilmSubmission">
-          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
-          <End Type="CaraOnlineForms_DevModel.Participant" Role="Participant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FilmSubmission">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Principal>
-            <Dependent Role="Participant">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="PasswordToReset">
           <Key>
             <PropertyRef Name="PasswordToResetId" />
@@ -993,12 +962,12 @@
           <Property Type="String" Name="CodeName" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="ModifiedDate" Nullable="false" Precision="3" />
           <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
-          <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_Screener_FilmSubmission" FromRole="Screener" ToRole="FilmSubmission" />
           <NavigationProperty Name="Format" Relationship="CaraOnlineForms_DevModel.FK_Screener_Format" FromRole="Screener" ToRole="Format" />
           <NavigationProperty Name="PostScreeningAction" Relationship="CaraOnlineForms_DevModel.FK_Screener_PostScreeningAction" FromRole="Screener" ToRole="PostScreeningAction" />
           <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_Screener_ModifiedBy" FromRole="Screener" ToRole="User" />
           <NavigationProperty Name="ScreenerGenres" Relationship="CaraOnlineForms_DevModel.FK_ScreenerGenre_Screener" FromRole="Screener" ToRole="ScreenerGenre" />
           <NavigationProperty Name="ScreenerAttributes" Relationship="CaraOnlineForms_DevModel.FK_ScreenerAttribute_Screener" FromRole="Screener" ToRole="ScreenerAttribute" />
+          <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_Screener_FilmSubmission" FromRole="Screener" ToRole="FilmSubmission" />
         </EntityType>
         <EntityType Name="ScreenerGenre">
           <Key>
@@ -1010,18 +979,6 @@
           <NavigationProperty Name="Genre" Relationship="CaraOnlineForms_DevModel.FK_ScreenerGenre_Genre" FromRole="ScreenerGenre" ToRole="Genre" />
           <NavigationProperty Name="Screener" Relationship="CaraOnlineForms_DevModel.FK_ScreenerGenre_Screener" FromRole="ScreenerGenre" ToRole="Screener" />
         </EntityType>
-        <Association Name="FK_Screener_FilmSubmission">
-          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
-          <End Type="CaraOnlineForms_DevModel.Screener" Role="Screener" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FilmSubmission">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Principal>
-            <Dependent Role="Screener">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Screener_Format">
           <End Type="CaraOnlineForms_DevModel.Format" Role="Format" Multiplicity="0..1" />
           <End Type="CaraOnlineForms_DevModel.Screener" Role="Screener" Multiplicity="*" />
@@ -1164,18 +1121,6 @@
           <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
           <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_CertificateMailing_FilmSubmission" FromRole="CertificateMailing" ToRole="FilmSubmission" />
         </EntityType>
-        <Association Name="FK_CertificateMailing_FilmSubmission">
-          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
-          <End Type="CaraOnlineForms_DevModel.CertificateMailing" Role="CertificateMailing" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FilmSubmission">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Principal>
-            <Dependent Role="CertificateMailing">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="CompanyID" />
@@ -1194,9 +1139,10 @@
           <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
           <NavigationProperty Name="Address" Relationship="CaraOnlineForms_DevModel.FK_Company_Address" FromRole="Company" ToRole="Address" />
           <NavigationProperty Name="CompanyContacts" Relationship="CaraOnlineForms_DevModel.FK_CoContact_Company" FromRole="Company" ToRole="CompanyContact" />
-          <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_Company_FilmSubmission" FromRole="Company" ToRole="FilmSubmission" />
           <NavigationProperty Name="User" Relationship="CaraOnlineForms_DevModel.FK_Company_User" FromRole="Company" ToRole="User" />
           <NavigationProperty Name="RelType" Relationship="CaraOnlineForms_DevModel.FK_Company_RelType" FromRole="Company" ToRole="RelType" />
+          <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_Company_FilmSubmission" FromRole="Company" ToRole="FilmSubmission" />
+          <NavigationProperty Name="CompanyRightsTypes" Relationship="CaraOnlineForms_DevModel.FK_CompanyRightsType_Company" FromRole="Company" ToRole="CompanyRightsType" />
         </EntityType>
         <EntityType Name="CompanyContact">
           <Key>
@@ -1254,18 +1200,6 @@
             </Principal>
             <Dependent Role="CompanyContact">
               <PropertyRef Name="CompanyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Company_FilmSubmission">
-          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
-          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FilmSubmission">
-              <PropertyRef Name="FilmSubmissionId" />
-            </Principal>
-            <Dependent Role="Company">
-              <PropertyRef Name="FilmSubmissionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1330,6 +1264,154 @@
             </Principal>
             <Dependent Role="CompanyContact">
               <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RightsType">
+          <Key>
+            <PropertyRef Name="RightsTypeId" />
+          </Key>
+          <Property Type="Int32" Name="RightsTypeId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="RightsTypeDescription" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CompanyRightsTypes" Relationship="CaraOnlineForms_DevModel.FK_CompanyRightsType_RightsType" FromRole="RightsType" ToRole="CompanyRightsType" />
+        </EntityType>
+        <EntityType Name="FilmSubmission">
+          <Key>
+            <PropertyRef Name="FilmSubmissionId" />
+          </Key>
+          <Property Type="Int32" Name="FilmSubmissionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FilmTitle" Nullable="false" MaxLength="120" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="ISAN" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ISANCheck" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="EIDR" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="OtherID" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Synopsis" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="USFilmLocation" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CanadaFilmLocation" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ForeignFilmLocation" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="IncludeOtherLanguage" Nullable="false" />
+          <Property Type="Boolean" Name="IsDistributedUnrated" Nullable="false" />
+          <Property Type="String" Name="DistributedUnrated" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" />
+          <Property Type="DateTime" Name="Submitted" Precision="3" />
+          <Property Type="DateTime" Name="AcceptedByCARA" Precision="3" />
+          <Property Type="DateTime" Name="ReturnedByCARA" Precision="3" />
+          <Property Type="Int32" Name="ModifiedBy" Nullable="false" />
+          <Property Type="DateTime" Name="ModifiedDate" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CertificateMailings" Relationship="CaraOnlineForms_DevModel.FK_CertificateMailing_FilmSubmission" FromRole="FilmSubmission" ToRole="CertificateMailing" />
+          <NavigationProperty Name="Companies" Relationship="CaraOnlineForms_DevModel.FK_Company_FilmSubmission" FromRole="FilmSubmission" ToRole="Company" />
+          <NavigationProperty Name="FilmAltTitles" Relationship="CaraOnlineForms_DevModel.FK_FilmAltTitle_Film" FromRole="FilmSubmission" ToRole="FilmAltTitle" />
+          <NavigationProperty Name="Participants" Relationship="CaraOnlineForms_DevModel.FK_Participant_FilmSubmission" FromRole="FilmSubmission" ToRole="Participant" />
+          <NavigationProperty Name="Screeners" Relationship="CaraOnlineForms_DevModel.FK_Screener_FilmSubmission" FromRole="FilmSubmission" ToRole="Screener" />
+          <NavigationProperty Name="CompanyRightsTypes" Relationship="CaraOnlineForms_DevModel.FK_CompanyRightsType_FilmSubmission" FromRole="FilmSubmission" ToRole="CompanyRightsType" />
+        </EntityType>
+        <Association Name="FK_CertificateMailing_FilmSubmission">
+          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.CertificateMailing" Role="CertificateMailing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FilmSubmission">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Principal>
+            <Dependent Role="CertificateMailing">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Company_FilmSubmission">
+          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FilmSubmission">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FilmAltTitle_Film">
+          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.FilmAltTitle" Role="FilmAltTitle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FilmSubmission">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Principal>
+            <Dependent Role="FilmAltTitle">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Participant_FilmSubmission">
+          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Participant" Role="Participant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FilmSubmission">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Principal>
+            <Dependent Role="Participant">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Screener_FilmSubmission">
+          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.Screener" Role="Screener" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FilmSubmission">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Principal>
+            <Dependent Role="Screener">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CompanyRightsType">
+          <Key>
+            <PropertyRef Name="CompanyRightsTypeId" />
+          </Key>
+          <Property Type="Int32" Name="CompanyRightsTypeId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="FilmSubmissionId" Nullable="false" />
+          <Property Type="Int32" Name="CompanyId" Nullable="false" />
+          <Property Type="Int32" Name="RightsTypeId" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="CaraOnlineForms_DevModel.FK_CompanyRightsType_Company" FromRole="CompanyRightsType" ToRole="Company" />
+          <NavigationProperty Name="FilmSubmission" Relationship="CaraOnlineForms_DevModel.FK_CompanyRightsType_FilmSubmission" FromRole="CompanyRightsType" ToRole="FilmSubmission" />
+          <NavigationProperty Name="RightsType" Relationship="CaraOnlineForms_DevModel.FK_CompanyRightsType_RightsType" FromRole="CompanyRightsType" ToRole="RightsType" />
+        </EntityType>
+        <Association Name="FK_CompanyRightsType_Company">
+          <End Type="CaraOnlineForms_DevModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.CompanyRightsType" Role="CompanyRightsType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="CompanyRightsType">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyRightsType_FilmSubmission">
+          <End Type="CaraOnlineForms_DevModel.FilmSubmission" Role="FilmSubmission" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.CompanyRightsType" Role="CompanyRightsType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FilmSubmission">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Principal>
+            <Dependent Role="CompanyRightsType">
+              <PropertyRef Name="FilmSubmissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyRightsType_RightsType">
+          <End Type="CaraOnlineForms_DevModel.RightsType" Role="RightsType" Multiplicity="1" />
+          <End Type="CaraOnlineForms_DevModel.CompanyRightsType" Role="CompanyRightsType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RightsType">
+              <PropertyRef Name="RightsTypeId" />
+            </Principal>
+            <Dependent Role="CompanyRightsType">
+              <PropertyRef Name="RightsTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1406,27 +1488,6 @@
                 <ScalarProperty Name="ParticipantTypeID" ColumnName="ParticipantTypeID" />
                 <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
                 <ScalarProperty Name="PartisipantId" ColumnName="PartisipantId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FilmSubmissions">
-            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.FilmSubmission">
-              <MappingFragment StoreEntitySet="FilmSubmission">
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ReturnedByCARA" ColumnName="ReturnedByCARA" />
-                <ScalarProperty Name="AcceptedByCARA" ColumnName="AcceptedByCARA" />
-                <ScalarProperty Name="Submitted" ColumnName="Submitted" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="Synopsis" ColumnName="Synopsis" />
-                <ScalarProperty Name="OtherID" ColumnName="OtherID" />
-                <ScalarProperty Name="EIDR" ColumnName="EIDR" />
-                <ScalarProperty Name="ISANCheck" ColumnName="ISANCheck" />
-                <ScalarProperty Name="ISAN" ColumnName="ISAN" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="FilmTitle" ColumnName="FilmTitle" />
-                <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1605,6 +1666,51 @@
               <MappingFragment StoreEntitySet="RelType">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="RelTypeID" ColumnName="RelTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RightsTypes">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.RightsType">
+              <MappingFragment StoreEntitySet="RightsType">
+                <ScalarProperty Name="RightsTypeDescription" ColumnName="RightsTypeDescription" />
+                <ScalarProperty Name="RightsTypeId" ColumnName="RightsTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FilmSubmissions">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.FilmSubmission">
+              <MappingFragment StoreEntitySet="FilmSubmission">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ReturnedByCARA" ColumnName="ReturnedByCARA" />
+                <ScalarProperty Name="AcceptedByCARA" ColumnName="AcceptedByCARA" />
+                <ScalarProperty Name="Submitted" ColumnName="Submitted" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="DistributedUnrated" ColumnName="DistributedUnrated" />
+                <ScalarProperty Name="IsDistributedUnrated" ColumnName="IsDistributedUnrated" />
+                <ScalarProperty Name="IncludeOtherLanguage" ColumnName="IncludeOtherLanguage" />
+                <ScalarProperty Name="ForeignFilmLocation" ColumnName="ForeignFilmLocation" />
+                <ScalarProperty Name="CanadaFilmLocation" ColumnName="CanadaFilmLocation" />
+                <ScalarProperty Name="USFilmLocation" ColumnName="USFilmLocation" />
+                <ScalarProperty Name="Synopsis" ColumnName="Synopsis" />
+                <ScalarProperty Name="OtherID" ColumnName="OtherID" />
+                <ScalarProperty Name="EIDR" ColumnName="EIDR" />
+                <ScalarProperty Name="ISANCheck" ColumnName="ISANCheck" />
+                <ScalarProperty Name="ISAN" ColumnName="ISAN" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FilmTitle" ColumnName="FilmTitle" />
+                <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyRightsTypes">
+            <EntityTypeMapping TypeName="CaraOnlineForms_DevModel.CompanyRightsType">
+              <MappingFragment StoreEntitySet="CompanyRightsType">
+                <ScalarProperty Name="RightsTypeId" ColumnName="RightsTypeId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="FilmSubmissionId" ColumnName="FilmSubmissionId" />
+                <ScalarProperty Name="CompanyRightsTypeId" ColumnName="CompanyRightsTypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

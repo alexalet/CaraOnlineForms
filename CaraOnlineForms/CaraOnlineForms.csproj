@@ -143,6 +143,7 @@
     <Compile Include="Controllers\ProcessStatusController.cs" />
     <Compile Include="Controllers\ScreenerController.cs" />
     <Compile Include="Controllers\SubmitionController.cs" />
+    <Compile Include="Controllers\SummaryController.cs" />
     <Compile Include="Filters\Authorization.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -311,6 +312,7 @@
     <Content Include="Views\Company\_CompanyEdit.cshtml" />
     <Content Include="Views\Company\Companies.cshtml" />
     <Content Include="Views\Company\_CompanyContactEdit.cshtml" />
+    <Content Include="Views\Summary\Summary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

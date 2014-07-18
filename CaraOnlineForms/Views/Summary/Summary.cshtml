@@ -1,0 +1,17 @@
+﻿@using CaraEntites;
+@using ViewModels;
+@model CompaniesViewModel
+@{
+    ViewBag.Title = "Contacts";
+    Html.RenderAction("_WorkFlow", "NavMenu", new { StepId = "Summary" });
+}
+
+<script>
+    $(document).ready(function () {
+        _cache = $('#frmSummary').serialize();
+    });
+</script>
+<form id="frmSummary">
+<h2>Summary</h2>
+I'm here!!!
+</form>

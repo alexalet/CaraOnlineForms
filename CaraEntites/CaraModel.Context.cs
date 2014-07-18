@@ -30,7 +30,6 @@ namespace CaraEntites
         public DbSet<User> Users { get; set; }
         public DbSet<FilmAltTitle> FilmAltTitles { get; set; }
         public DbSet<Participant> Participants { get; set; }
-        public DbSet<FilmSubmission> FilmSubmissions { get; set; }
         public DbSet<PasswordToReset> PasswordToResets { get; set; }
         public DbSet<EmailNote> EmailNotes { get; set; }
         public DbSet<Format> Formats { get; set; }
@@ -46,5 +45,8 @@ namespace CaraEntites
         public DbSet<CompanyContact> CompanyContacts { get; set; }
         public DbSet<ContactRole> ContactRoles { get; set; }
         public DbSet<RelType> RelTypes { get; set; }
+        public DbSet<RightsType> RightsTypes { get; set; }
+        public DbSet<FilmSubmission> FilmSubmissions { get; set; }
+        public DbSet<CompanyRightsType> CompanyRightsTypes { get; set; }
     }
 }

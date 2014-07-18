@@ -13,6 +13,7 @@ namespace Repository
         {
             FilmSubmission res= _context.FilmSubmissions
                                         .Include("FilmAltTitles")
+                                        //.Include
                                         .FirstOrDefault(x => x.FilmSubmissionId == filmId && x.UserId == userId && !x.Deleted && x.Submitted == null);
             if (res != null && res.Synopsis != null)
                 res.Synopsis.Replace("\n","\r\n");
@@ -30,6 +31,12 @@ namespace Repository
                     return null;
                 film.FilmTitle = newFilm.FilmTitle;
                 film.Synopsis = newFilm.Synopsis.Trim().Replace("\r", "");
+                film.USFilmLocation = newFilm.USFilmLocation;
+                film.CanadaFilmLocation = newFilm.CanadaFilmLocation;
+                film.ForeignFilmLocation = newFilm.ForeignFilmLocation;
+                film.IncludeOtherLanguage = newFilm.IncludeOtherLanguage;
+                film.IsDistributedUnrated = newFilm.IsDistributedUnrated;
+                film.DistributedUnrated = newFilm.DistributedUnrated;
                 film.ModifiedDate = DateTime.Now;
                 film.ModifiedBy = userId;
                 _context.SaveChanges();
@@ -56,6 +63,12 @@ namespace Repository
                 film.UserId = newFilm.UserId;
                 film.FilmTitle = newFilm.FilmTitle;
                 film.Synopsis = newFilm.Synopsis.Trim().Replace("\r", "");
+                film.USFilmLocation = newFilm.USFilmLocation;
+                film.CanadaFilmLocation = newFilm.CanadaFilmLocation;
+                film.ForeignFilmLocation = newFilm.ForeignFilmLocation;
+                film.IncludeOtherLanguage = newFilm.IncludeOtherLanguage;
+                film.IsDistributedUnrated = newFilm.IsDistributedUnrated;
+                film.DistributedUnrated = newFilm.DistributedUnrated;
                 film.CreatedDate = DateTime.Now;
                 film.ModifiedDate = DateTime.Now;
                 film.ModifiedBy = userId;
